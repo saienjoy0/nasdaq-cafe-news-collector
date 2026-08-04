@@ -1,0 +1,16 @@
+output/**/raw/article_fulltext.json
+output/**/CHATGPT_FULLTEXT_HANDOFF_*.md
+output/latest/chatgpt_fulltext_handoff.md
+output/**/_private/
+output/**/fulltext_cache/
+
+# Local credentials and generated daily artifacts
+.env
+.env.*
+!.env.example
+output/**
+
+# Python and local workspace caches
+__pycache__/
+*.py[cod]
+.pytest_cache/

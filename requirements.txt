@@ -1,0 +1,15 @@
+requests
+feedparser
+defusedxml>=0.7.1
+fake_useragent==2.2.0
+pandas
+python-dotenv
+yfinance
+fredapi
+beautifulsoup4
+pypdf
+google-search-results
+tavily-python
+python-dateutil
+pytz
+rapidfuzz
