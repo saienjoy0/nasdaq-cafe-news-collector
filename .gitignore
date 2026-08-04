@@ -14,3 +14,9 @@ output/**
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.codex-deps/
+
+# Local Codex instructions and optional third-party source
+.agents/
+vendor/
+CODEX_PHASE1_INFO_SKILL_IMPLEMENTATION_REQUEST.md

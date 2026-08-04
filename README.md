@@ -83,11 +83,12 @@ Raw Archiveの主な保護設定:
 
 ## RSS取得経路
 
-1. `vendor/finance-news-aggregator`
-2. feedparser
-3. requests + ElementTree
+1. feedparser
+2. requests + ElementTree
 
-vendor repositoryは通常実行で更新せず、commit hashとfeedごとの経路を `raw/rss_news.json` に記録します。
+公開GitHubリポジトリには第三者のvendorコードを同梱しません。ローカルに
+`vendor/finance-news-aggregator` が存在する場合だけ互換経路として利用し、
+そのcommit hashとfeedごとの経路を `raw/rss_news.json` に記録します。
 
 ## 禁止事項
 
