@@ -62,12 +62,24 @@ jobs:
           fi
 
           auth_dir="$HOME/.longbridge/openapi"
-          archive_path="$RUNNER_TEMP/longbridge-openapi-auth.zip"
+          archive_path="$RUNNER_TEMP/longbridge-openapi-auth.bin"
           rm -rf "$auth_dir"
           mkdir -p "$auth_dir"
           umask 077
           printf '%s' "$LONGBRIDGE_CLI_AUTH_B64" | base64 --decode > "$archive_path"
-          unzip -q "$archive_path" -d "$auth_dir"
+
+          archive_size="$(wc -c < "$archive_path" | tr -d ' ')"
+          echo "Decoded OAuth archive size: ${archive_size} bytes"
+          if unzip -tq "$archive_path" >/dev/null 2>&1; then
+            unzip -q "$archive_path" -d "$auth_dir"
+            echo "OAuth archive format: zip"
+          elif tar -tf "$archive_path" >/dev/null 2>&1; then
+            tar -xf "$archive_path" -C "$auth_dir"
+            echo "OAuth archive format: tar"
+          else
+            echo "::error::Decoded OAuth secret is neither a valid ZIP nor TAR archive."
+            exit 1
+          fi
           rm -f "$archive_path"
           chmod -R go-rwx "$auth_dir"
 
