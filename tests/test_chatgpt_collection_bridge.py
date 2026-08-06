@@ -44,6 +44,8 @@ class ChatGPTCollectionBridgeContractTests(unittest.TestCase):
             self.assertEqual(1, self.daily.count("python -m nasdaq_cafe.run collect"))
 
     def test_bridge_waits_for_exact_child_run_and_reports_artifact_contract(self) -> None:
+        self.assertIn("previous_run_id=", self.bridge)
+        self.assertIn("select(.databaseId > $previous_run_id)", self.bridge)
         self.assertIn('gh run watch "$CHILD_RUN_ID"', self.bridge)
         self.assertIn("<!-- nasdaq-cafe-collection-result -->", self.bridge)
         self.assertIn("status: success", self.bridge)
@@ -55,6 +57,13 @@ class ChatGPTCollectionBridgeContractTests(unittest.TestCase):
         self.assertIn("status: failure", failure_section)
         self.assertIn("chatgpt-collect-failed", failure_section)
         self.assertNotIn('gh issue close "$ISSUE_NUMBER"', failure_section)
+
+    def test_child_failure_is_propagated_after_reporting(self) -> None:
+        self.assertIn("Propagate collector failure", self.bridge)
+        self.assertIn("steps.wait.outputs.conclusion != 'success'", self.bridge)
+        report_index = self.bridge.index("Report request result")
+        propagate_index = self.bridge.index("Propagate collector failure")
+        self.assertLess(report_index, propagate_index)
 
     def test_longbridge_trade_surface_is_not_added(self) -> None:
         for forbidden in (
