@@ -119,6 +119,13 @@ jobs:
             exit 1
           fi
 
+          # Prove that the rotator token can update repository secrets before
+          # consuming a refresh token that the OAuth server may rotate.
+          echo "::add-mask::$LONGBRIDGE_OAUTH_REFRESH_TOKEN"
+          printf '%s' "$LONGBRIDGE_OAUTH_REFRESH_TOKEN" | \
+            gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          echo "Longbridge refresh-token write preflight succeeded."
+
           next_refresh_path="$RUNNER_TEMP/longbridge-next-refresh-token"
           export LONGBRIDGE_NEXT_REFRESH_TOKEN_PATH="$next_refresh_path"
           python scripts/prepare_longbridge_oauth_session.py
