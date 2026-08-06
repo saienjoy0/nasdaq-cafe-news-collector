@@ -62,6 +62,68 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s tests -v
 
+      - name: Install Longbridge CLI
+        id: install_longbridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://open.longbridge.com/longbridge/longbridge-terminal/install | sh
+
+          longbridge_bin="$(command -v longbridge || true)"
+          if [[ -z "$longbridge_bin" ]]; then
+            for candidate in \
+              "$HOME/.local/bin/longbridge" \
+              "$HOME/bin/longbridge" \
+              "/usr/local/bin/longbridge"; do
+              if [[ -x "$candidate" ]]; then
+                longbridge_bin="$candidate"
+                break
+              fi
+            done
+          fi
+
+          if [[ -z "$longbridge_bin" ]]; then
+            echo "::error::Longbridge CLI installation completed without a discoverable executable."
+            exit 1
+          fi
+
+          echo "$(dirname "$longbridge_bin")" >> "$GITHUB_PATH"
+          echo "binary=$longbridge_bin" >> "$GITHUB_OUTPUT"
+          "$longbridge_bin" --version
+
+      - name: Restore and validate Longbridge OAuth session
+        id: longbridge_auth
+        shell: bash
+        env:
+          LONGBRIDGE_CLI_AUTH_B64: ${{ secrets.LONGBRIDGE_CLI_AUTH_B64 }}
+          LONGBRIDGE_BIN: ${{ steps.install_longbridge.outputs.binary }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${LONGBRIDGE_CLI_AUTH_B64:-}" ]]; then
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Longbridge OAuth secret is not configured; collection will record Longbridge as missing."
+            exit 0
+          fi
+
+          auth_dir="$HOME/.longbridge/openapi"
+          auth_path="$auth_dir/cli-auth"
+          mkdir -p "$auth_dir"
+          umask 077
+          printf '%s' "$LONGBRIDGE_CLI_AUTH_B64" | base64 --decode > "$auth_path"
+          chmod 600 "$auth_path"
+
+          before_sha="$(sha256sum "$auth_path" | awk '{print $1}')"
+          echo "before_sha=$before_sha" >> "$GITHUB_OUTPUT"
+
+          "$LONGBRIDGE_BIN" auth status --format json > "$RUNNER_TEMP/longbridge-auth-status.json"
+          python scripts/validate_longbridge_auth_status.py "$RUNNER_TEMP/longbridge-auth-status.json"
+
+          "$LONGBRIDGE_BIN" check --format json > "$RUNNER_TEMP/longbridge-check.json"
+          python scripts/validate_longbridge_check.py "$RUNNER_TEMP/longbridge-check.json"
+
+          echo "available=true" >> "$GITHUB_OUTPUT"
+
       - name: Resolve target date
         id: target
         shell: bash
@@ -83,6 +145,37 @@ jobs:
           python -m nasdaq_cafe.run collect \
             --date "${{ steps.target.outputs.date }}" \
             "${refresh_args[@]}"
+
+      - name: Persist refreshed Longbridge OAuth session
+        if: ${{ steps.longbridge_auth.outputs.available == 'true' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.LONGBRIDGE_SECRET_ROTATOR_TOKEN }}
+          BEFORE_SHA: ${{ steps.longbridge_auth.outputs.before_sha }}
+        run: |
+          set -euo pipefail
+          auth_path="$HOME/.longbridge/openapi/cli-auth"
+
+          if [[ ! -s "$auth_path" ]]; then
+            echo "::error::Longbridge OAuth session disappeared after collection."
+            exit 1
+          fi
+
+          after_sha="$(sha256sum "$auth_path" | awk '{print $1}')"
+          if [[ "$after_sha" == "$BEFORE_SHA" ]]; then
+            echo "Longbridge OAuth session did not change; repository secret rotation is unnecessary."
+            exit 0
+          fi
+
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo "::error::Longbridge OAuth session changed, but LONGBRIDGE_SECRET_ROTATOR_TOKEN is not configured."
+            exit 1
+          fi
+
+          encoded="$(base64 -w 0 "$auth_path")"
+          echo "::add-mask::$encoded"
+          printf '%s' "$encoded" | gh secret set LONGBRIDGE_CLI_AUTH_B64 --repo "$GITHUB_REPOSITORY"
+          echo "Longbridge OAuth repository secret was rotated successfully."
 
       - name: Upload safe daily package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
