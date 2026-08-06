@@ -115,8 +115,10 @@ class LongbridgeOAuthWorkflowContractTests(unittest.TestCase):
 
     def test_workflow_restores_only_the_expected_oauth_secret(self) -> None:
         self.assertIn("secrets.LONGBRIDGE_CLI_AUTH_B64", self.workflow)
-        self.assertIn('$HOME/.longbridge/openapi/cli-auth', self.workflow)
+        self.assertIn('$HOME/.longbridge/openapi', self.workflow)
+        self.assertIn('"$auth_dir/tokens"', self.workflow)
         self.assertIn("base64 --decode", self.workflow)
+        self.assertIn("unzip -q", self.workflow)
         self.assertNotIn("longbridge auth login", self.workflow)
 
     def test_workflow_enforces_paper_account_before_collection(self) -> None:
@@ -131,12 +133,13 @@ class LongbridgeOAuthWorkflowContractTests(unittest.TestCase):
             "gh secret set LONGBRIDGE_CLI_AUTH_B64",
             self.workflow,
         )
+        self.assertIn("zip -qr", self.workflow)
         self.assertNotIn("gh secret delete", self.workflow)
 
     def test_workflow_never_uploads_oauth_material(self) -> None:
         upload_section = self.workflow.split("- name: Upload safe daily package", 1)[1]
         self.assertNotIn(".longbridge", upload_section)
-        self.assertNotIn("cli-auth", upload_section)
+        self.assertNotIn("tokens", upload_section)
         self.assertNotIn("RUNNER_TEMP", upload_section)
 
     def test_workflow_does_not_enable_longbridge_trade_commands(self) -> None:
