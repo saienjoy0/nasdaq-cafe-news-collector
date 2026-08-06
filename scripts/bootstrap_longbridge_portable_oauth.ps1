@@ -202,8 +202,20 @@ Write-Host "Saving portable OAuth credentials to GitHub Repository Secrets..."
 Set-RepositorySecret -Name "LONGBRIDGE_OAUTH_CLIENT_ID" -Value $clientId
 Set-RepositorySecret -Name "LONGBRIDGE_OAUTH_REFRESH_TOKEN" -Value $refreshToken
 
-# The machine-bound CLI file is intentionally no longer used.
-gh secret delete LONGBRIDGE_CLI_AUTH_B64 --repo $Repository 2>$null
+# The machine-bound CLI file is intentionally no longer used. Its absence is
+# already the desired state, so a 404 must not fail an otherwise valid setup.
+$previousErrorActionPreference = $ErrorActionPreference
+try {
+    $ErrorActionPreference = "SilentlyContinue"
+    gh secret delete LONGBRIDGE_CLI_AUTH_B64 --repo $Repository 2>$null | Out-Null
+    $legacyDeleteExitCode = $LASTEXITCODE
+}
+finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+}
+if ($legacyDeleteExitCode -ne 0) {
+    Write-Host "Legacy LONGBRIDGE_CLI_AUTH_B64 was already absent; continuing."
+}
 
 Write-Host "Portable Longbridge OAuth bootstrap completed."
 Write-Host "Repository: $Repository"
