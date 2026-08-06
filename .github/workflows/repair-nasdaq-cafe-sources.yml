@@ -7,6 +7,12 @@ on:
     paths:
       - .repair/nasdaq_cafe_py_only.zip
       - .github/workflows/repair-nasdaq-cafe-sources.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .repair/nasdaq_cafe_py_only.zip
+      - .github/workflows/repair-nasdaq-cafe-sources.yml
 
 permissions:
   contents: write
