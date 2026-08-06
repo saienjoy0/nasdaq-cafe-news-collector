@@ -1,0 +1,41 @@
+name: Longbridge bootstrap Windows check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/longbridge-bootstrap-windows-check.yml
+      - scripts/bootstrap_longbridge_portable_oauth.ps1
+
+permissions:
+  contents: read
+
+jobs:
+  parse:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Confirm ASCII-only bootstrap
+        shell: powershell
+        run: |
+          $bytes = [System.IO.File]::ReadAllBytes("scripts/bootstrap_longbridge_portable_oauth.ps1")
+          $nonAscii = @($bytes | Where-Object { $_ -gt 127 })
+          if ($nonAscii.Count -ne 0) {
+            throw "Bootstrap must remain ASCII-only for Windows PowerShell 5.1 compatibility."
+          }
+      - name: Parse with Windows PowerShell
+        shell: powershell
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path "scripts/bootstrap_longbridge_portable_oauth.ps1"),
+            [ref]$tokens,
+            [ref]$errors
+          ) | Out-Null
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
