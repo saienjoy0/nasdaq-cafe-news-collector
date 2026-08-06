@@ -423,4 +423,666 @@ def _fetch_url(url: str) -> FetchResult:
     if response.status_code < 200 or response.status_code >= 300:
         return FetchResult("failed", read_url, "", f"HTTP {response.status_code}; no full text retrieved.")
 
-    content_type = response.headers.get("content-typßo=¶‰žËkºwµçpÕ±±Q•áÑQ…É•Ñut€ômt(€€€™½È…¹‘¥‘…Ñ”¥¸…¹‘¥‘…Ñ•Ìè(€€€€€€€¥˜…¹‘¥‘…Ñ”¹ÁÉ¥µ…Éå}ÕÉ°¹ÍÑÉ¥À ¤¹±½Ý•È ¤€ôôÑ…É•Ð¹ÁÉ¥µ…Éå}ÕÉ°¹ÍÑÉ¥À ¤¹±½Ý•È ¤è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€¥˜}É•©•Ñ•‘}ÕÉ°¡…¹‘¥‘…Ñ”¹ÁÉ¥µ…Éå}ÕÉ°¤è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€Í½É”€ô}™…±±‰…­}Í¥µ¥±…É¥Ñå}Í½É”¡Ñ…É•Ð°…¹‘¥‘…Ñ”¤(€€€€€€€¥˜Í½É”€ðô€Àè(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€É…¹­•¹…ÁÁ•¹ ¡Í½É”°…¹‘¥‘…Ñ”¤¤(€€€É…¹­•¹Í½ÉÐ¡­•äõ±…µ‰‘„É½ÜèÉ½ÝlÁt°É•Ù•ÉÍ”õQÉÕ”¤(€€€É•ÑÕÉ¸m…¹‘¥‘…Ñ”™½È|°…¹‘¥‘…Ñ”¥¸É…¹­•‘lèÕut(()‘•˜}…•ÁÑ…‰±•}™…±±‰…­}…¹‘¥‘…Ñ”¡Ñ…É•ÐèÕ±±Q•áÑQ…É•Ð°…¹‘¥‘…Ñ”èÕ±±Q•áÑQ…É•Ð¤€´ø‰½½°è(€€€¥˜}É•©•Ñ•‘}ÕÉ°¡…¹‘¥‘…Ñ”¹ÁÉ¥µ…Éå}ÕÉ°¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜¹½Ð}ÅÕ…±¥Ñå}ÕÉ°¡…¹‘¥‘…Ñ”¹ÁÉ¥µ…Éå}ÕÉ°¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜¹½Ð}ÁÕ‰±¥Í¡•‘}‘…Ñ•Í}±½Í”¡Ñ…É•Ð¹ÁÕ‰±¥Í¡•‘}…Ð°…¹‘¥‘…Ñ”¹ÁÕ‰±¥Í¡•‘}…Ð¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜Ñ…É•Ð¹É•±…Ñ•‘}Ñ¥­•ÉÌè(€€€€€€€…¹‘¥‘…Ñ•}Ñ¥­•ÉÌ€ôÍ•Ð¡…¹‘¥‘…Ñ”¹É•±…Ñ•‘}Ñ¥­•ÉÌ¤(€€€€€€€¥˜…¹‘¥‘…Ñ•}Ñ¥­•ÉÌ…¹¹½ÐÍ•Ð¡Ñ…É•Ð¹É•±…Ñ•‘}Ñ¥­•ÉÌ¤¹¥¹Ñ•ÉÍ•Ñ¥½¸¡…¹‘¥‘…Ñ•}Ñ¥­•ÉÌ¤è(€€€€€€€€€€€É•ÑÕÉ¸…±Í”(€€€É•ÑÕÉ¸}™…±±‰…­}Í¥µ¥±…É¥Ñå}Í½É”¡Ñ…É•Ð°…¹‘¥‘…Ñ”¤€øô€À¸ÐØ(()‘•˜}™…±±‰…­}Í¥µ¥±…É¥Ñå}Í½É”¡Ñ…É•ÐèÕ±±Q•áÑQ…É•Ð°…¹‘¥‘…Ñ”èÕ±±Q•áÑQ…É•Ð¤€´ø™±½…Ðè(€€€Ñ¥Ñ±•}Í½É”€ô}Ý½É‘}½Ù•É±…Á}Í½É”¡Ñ…É•Ð¹Ñ¥Ñ±”°…¹‘¥‘…Ñ”¹Ñ¥Ñ±”¤(€€€½µ‰¥¹•‘}Ñ…É•Ð€ô˜‰íÑ…É•Ð¹Ñ¥Ñ±•ôíÑ…É•Ð¹Í¹¥ÁÁ•Ñôìœ€œ¹©½¥¸¡Ñ…É•Ð¹É•±…Ñ•‘}Ñ¥­•ÉÌ¥ôìœ€œ¹©½¥¸¡Ñ…É•Ð¹É•±…Ñ•‘}¥¹‘•á•Ì¥ôˆ(€€€½µ‰¥¹•‘}…¹‘¥‘…Ñ”€ô˜‰í…¹‘¥‘…Ñ”¹Ñ¥Ñ±•ôí…¹‘¥‘…Ñ”¹Í¹¥ÁÁ•Ñôìœ€œ¹©½¥¸¡…¹‘¥‘…Ñ”¹É•±…Ñ•‘}Ñ¥­•ÉÌ¥ôìœ€œ¹©½¥¸¡…¹‘¥‘…Ñ”¹É•±…Ñ•‘}¥¹‘•á•Ì¥ôˆ(€€€Ñ¡•µ•}‰½¹ÕÌ€ô€À¸Äà¥˜}¡…Í}Ñ¡•µ•}½Ù•É±…À¡½µ‰¥¹•‘}Ñ…É•Ð°½µ‰¥¹•‘}…¹‘¥‘…Ñ”¤•±Í”€À¸À(€€€Ñ¥­•É}‰½¹ÕÌ€ô€À¸ÄÈ¥˜Í•Ð¡Ñ…É•Ð¹É•±…Ñ•‘}Ñ¥­•ÉÌ¤¹¥¹Ñ•ÉÍ•Ñ¥½¸¡…¹‘¥‘…Ñ”¹É•±…Ñ•‘}Ñ¥­•ÉÌ¤•±Í”€À¸À(€€€Í½ÕÉ•}‰½¹ÕÌ€ô€À¸ÀÔ¥˜}Í…µ•}‘½µ…¥¹}™…µ¥±ä¡Ñ…É•Ð¹ÁÉ¥µ…Éå}ÕÉ°°…¹‘¥‘…Ñ”¹ÁÉ¥µ…Éå}ÕÉ°¤•±Í”€À¸À(€€€É•ÑÕÉ¸Ñ¥Ñ±•}Í½É”€¬Ñ¡•µ•}‰½¹ÕÌ€¬Ñ¥­•É}‰½¹ÕÌ€¬Í½ÕÉ•}‰½¹ÕÌ(()‘•˜}™•Ñ¡}™…±±‰…­}Í•…É¡}…¹‘¥‘…Ñ•Ì¡½¹™¥œèIÕ¹½¹™¥œ°Ñ…É•ÐèÕ±±Q•áÑQ…É•Ð°É•µ…¥¹¥¹}‰Õ‘•Ðè¥¹Ð¤€´ø‘¥ÑmÍÑÈ°¹åtè(€€€…¹‘¥‘…Ñ•Ìè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut€ômt(€€€ÅÕ•Éå}½Õ¹Ð€ô€À(€€€¥˜É•µ…¥¹¥¹}‰Õ‘•Ð€ðô€Àè(€€€€€€€É•ÑÕÉ¸ì‰…¹‘¥‘…Ñ•Ìˆèmt°€‰Ñ…É•ÑÌˆèmt°€‰ÅÕ•Éå}½Õ¹Ðˆè€Áô((€€€Í•ÉÁ…Á¥}­•ä€ô½¹™¥œ¹•¹Ø¹•Ð ‰MIAA%}A%}-dˆ°€ˆˆ¤¹ÍÑÉ¥À ¤(€€€Ñ…Ù¥±å}­•ä€ô½¹™¥œ¹•¹Ø¹•Ð ‰QY%1e}A%}-dˆ°€ˆˆ¤¹ÍÑÉ¥À ¤(€€€ÅÕ•É¥•Ì€ô}™…±±‰…­}ÅÕ•É¥•Ì¡Ñ…É•Ð¥lèµ¥¸¡5a}11	-}EUI%M}AI}IQ%1°É•µ…¥¹¥¹}‰Õ‘•Ð¥t(€€€™½ÈÅÕ•Éä¥¸ÅÕ•É¥•Ìè(€€€€€€€¥˜ÅÕ•Éå}½Õ¹Ð€øôÉ•µ…¥¹¥¹}‰Õ‘•Ðè(€€€€€€€€€€€‰É•…¬(€€€€€€€™•Ñ¡•è±¥ÍÑm‘¥ÑmÍÑÈ°¹åut€ômt(€€€€€€€¥˜}¥Í}½¹™¥ÕÉ•‘}…Á¥}­•ä¡Í•ÉÁ…Á¥}­•ä°€‰Í•ÉÁ…Á¤ˆ¤è(€€€€€€€€€€€™•Ñ¡•€ô}™•Ñ¡}Í•ÉÁ…Á¥}™…±±‰…¬¡Í•ÉÁ…Á¥}­•ä°ÅÕ•Éä¤(€€€€€€€€€€€ÅÕ•Éå}½Õ¹Ð€¬ô€Ä(€€€€€€€•±¥˜}¥Í}½¹™¥ÕÉ•‘}…Á¥}­•ä¡Ñ…Ù¥±å}­•ä°€‰Ñ…Ù¥±äˆ¤è(€€€€€€€€€€€™•Ñ¡•€ô}™•Ñ¡}Ñ…Ù¥±å}™…±±‰…¬¡Ñ…Ù¥±å}­•ä°ÅÕ•Éä¤(€€€€€€€€€€€ÅÕ•Éå}½Õ¹Ð€¬ô€Ä(€€€€€€€¥˜¹½Ð™•Ñ¡•è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€…¹‘¥‘…Ñ•Ì¹•áÑ•¹¡™•Ñ¡•¤((€€€¹½Éµ…±¥é•€ô}‘•‘ÕÁ•}…¹‘¥‘…Ñ•}¥Ñ•µÌ¡…¹‘¥‘…Ñ•Ì¤(€€€Ñ…É•ÑÌ€ômÑ…É•Ñ}¥Ñ•´™½È¥Ñ•´¥¸¹½Éµ…±¥é•¥˜€¡Ñ…É•Ñ}¥Ñ•´€èô}Ñ…É•Ñ}™É½µ}Í•…É¡}¥Ñ•´¡¥Ñ•´¤¥t(€€€É•ÑÕÉ¸ì‰…¹‘¥‘…Ñ•Ìˆè¹½Éµ…±¥é•°€‰Ñ…É•ÑÌˆèÑ…É•ÑÌ°€‰ÅÕ•Éå}½Õ¹ÐˆèÅÕ•Éå}½Õ¹Ñô(()‘•˜}™•Ñ¡}Í•ÉÁ…Á¥}™…±±‰…¬¡…Á¥}­•äèÍÑÈ°ÅÕ•ÉäèÍÑÈ¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€ÑÉäè(€€€€€€€É•ÍÁ½¹Í”€ôÉ•ÅÕ•ÍÑÌ¹•Ð (€€€€€€€€€€€€‰¡ÑÑÁÌè¼½Í•ÉÁ…Á¤¹½´½Í•…É ¹©Í½¸ˆ°(€€€€€€€€€€€Á…É…µÌõì‰•¹¥¹”ˆè€‰½½±”ˆ°€‰ÄˆèÅÕ•Éä°€‰…Á¥}­•äˆè…Á¥}­•ä°€‰¹Õ´ˆè€Ñô°(€€€€€€€€€€€Ñ¥µ•½ÕÐôÄÀ°(€€€€€€€€¤(€€€€€€€É•ÍÁ½¹Í”¹É…¥Í•}™½É}ÍÑ…ÑÕÌ ¤(€€€€€€€Á…å±½…€ôÉ•ÍÁ½¹Í”¹©Í½¸ ¤(€€€•á•ÁÐá•ÁÑ¥½¸è(€€€€€€€É•ÑÕÉ¸mt((€€€¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut€ômt(€€€™½ÈÉ•ÍÕ±Ð¥¸Á…å±½…¹•Ð ‰½É…¹¥}É•ÍÕ±ÑÌˆ°mt¥lèÑtè(€€€€€€€¥Ñ•µÌ¹…ÁÁ•¹ (€€€€€€€€€€€ì(€€€€€€€€€€€€€€€€‰Ñ¥Ñ±”ˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰Ñ¥Ñ±”ˆ¤¤°(€€€€€€€€€€€€€€€€‰Í½ÕÉ”ˆè€‰M•ÉÁA$ˆ°(€€€€€€€€€€€€€€€€‰ÁÕ‰±¥Í¡•‘}…Ðˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰‘…Ñ”ˆ¤¤°(€€€€€€€€€€€€€€€€‰ÕÉ°ˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰±¥¹¬ˆ¤¤°(€€€€€€€€€€€€€€€€‰Í¹¥ÁÁ•Ðˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰Í¹¥ÁÁ•Ðˆ¤¤°(€€€€€€€€€€€€€€€€‰ÅÕ•ÉäˆèÅÕ•Éä°(€€€€€€€€€€€€€€€€‰Í•…É¡}É½±”ˆè€‰…ÉÑ¥±•}™Õ±±Ñ•áÑ}™…±±‰…¬ˆ°(€€€€€€€€€€€ô(€€€€€€€€¤(€€€É•ÑÕÉ¸m¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜¥Ñ•´¹•Ð ‰Ñ¥Ñ±”ˆ¤…¹¥Ñ•´¹•Ð ‰ÕÉ°ˆ¤…¹¥Ñ•´¹•Ð ‰Í¹¥ÁÁ•Ðˆ¥t(()‘•˜}™•Ñ¡}Ñ…Ù¥±å}™…±±‰…¬¡…Á¥}­•äèÍÑÈ°ÅÕ•ÉäèÍÑÈ¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€ÑÉäè(€€€€€€€É•ÍÁ½¹Í”€ôÉ•ÅÕ•ÍÑÌ¹Á½ÍÐ (€€€€€€€€€€€€‰¡ÑÑÁÌè¼½…Á¤¹Ñ…Ù¥±ä¹½´½Í•…É ˆ°(€€€€€€€€€€€©Í½¸õì‰…Á¥}­•äˆè…Á¥}­•ä°€‰ÅÕ•ÉäˆèÅÕ•Éä°€‰Í•…É¡}‘•ÁÑ ˆè€‰‰…Í¥Œˆ°€‰µ…á}É•ÍÕ±ÑÌˆè€Ð°€‰¥¹±Õ‘•}É…Ý}½¹Ñ•¹Ðˆè…±Í•ô°(€€€€€€€€€€€Ñ¥µ•½ÕÐôÄÀ°(€€€€€€€€¤(€€€€€€€É•ÍÁ½¹Í”¹É…¥Í•}™½É}ÍÑ…ÑÕÌ ¤(€€€€€€€Á…å±½…€ôÉ•ÍÁ½¹Í”¹©Í½¸ ¤(€€€•á•ÁÐá•ÁÑ¥½¸è(€€€€€€€É•ÑÕÉ¸mt((€€€¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut€ômt(€€€™½ÈÉ•ÍÕ±Ð¥¸Á…å±½…¹•Ð ‰É•ÍÕ±ÑÌˆ°mt¥lèÑtè(€€€€€€€¥Ñ•µÌ¹…ÁÁ•¹ (€€€€€€€€€€€ì(€€€€€€€€€€€€€€€€‰Ñ¥Ñ±”ˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰Ñ¥Ñ±”ˆ¤¤°(€€€€€€€€€€€€€€€€‰Í½ÕÉ”ˆè€‰Q…Ù¥±äˆ°(€€€€€€€€€€€€€€€€‰ÁÕ‰±¥Í¡•‘}…Ðˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰ÁÕ‰±¥Í¡•‘}‘…Ñ”ˆ¤¤°(€€€€€€€€€€€€€€€€‰ÕÉ°ˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰ÕÉ°ˆ¤¤°(€€€€€€€€€€€€€€€€‰Í¹¥ÁÁ•Ðˆè}±•…¸¡É•ÍÕ±Ð¹•Ð ‰½¹Ñ•¹Ðˆ¤¤°(€€€€€€€€€€€€€€€€‰ÅÕ•ÉäˆèÅÕ•Éä°(€€€€€€€€€€€€€€€€‰Í•…É¡}É½±”ˆè€‰…ÉÑ¥±•}™Õ±±Ñ•áÑ}™…±±‰…¬ˆ°(€€€€€€€€€€€ô(€€€€€€€€¤(€€€É•ÑÕÉ¸m¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜¥Ñ•´¹•Ð ‰Ñ¥Ñ±”ˆ¤…¹¥Ñ•´¹•Ð ‰ÕÉ°ˆ¤…¹¥Ñ•´¹•Ð ‰Í¹¥ÁÁ•Ðˆ¥t(()‘•˜}™…±±‰…­}ÅÕ•É¥•Ì¡Ñ…É•ÐèÕ±±Q•áÑQ…É•Ð¤€´ø±¥ÍÑmÍÑÉtè(€€€Ñ¥Ñ±”€ôÑ…É•Ð¹Ñ¥Ñ±”¹ÍÑÉ¥À ¤(€€€¥˜¹½ÐÑ¥Ñ±”è(€€€€€€€É•ÑÕÉ¸mt(€€€ÅÕ•É¥•Ìè±¥ÍÑmÍÑÉt€ômt(€€€±½Ý•É•€ô˜‰íÑ…É•Ð¹Í½ÕÉ•ôíÑ…É•Ð¹ÁÉ¥µ…Éå}ÕÉ±ôˆ¹±½Ý•È ¤(€€€¥˜€‰É•ÕÑ•ÉÌˆ¥¸±½Ý•É•è(€€€€€€€ÅÕ•É¥•Ì¹•áÑ•¹¡m˜‰íÑ¥Ñ±•ôe…¡½¼¥¹…¹”ˆ°˜‰íÑ¥Ñ±•ô9…Í‘…Ä‰t¤(€€€•±¥˜€‰¹‰Œˆ¥¸±½Ý•É•è(€€€€€€€ÅÕ•É¥•Ì¹•áÑ•¹¡m˜œ‰íÑ¥Ñ±•ôˆœ°˜‰íÑ¥Ñ±•ôe…¡½¼¥¹…¹”‰t¤(€€€•±Í”è(€€€€€€€ÅÕ•É¥•Ì¹•áÑ•¹¡m˜œ‰íÑ¥Ñ±•ôˆœ°˜‰íÑ¥Ñ±•ô	…É¡…ÉÐ‰t¤(€€€É•ÑÕÉ¸}‘•‘ÕÁ•}ÍÑÉ¥¹Ì¡ÅÕ•É¥•Ì¥lé5a}11	-}EUI%M}AI}IQ%1t(()‘•˜}…¹‘¥‘…Ñ•}…±Ñ•É¹…Ñ•Ì¡Ñ…É•ÐèÕ±±Q•áÑQ…É•Ð°…±±}Ñ…É•ÑÌè±¥ÍÑmÕ±±Q•áÑQ…É•Ñt¤€´ø±¥ÍÑmÕ±±Q•áÑQ…É•Ñtè(€€€…±Ñ•É¹…Ñ•Ìè±¥ÍÑmÑÕÁ±•m™±½…Ð°Õ±±Q•áÑQ…É•Ñut€ômt(€€€™½È…¹‘¥‘…Ñ”¥¸…±±}Ñ…É•ÑÌè(€€€€€€€¥˜…¹‘¥‘…Ñ”¹ÁÉ¥µ…Éå}ÕÉ°€ôôÑ…É•Ð¹ÁÉ¥µ…Éå}ÕÉ°è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€¥˜¹½Ð}Í…µ•}½¹Ñ•¹Ñ}…¹‘¥‘…Ñ”¡Ñ…É•Ð°…¹‘¥‘…Ñ”¤è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€…±Ñ•É¹…Ñ•Ì¹…ÁÁ•¹ ¡}Ý½É‘}½Ù•É±…Á}Í½É”¡Ñ…É•Ð¹Ñ¥Ñ±”°…¹‘¥‘…Ñ”¹Ñ¥Ñ±”¤°…¹‘¥‘…Ñ”¤¤(€€€…±Ñ•É¹…Ñ•Ì¹Í½ÉÐ¡­•äõ±…µ‰‘„É½ÜèÉ½ÝlÁt°É•Ù•ÉÍ”õQÉÕ”¤(€€€É•ÑÕÉ¸m…¹‘¥‘…Ñ”™½È|°…¹‘¥‘…Ñ”¥¸…±Ñ•É¹…Ñ•ÍlèÅut(()‘•˜}Í…µ•}½¹Ñ•¹Ñ}…¹‘¥‘…Ñ”¡„èÕ±±Q•áÑQ…É•Ð°ˆèÕ±±Q•áÑQ…É•Ð¤€´ø‰½½°è(€€€Ñ¥Ñ±•}Í½É”€ô}Ý½É‘}½Ù•É±…Á}Í½É”¡„¹Ñ¥Ñ±”°ˆ¹Ñ¥Ñ±”¤(€€€¥˜Ñ¥Ñ±•}Í½É”€øô€À¸ÜÈè(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€É•ÑÕÉ¸Ñ¥Ñ±•}Í½É”€øô€À¸ÐÔ…¹}¡…Í}Ñ¡•µ•}½Ù•É±…À¡„¹Ñ¥Ñ±”€¬€ˆ€ˆ€¬„¹Í¹¥ÁÁ•Ð°ˆ¹Ñ¥Ñ±”€¬€ˆ€ˆ€¬ˆ¹Í¹¥ÁÁ•Ð¤(()‘•˜}Ý½É‘}½Ù•É±…Á}Í½É”¡±•™ÐèÍÑÈ°É¥¡ÐèÍÑÈ¤€´ø™±½…Ðè(€€€±•™Ñ}Ý½É‘Ì€ô}µ•…¹¥¹™Õ±}Ý½É‘Ì¡±•™Ð¤(€€€É¥¡Ñ}Ý½É‘Ì€ô}µ•…¹¥¹™Õ±}Ý½É‘Ì¡É¥¡Ð¤(€€€¥˜¹½Ð±•™Ñ}Ý½É‘Ì½È¹½ÐÉ¥¡Ñ}Ý½É‘Ìè(€€€€€€€É•ÑÕÉ¸€À¸À(€€€É•ÑÕÉ¸±•¸¡±•™Ñ}Ý½É‘Ì€˜É¥¡Ñ}Ý½É‘Ì¤€¼µ…à¡±•¸¡±•™Ñ}Ý½É‘Ì¤°±•¸¡É¥¡Ñ}Ý½É‘Ì¤¤(()‘•˜}µ•…¹¥¹™Õ±}Ý½É‘Ì¡Ù…±Õ”èÍÑÈ¤€´øÍ•ÑmÍÑÉtè(€€€ÍÑ½À€ôì‰Ñ¡”ˆ°€‰…¹ˆ°€‰™½Èˆ°€‰Ý¥Ñ ˆ°€‰™É½´ˆ°€‰Ñ¡…Ðˆ°€‰Ñ¡¥Ìˆ°€‰¥¹Ñ¼ˆ°€‰Í…åÌˆ°€‰µ…äˆ°€‰…É”ˆ°€‰Ý…Ìˆ°€‰Ý¡ä‰ô(€€€É•ÑÕÉ¸íÝ½É™½ÈÝ½É¥¸É”¹™¥¹‘…±°¡È‰m„µèÀ´åuìÌ±ôˆ°Ù…±Õ”¹±½Ý•È ¤¤¥˜Ý½É¹½Ð¥¸ÍÑ½Áô(()‘•˜}¡…Í}Ñ¡•µ•}½Ù•É±…À¡±•™ÐèÍÑÈ°É¥¡ÐèÍÑÈ¤€´ø‰½½°è(€€€±•™Ñ}Ñ•áÐ€ô±•™Ð¹±½Ý•È ¤(€€€É¥¡Ñ}Ñ•áÐ€ôÉ¥¡Ð¹±½Ý•È ¤(€€€É•ÑÕÉ¸…¹ä¡Ñ•É´¥¸±•™Ñ}Ñ•áÐ…¹Ñ•É´¥¸É¥¡Ñ}Ñ•áÐ™½ÈÑ•É´¥¸Q!5}QI5L¤(()‘•˜}ÅÕ…±¥Ñå}ÕÉ°¡Ù…±Õ”èÍÑÈ¤€´ø‰½½°è(€€€¡½ÍÐ€ôÕÉ±Á…ÉÍ”¡Ù…±Õ”¤¹¹•Ñ±½Œ¹±½Ý•È ¤¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(€€€É•ÑÕÉ¸…¹ä¡¡½ÍÐ€ôô‘½µ…¥¸½È¡½ÍÐ¹•¹‘ÍÝ¥Ñ ¡˜ˆ¹í‘½µ…¥¹ôˆ¤™½È‘½µ…¥¸¥¸EU1%Qe}=5%9L¤(()‘•˜}É•©•Ñ•‘}ÕÉ°¡Ù…±Õ”èÍÑÈ¤€´ø‰½½°è(€€€Á…ÉÍ•€ôÕÉ±Á…ÉÍ”¡Ù…±Õ”¤(€€€¡½ÍÐ€ôÁ…ÉÍ•¹¹•Ñ±½Œ¹±½Ý•È ¤¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(€€€Ñ•áÐ€ôÙ…±Õ”¹±½Ý•È ¤(€€€¥˜¹½ÐÁ…ÉÍ•¹Í¡•µ”¹ÍÑ…ÉÑÍÝ¥Ñ  ‰¡ÑÑÀˆ¤½È¹½Ð¡½ÍÐè(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€¥˜…¹ä¡¡½ÍÐ€ôô‘½µ…¥¸½È¡½ÍÐ¹•¹‘ÍÝ¥Ñ ¡˜ˆ¹í‘½µ…¥¹ôˆ¤™½È‘½µ…¥¸¥¸I)Q}=5%9L¤è(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€É•©•Ñ•‘}µ…É­•ÉÌ€ô€ (€€€€€€€€ˆ½ÅÕ½Ñ”¼ˆ°(€€€€€€€€‰™¥¹…¹”¹å…¡½¼¹½´½ÅÕ½Ñ”ˆ°(€€€€€€€€‰™…•‰½½¬¹½´ˆ°(€€€€€€€€‰ÑÝ¥ÑÑ•È¹½´ˆ°(€€€€€€€€‰à¹½´¼ˆ°(€€€€€€€€‰±¥¹­•‘¥¸¹½´½Á½ÍÑÌˆ°(€€€€€€€€‰É•ÕÑ•ÉÌ¹½´½Á±ÕÌˆ°(€€€€¤(€€€É•ÑÕÉ¸…¹ä¡µ…É­•È¥¸Ñ•áÐ™½Èµ…É­•È¥¸É•©•Ñ•‘}µ…É­•ÉÌ¤(()‘•˜}Í…µ•}‘½µ…¥¹}™…µ¥±ä¡±•™ÐèÍÑÈ°É¥¡ÐèÍÑÈ¤€´ø‰½½°è(€€€±•™Ñ}¡½ÍÐ€ôÕÉ±Á…ÉÍ”¡±•™Ð¤¹¹•Ñ±½Œ¹±½Ý•È ¤¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(€€€É¥¡Ñ}¡½ÍÐ€ôÕÉ±Á…ÉÍ”¡É¥¡Ð¤¹¹•Ñ±½Œ¹±½Ý•È ¤¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(€€€¥˜¹½Ð±•™Ñ}¡½ÍÐ½È¹½ÐÉ¥¡Ñ}¡½ÍÐè(€€€€€€€É•ÑÕÉ¸…±Í”(€€€É•ÑÕÉ¸±•™Ñ}¡½ÍÐ€ôôÉ¥¡Ñ}¡½ÍÐ½È±•™Ñ}¡½ÍÐ¹•¹‘ÍÝ¥Ñ ¡É¥¡Ñ}¡½ÍÐ¤½ÈÉ¥¡Ñ}¡½ÍÐ¹•¹‘ÍÝ¥Ñ ¡±•™Ñ}¡½ÍÐ¤(()‘•˜}ÁÕ‰±¥Í¡•‘}‘…Ñ•Í}±½Í”¡±•™ÐèÍÑÈ°É¥¡ÐèÍÑÈ¤€´ø‰½½°è(€€€±•™Ñ}‘…Ñ”€ô}Á…ÉÍ•}‘…Ñ”¡±•™Ð¤(€€€É¥¡Ñ}‘…Ñ”€ô}Á…ÉÍ•}‘…Ñ”¡É¥¡Ð¤(€€€¥˜±•™Ñ}‘…Ñ”¥Ì9½¹”½ÈÉ¥¡Ñ}‘…Ñ”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€É•ÑÕÉ¸…‰Ì ¡±•™Ñ}‘…Ñ”€´É¥¡Ñ}‘…Ñ”¤¹‘…åÌ¤€ðô€ÐÔ(()‘•˜}Á…ÉÍ•}‘…Ñ”¡Ù…±Õ”è¹ä¤è(€€€Ñ•áÐ€ô}±•…¸¡Ù…±Õ”¤(€€€¥˜¹½ÐÑ•áÐè(€€€€€€€É•ÑÕÉ¸9½¹”(€€€¥˜Ñ•áÐ¹•¹‘ÍÝ¥Ñ  ‰hˆ¤è(€€€€€€€Ñ•áÐ€ôÑ•áÑlè´Åt€¬€ˆ¬ÀÀèÀÀˆ(€€€ÑÉäè(€€€€€€€Á…ÉÍ•€ô‘…Ñ•Ñ¥µ”¹™É½µ¥Í½™½Éµ…Ð¡Ñ•áÐ¤(€€€€€€€É•ÑÕÉ¸Á…ÉÍ•¹…ÍÑ¥µ•é½¹”¡Ñ¥µ•é½¹”¹ÕÑŒ¤¹‘…Ñ” ¤¥˜Á…ÉÍ•¹Ñé¥¹™¼•±Í”Á…ÉÍ•¹‘…Ñ” ¤(€€€•á•ÁÐY…±Õ•ÉÉ½Èè(€€€€€€€Á…ÍÌ(€€€ÑÉäè(€€€€€€€Á…ÉÍ•€ôÁ…ÉÍ•‘…Ñ•}Ñ½}‘…Ñ•Ñ¥µ”¡Ñ•áÐ¤(€€€€€€€É•ÑÕÉ¸Á…ÉÍ•¹…ÍÑ¥µ•é½¹”¡Ñ¥µ•é½¹”¹ÕÑŒ¤¹‘…Ñ” ¤¥˜Á…ÉÍ•¹Ñé¥¹™¼•±Í”Á…ÉÍ•¹‘…Ñ” ¤(€€€•á•ÁÐ€¡QåÁ•ÉÉ½È°Y…±Õ•ÉÉ½È°%¹‘•áÉÉ½È°=Ù•É™±½ÝÉÉ½È¤è(€€€€€€€Á…ÍÌ(€€€™½È™µÐ¥¸€ ˆ•d´•´´•ˆ°€ˆ•ˆ€•°€•dˆ°€ˆ•€•°€•dˆ°€ˆ•´¼•¼•dˆ¤è(€€€€€€€ÑÉäè(€€€€€€€€€€€É•ÑÕÉ¸‘…Ñ•Ñ¥µ”¹ÍÑÉÁÑ¥µ”¡Ñ•áÐ°™µÐ¤¹‘…Ñ” ¤(€€€€€€€•á•ÁÐY…±Õ•ÉÉ½Èè(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€É•ÑÕÉ¸9½¹”(()‘•˜}É•±…Ñ•‘}¥¹‘•á•Í}™É½µ}Ñ•áÐ¡Ù…±Õ”èÍÑÈ¤€´ø±¥ÍÑmÍÑÉtè(€€€Ñ•áÐ€ôÙ…±Õ”¹±½Ý•È ¤(€€€¥¹‘•á•Ì€ômt(€€€¥˜€‰¹…Í‘…Äˆ¥¸Ñ•áÐè(€€€€€€€¥¹‘•á•Ì¹…ÁÁ•¹ ‰9MDˆ¤(€€€¥˜€‰Í½àˆ¥¸Ñ•áÐ½È€‰Í•µ¥½¹‘ÕÑ½Èˆ¥¸Ñ•áÐ½È€‰¡¥Àˆ¥¸Ñ•áÐè(€€€€€€€¥¹‘•á•Ì¹…ÁÁ•¹ ‰M=`ˆ¤(€€€É•ÑÕÉ¸¥¹‘•á•Ì(()‘•˜}ÍÕµµ…Éå}™É½µ}Á…å±½…¡Á…å±½…è‘¥ÑmÍÑÈ°¹åt¤€´ø‘¥ÑmÍÑÈ°¹åtè(€€€ÍÕµµ…Éä€ôÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤(€€€¥˜¥Í¥¹ÍÑ…¹”¡ÍÕµµ…Éä°‘¥Ð¤è(€€€€€€€É•ÑÕÉ¸ÍÕµµ…Éä(€€€¥Ñ•µÌ€ôÁ…å±½…¹•Ð ‰¥Ñ•µÌˆ°mt¤(€€€Õ¹É•…‘…‰±”€ôÁ…å±½…¹•Ð ‰Õ¹É•…‘…‰±”ˆ°mt¤(€€€É•ÑÕÉ¸ì(€€€€€€€€‰Ñ…É•Ñ}½Õ¹Ðˆè±•¸¡¥Ñ•µÌ¤€¬±•¸¡Õ¹É•…‘…‰±”¤°(€€€€€€€€‰É•…‘…‰±•}½Õ¹ÐˆèÍÕ´ Ä™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜¥Ñ•´¹•Ð ‰…•ÍÍ}ÍÑ…ÑÕÌˆ¤€ôô€‰É•…‘…‰±”ˆ¤°(€€€€€€€€‰…±Ñ•É¹…Ñ•}É•…‘…‰±•}½Õ¹ÐˆèÍÕ´ Ä™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜¥Ñ•´¹•Ð ‰…•ÍÍ}ÍÑ…ÑÕÌˆ¤€ôô€‰…±Ñ•É¹…Ñ•}É•…‘…‰±”ˆ¤°(€€€€€€€€‰Õ¹É•…‘…‰±•}½Õ¹Ðˆè±•¸¡Õ¹É•…‘…‰±”¤°(€€€€€€€€‰Ñ½Ñ…±}™Õ±±}Ñ•áÑ}¡…ÉÌˆèÍÕ´¡¥¹Ð¡¥Ñ•´¹•Ð ‰™Õ±±}Ñ•áÑ}¡…É}½Õ¹Ðˆ¤½È€À¤™½È¥Ñ•´¥¸¥Ñ•µÌ¤°(€€€€€€€€‰É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆèÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ°íô¤¹•Ð ‰É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆ°€À¤¥˜¥Í¥¹ÍÑ…¹”¡Á…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤°‘¥Ð¤•±Í”€À°(€€€€€€€€‰Õ¹É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆèÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ°íô¤¹•Ð ‰Õ¹É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆ°€À¤¥˜¥Í¥¹ÍÑ…¹”¡Á…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤°‘¥Ð¤•±Í”±•¸¡Õ¹É•…‘…‰±”¤°(€€€€€€€€‰™…±±‰…­}…ÑÑ•µÁÑ•‘}½Õ¹ÐˆèÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ°íô¤¹•Ð ‰™…±±‰…­}…ÑÑ•µÁÑ•‘}½Õ¹Ðˆ°€À¤¥˜¥Í¥¹ÍÑ…¹”¡Á…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤°‘¥Ð¤•±Í”€À°(€€€€€€€€‰™…±±‰…­}ÍÕ•ÍÍ}½Õ¹ÐˆèÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ°íô¤¹•Ð ‰™…±±‰…­}ÍÕ•ÍÍ}½Õ¹Ðˆ°€À¤¥˜¥Í¥¹ÍÑ…¹”¡Á…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤°‘¥Ð¤•±Í”€À°(€€€€€€€€‰™…±±‰…­}™…¥±•‘}½Õ¹ÐˆèÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ°íô¤¹•Ð ‰™…±±‰…­}™…¥±•‘}½Õ¹Ðˆ°€À¤¥˜¥Í¥¹ÍÑ…¹”¡Á…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤°‘¥Ð¤•±Í”€À°(€€€€€€€€‰™…±±‰…­}ÅÕ•Éå}½Õ¹ÐˆèÁ…å±½…¹•Ð ‰ÍÕµµ…Éäˆ°íô¤¹•Ð ‰™…±±‰…­}ÅÕ•Éå}½Õ¹Ðˆ°€À¤¥˜¥Í¥¹ÍÑ…¹”¡Á…å±½…¹•Ð ‰ÍÕµµ…Éäˆ¤°‘¥Ð¤•±Í”€À°(€€€ô(()‘•˜}•µÁÑå}Á…å±½…¡Ñ…É•Ñ}‘…Ñ”èÍÑÈ¤€´ø‘¥ÑmÍÑÈ°¹åtè(€€€É•ÑÕÉ¸ì(€€€€€€€€‰‘…Ñ”ˆèÑ…É•Ñ}‘…Ñ”°(€€€€€€€€‰•¹•É…Ñ•‘}…Ñ}©ÍÐˆè}¹½Ý}©ÍÐ ¤°(€€€€€€€€‰½±±•Ñ½Èˆè€‰…ÉÑ¥±•}™Õ±±Ñ•áÑ}½±±•Ñ½Èˆ°(€€€€€€€€‰ÍÕµµ…Éäˆèì(€€€€€€€€€€€€‰Ñ…É•Ñ}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰É•…‘…‰±•}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰…±Ñ•É¹…Ñ•}É•…‘…‰±•}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰Õ¹É•…‘…‰±•}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰Ñ½Ñ…±}™Õ±±}Ñ•áÑ}¡…ÉÌˆè€À°(€€€€€€€€€€€€‰É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆè€À°(€€€€€€€€€€€€‰Õ¹É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆè€À°(€€€€€€€€€€€€‰™…±±‰…­}…ÑÑ•µÁÑ•‘}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰™…±±‰…­}ÍÕ•ÍÍ}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰™…±±‰…­}™…¥±•‘}½Õ¹Ðˆè€À°(€€€€€€€€€€€€‰™…±±‰…­}ÅÕ•Éå}½Õ¹Ðˆè€À°(€€€€€€€ô°(€€€€€€€€‰¥Ñ•µÌˆèmt°(€€€€€€€€‰Õ¹É•…‘…‰±”ˆèmt°(€€€€€€€€‰™…±±‰…­}Í•…É¡}ÍÕÁÁ±•µ•¹ÑÌˆèmt°(€€€€€€€€‰™…±±‰…­}…ÑÑ•µÁÑÌˆèmt°(€€€ô(()‘•˜}…ÉÑ¥±•}¥¡Ñ…É•ÐèÕ±±Q•áÑQ…É•Ð¤€´øÍÑÈè(€€€‘¥•ÍÐ€ô¡…Í¡±¥ˆ¹Í¡„Ä¡Ñ…É•Ð¹ÁÉ¥µ…Éå}ÕÉ°¹•¹½‘” ‰ÕÑ˜´àˆ¤¤¹¡•á‘¥•ÍÐ ¥lèÄÁt(€€€ÁÉ•™¥à€ôì‰µÕÍÐˆè€‰µÕÍÐˆ°€‰½ÁÑ¥½¹…°ˆè€‰½ÁÑ¥½¹…°ˆ°€‰ÍÕÁÁ±•µ•¹Ðˆè€‰ÍÕÁÁ±•µ•¹Ð‰ô¹•Ð¡Ñ…É•Ð¹É•Ù¥•Ý}ÁÉ¥½É¥Ñä°€‰…ÉÑ¥±”ˆ¤(€€€É•ÑÕÉ¸˜‰íÁÉ•™¥áôµí‘¥•ÍÑôˆ(()‘•˜}Ù…±¥‘}¡ÑÑÁ}ÕÉ°¡Ù…±Õ”èÍÑÈ¤€´ø‰½½°è(€€€Á…ÉÍ•€ôÕÉ±Á…ÉÍ”¡Ù…±Õ”¤(€€€É•ÑÕÉ¸Á…ÉÍ•¹Í¡•µ”¥¸ì‰¡ÑÑÀˆ°€‰¡ÑÑÁÌ‰ô…¹‰½½°¡Á…ÉÍ•¹¹•Ñ±½Œ¤(()‘•˜}‘•‘ÕÁ•}©½¥¸¡±¥¹•Ìè±¥ÍÑmÍÑÉt¤€´øÍÑÈè(€€€Í••¸èÍ•ÑmÍÑÉt€ôÍ•Ð ¤(€€€½ÕÑÁÕÐè±¥ÍÑmÍÑÉt€ômt(€€€™½È±¥¹”¥¸±¥¹•Ìè(€€€€€€€¹½Éµ…±¥é•€ô}±•…¹}Ñ•áÐ¡±¥¹”¤(€€€€€€€­•ä€ô¹½Éµ…±¥é•¹±½Ý•È ¤(€€€€€€€¥˜¹½Ð¹½Éµ…±¥é•½È­•ä¥¸Í••¸è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€Í••¸¹…‘¡­•ä¤(€€€€€€€½ÕÑÁÕÐ¹…ÁÁ•¹¡¹½Éµ…±¥é•¤(€€€É•ÑÕÉ¸€‰q¹q¸ˆ¹©½¥¸¡½ÕÑÁÕÐ¤(()‘•˜}…ÁÁ•¹‘}É•ÍÕ•}¹½Ñ”¡•á¥ÍÑ¥¹œèÍÑÈ°¹½Ñ”èÍÑÈ¤€´øÍÑÈè(€€€•á¥ÍÑ¥¹}±•…¸€ô}±•…¸¡•á¥ÍÑ¥¹œ¤(€€€¥˜¹½Ð•á¥ÍÑ¥¹}±•…¸è(€€€€€€€É•ÑÕÉ¸¹½Ñ”(€€€¥˜¹½Ñ”¥¸•á¥ÍÑ¥¹}±•…¸è(€€€€€€€É•ÑÕÉ¸•á¥ÍÑ¥¹}±•…¸(€€€É•ÑÕÉ¸˜‰í•á¥ÍÑ¥¹}±•…¹ôí¹½Ñ•ôˆ(()‘•˜}‘•‘ÕÁ•}…¹‘¥‘…Ñ•}¥Ñ•µÌ¡¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€Í••¸èÍ•ÑmÑÕÁ±•mÍÑÈ°ÍÑÉut€ôÍ•Ð ¤(€€€½ÕÑÁÕÐè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut€ômt(€€€™½È¥Ñ•´¥¸¥Ñ•µÌè(€€€€€€€Ñ¥Ñ±”€ô}±•…¸¡¥Ñ•´¹•Ð ‰Ñ¥Ñ±”ˆ¤¤(€€€€€€€ÕÉ°€ô}±•…¸¡¥Ñ•´¹•Ð ‰ÕÉ°ˆ¤¤(€€€€€€€¥˜¹½ÐÑ¥Ñ±”½È¹½ÐÕÉ°è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€­•ä€ô€¡Ñ¥Ñ±”¹±½Ý•È ¤°ÕÉ°¹±½Ý•È ¤¤(€€€€€€€¥˜­•ä¥¸Í••¸è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€Í••¸¹…‘¡­•ä¤(€€€€€€€½ÕÑÁÕÐ¹…ÁÁ•¹¡¥Ñ•´¤(€€€É•ÑÕÉ¸½ÕÑÁÕÐ(()‘•˜}‘•‘ÕÁ•}ÍÑÉ¥¹Ì¡¥Ñ•µÌè±¥ÍÑmÍÑÉt¤€´ø±¥ÍÑmÍÑÉtè(€€€Í••¸èÍ•ÑmÍÑÉt€ôÍ•Ð ¤(€€€½ÕÑÁÕÐè±¥ÍÑmÍÑÉt€ômt(€€€™½È¥Ñ•´¥¸¥Ñ•µÌè(€€€€€€€±•…¹•€ô}±•…¸¡¥Ñ•´¤(€€€€€€€­•ä€ô±•…¹•¹±½Ý•È ¤(€€€€€€€¥˜±•…¹•…¹­•ä¹½Ð¥¸Í••¸è(€€€€€€€€€€€Í••¸¹…‘¡­•ä¤(€€€€€€€€€€€½ÕÑÁÕÐ¹…ÁÁ•¹¡±•…¹•¤(€€€É•ÑÕÉ¸½ÕÑÁÕÐ(()‘•˜}¥Í}½¹™¥ÕÉ•‘}…Á¥}­•ä¡Ù…±Õ”èÍÑÈ°ÁÉ½Ù¥‘•ÈèÍÑÈ¤€´ø‰½½°è(€€€­•ä€ôÙ…±Õ”¹ÍÑÉ¥À ¤(€€€¥˜¹½Ð­•äè(€€€€€€€É•ÑÕÉ¸…±Í”(€€€±½Ý•É•€ô­•ä¹±½Ý•È ¤(€€€¥˜±½Ý•É•¥¸%9Y1%}-e}Y1ULè(€€€€€€€É•ÑÕÉ¸…±Í”(€€€É•ÑÕÉ¸±½Ý•É•€„ô˜‰å½ÕÉ}íÁÉ½Ù¥‘•Éõ}…Á¥}­•äˆ(()‘•˜}±•…¹}Ñ•áÐ¡Ù…±Õ”èÍÑÈ¤€´øÍÑÈè(€€€Ñ•áÐ€ôÉ”¹ÍÕˆ¡È‰qÌ¬ˆ°€ˆ€ˆ°Ù…±Õ”½È€ˆˆ¤¹ÍÑÉ¥À ¤(€€€Ñ•áÐ€ôÑ•áÐ¹É•Á±…” ‰qÔÀÁ„Àˆ°€ˆ€ˆ¤(€€€É•ÑÕÉ¸É”¹ÍÕˆ¡Èˆ€¬ˆ°€ˆ€ˆ°Ñ•áÐ¤¹ÍÑÉ¥À ¤(()‘•˜}±•…¹}±¥ÍÐ¡Ù…±Õ”è¹ä¤€´ø±¥ÍÑmÍÑÉtè(€€€¥˜¹½Ð¥Í¥¹ÍÑ…¹”¡Ù…±Õ”°±¥ÍÐ¤è(€€€€€€€É•ÑÕÉ¸mt(€€€½ÕÑÁÕÐè±¥ÍÑmÍÑÉt€ômt(€€€™½È¥Ñ•´¥¸Ù…±Õ”è(€€€€€€€±•…¹•€ô}±•…¸¡¥Ñ•´¤(€€€€€€€¥˜±•…¹•…¹±•…¹•¹½Ð¥¸½ÕÑÁÕÐè(€€€€€€€€€€€½ÕÑÁÕÐ¹…ÁÁ•¹¡±•…¹•¤(€€€É•ÑÕÉ¸½ÕÑÁÕÐ(()‘•˜}±•…¸¡Ù…±Õ”è¹ä¤€´øÍÑÈè(€€€¥˜Ù…±Õ”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸€ˆˆ(€€€É•ÑÕÉ¸ÍÑÈ¡Ù…±Õ”¤¹ÍÑÉ¥À ¤(()‘•˜}¹½Ý}©ÍÐ ¤€´øÍÑÈè(€€€©ÍÐ€ôi½¹•%¹™¼ ‰Í¥„½Q½­å¼ˆ¤¥˜i½¹•%¹™¼•±Í”Ñ¥µ•é½¹”¡Ñ¥µ•‘•±Ñ„¡¡½ÕÉÌôä¤¤(€€€É•ÑÕÉ¸‘…Ñ•Ñ¥µ”¹¹½Ü¡UQ¤¹…ÍÑ¥µ•é½¹”¡©ÍÐ¤¹É•Á±…”¡µ¥É½Í•½¹ôÀ¤¹¥Í½™½Éµ…Ð ¤(
+    content_type = response.headers.get("content-type", "")
+    if "html" not in content_type.lower() and "text" not in content_type.lower():
+        return FetchResult("failed", read_url, "", f"unsupported content-type {content_type}; no full text retrieved.")
+
+    html = response.text or ""
+    status = _detect_blocked_or_paywalled(html)
+    if status:
+        note = "paywall/login/CAPTCHA marker detected; no bypass attempted."
+        return FetchResult(status, read_url, "", note)
+
+    text = _extract_article_text(html)
+    if len(text) < MIN_ARTICLE_CHARS:
+        return FetchResult(
+            "extraction_failed",
+            read_url,
+            "",
+            f"extraction failed because article text was too short ({len(text)} chars).",
+        )
+
+    note = "full text extraction may include boilerplate."
+    return FetchResult("readable", read_url, text, note)
+
+
+def _extract_article_text(html: str) -> str:
+    soup = BeautifulSoup(html, "html.parser")
+    jsonld_text = _extract_jsonld_article_body(soup)
+    if len(jsonld_text) >= MIN_ARTICLE_CHARS:
+        return jsonld_text
+
+    for tag in soup(["script", "style", "noscript", "svg", "form", "button", "nav", "footer", "aside", "iframe"]):
+        tag.decompose()
+
+    candidate_texts: list[str] = []
+    selectors = (
+        "article",
+        "main",
+        "[role='main']",
+        "[data-module*='Article']",
+        ".ArticleBody-articleBody",
+        ".article-body",
+        ".body__content",
+        ".caas-body",
+        ".content",
+    )
+    for selector in selectors:
+        for node in soup.select(selector):
+            text = _paragraph_text_from_node(node)
+            if text:
+                candidate_texts.append(text)
+
+    body_text = _paragraph_text_from_node(soup.body or soup)
+    if body_text:
+        candidate_texts.append(body_text)
+    if jsonld_text:
+        candidate_texts.append(jsonld_text)
+
+    if not candidate_texts:
+        return ""
+    return max(candidate_texts, key=len)
+
+
+def _extract_jsonld_article_body(soup: BeautifulSoup) -> str:
+    bodies: list[str] = []
+    for script in soup.find_all("script", type="application/ld+json"):
+        raw = script.string or script.get_text(" ", strip=True)
+        if not raw:
+            continue
+        try:
+            payload = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        bodies.extend(_walk_json_for_article_body(payload))
+    return _clean_text("\n\n".join(bodies))
+
+
+def _walk_json_for_article_body(value: Any) -> list[str]:
+    bodies: list[str] = []
+    if isinstance(value, dict):
+        article_body = value.get("articleBody")
+        if isinstance(article_body, str):
+            bodies.append(article_body)
+        for child in value.values():
+            bodies.extend(_walk_json_for_article_body(child))
+    elif isinstance(value, list):
+        for child in value:
+            bodies.extend(_walk_json_for_article_body(child))
+    return bodies
+
+
+def _paragraph_text_from_node(node: Any) -> str:
+    blocks: list[str] = []
+    for element in node.find_all(["h2", "h3", "p", "li"], recursive=True):
+        line = _clean_text(element.get_text(" ", strip=True))
+        if _keep_line(line):
+            blocks.append(line)
+    return _dedupe_join(blocks)
+
+
+def _keep_line(line: str) -> bool:
+    lowered = line.lower().strip()
+    if len(lowered) < 25:
+        return False
+    if any(marker in lowered for marker in BOILERPLATE_LINES):
+        return False
+    if lowered.startswith(("advertisement", "related:", "image source", "getty images")):
+        return False
+    return True
+
+
+def _detect_blocked_or_paywalled(html: str) -> str:
+    sample = BeautifulSoup(html[:120_000], "html.parser").get_text(" ", strip=True).lower()
+    if any(marker in sample for marker in PAYWALL_TEXT_MARKERS):
+        return "paywalled"
+    if any(marker in sample for marker in BLOCKED_TEXT_MARKERS):
+        return "blocked"
+    return ""
+
+
+def _item_from_result(
+    target: FullTextTarget,
+    result: FetchResult,
+    *,
+    used_alternate: bool,
+    alternate_sources: list[dict[str, str]],
+) -> dict[str, Any]:
+    full_text = result.full_text
+    return {
+        "article_id": _article_id(target),
+        "review_priority": target.review_priority,
+        "source_group": target.source_group,
+        "title": target.title,
+        "source": target.source,
+        "published_at": target.published_at,
+        "primary_url": target.primary_url,
+        "read_url": result.read_url,
+        "access_status": result.access_status,
+        "used_alternate_source": used_alternate,
+        "alternate_sources": alternate_sources,
+        "related_tickers": target.related_tickers,
+        "related_indexes": target.related_indexes,
+        "full_text": full_text,
+        "full_text_char_count": len(full_text),
+        "retrieved_at_jst": _now_jst(),
+        "notes_for_chatgpt": result.note,
+    }
+
+
+def _unreadable_from_item(item: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "article_id": item.get("article_id", ""),
+        "review_priority": item.get("review_priority", ""),
+        "source_group": item.get("source_group", ""),
+        "title": item.get("title", ""),
+        "source": item.get("source", ""),
+        "published_at": item.get("published_at", ""),
+        "primary_url": item.get("primary_url", ""),
+        "access_status": item.get("access_status", "failed"),
+        "related_tickers": item.get("related_tickers", []),
+        "related_indexes": item.get("related_indexes", []),
+        "reason": item.get("notes_for_chatgpt", "title/snippet only; no full text retrieved."),
+        "notes_for_chatgpt": item.get("notes_for_chatgpt", "title/snippet only; no full text retrieved."),
+    }
+
+
+def _build_targets(article_review_targets: dict[str, Any], search_supplements: list[dict[str, Any]]) -> list[FullTextTarget]:
+    targets: list[FullTextTarget] = []
+    seen_urls: set[str] = set()
+
+    for item in article_review_targets.get("must_review", []) if isinstance(article_review_targets, dict) else []:
+        _append_target(targets, seen_urls, _target_from_review_item(item, "must", "core_driver"))
+
+    optional_items = article_review_targets.get("optional_review", []) if isinstance(article_review_targets, dict) else []
+    for item in optional_items[:3]:
+        _append_target(targets, seen_urls, _target_from_review_item(item, "optional", "context_candidate"))
+
+    core_text = " ".join(target.title + " " + target.snippet for target in targets if target.review_priority == "must")
+    supplement_count = 0
+    for item in search_supplements:
+        if supplement_count >= MAX_SUPPLEMENT_TARGETS:
+            break
+        target = _target_from_search_item(item)
+        if not target:
+            continue
+        if not _has_theme_overlap(target.title + " " + target.snippet, core_text):
+            continue
+        if _append_target(targets, seen_urls, target):
+            supplement_count += 1
+
+    return targets
+
+
+def _append_target(targets: list[FullTextTarget], seen_urls: set[str], target: FullTextTarget | None) -> bool:
+    if not target or not target.primary_url:
+        return False
+    key = target.primary_url.strip().lower()
+    if key in seen_urls:
+        return False
+    seen_urls.add(key)
+    targets.append(target)
+    return True
+
+
+def _target_from_review_item(item: dict[str, Any], priority: str, group: str) -> FullTextTarget | None:
+    url = _clean(item.get("url"))
+    title = _clean(item.get("title"))
+    source = _clean(item.get("source"))
+    if not (url and title and source):
+        return None
+    return FullTextTarget(
+        review_priority=priority,
+        source_group=group,
+        title=title,
+        source=source,
+        published_at=_clean(item.get("published_at")),
+        primary_url=url,
+        related_tickers=_clean_list(item.get("related_tickers")),
+        related_indexes=_related_indexes_from_text(title + " " + _clean(item.get("snippet"))),
+        snippet=_clean(item.get("snippet")),
+    )
+
+
+def _target_from_search_item(item: dict[str, Any]) -> FullTextTarget | None:
+    url = _clean(item.get("url"))
+    title = _clean(item.get("title"))
+    source = _clean(item.get("source"))
+    snippet = _clean(item.get("snippet"))
+    if not (url and title and source and snippet):
+        return None
+    return FullTextTarget(
+        review_priority="supplement",
+        source_group="search_supplement",
+        title=title,
+        source=source,
+        published_at=_clean(item.get("published_at")),
+        primary_url=url,
+        related_tickers=_clean_list(item.get("related_tickers")),
+        related_indexes=_related_indexes_from_text(title + " " + snippet),
+        snippet=snippet,
+    )
+
+
+def _target_from_fulltext_item(item: dict[str, Any]) -> FullTextTarget | None:
+    url = _clean(item.get("primary_url"))
+    title = _clean(item.get("title"))
+    source = _clean(item.get("source"))
+    if not (url and title and source):
+        return None
+    return FullTextTarget(
+        review_priority=_clean(item.get("review_priority")) or "supplement",
+        source_group=_clean(item.get("source_group")) or "search_supplement",
+        title=title,
+        source=source,
+        published_at=_clean(item.get("published_at")),
+        primary_url=url,
+        related_tickers=_clean_list(item.get("related_tickers")),
+        related_indexes=_clean_list(item.get("related_indexes")) or _related_indexes_from_text(title),
+        snippet="",
+    )
+
+
+def _fallback_targets_from_search_supplements(items: list[dict[str, Any]]) -> list[FullTextTarget]:
+    targets: list[FullTextTarget] = []
+    for item in items:
+        target = _target_from_search_item(item)
+        if target:
+            targets.append(target)
+    return targets
+
+
+def _rank_existing_fallback_candidates(target: FullTextTarget, candidates: list[FullTextTarget]) -> list[FullTextTarget]:
+    ranked: list[tuple[float, FullTextTarget]] = []
+    for candidate in candidates:
+        if candidate.primary_url.strip().lower() == target.primary_url.strip().lower():
+            continue
+        if _rejected_url(candidate.primary_url):
+            continue
+        score = _fallback_similarity_score(target, candidate)
+        if score <= 0:
+            continue
+        ranked.append((score, candidate))
+    ranked.sort(key=lambda row: row[0], reverse=True)
+    return [candidate for _, candidate in ranked[:5]]
+
+
+def _acceptable_fallback_candidate(target: FullTextTarget, candidate: FullTextTarget) -> bool:
+    if _rejected_url(candidate.primary_url):
+        return False
+    if not _quality_url(candidate.primary_url):
+        return False
+    if not _published_dates_close(target.published_at, candidate.published_at):
+        return False
+    if target.related_tickers:
+        candidate_tickers = set(candidate.related_tickers)
+        if candidate_tickers and not set(target.related_tickers).intersection(candidate_tickers):
+            return False
+    return _fallback_similarity_score(target, candidate) >= 0.46
+
+
+def _fallback_similarity_score(target: FullTextTarget, candidate: FullTextTarget) -> float:
+    title_score = _word_overlap_score(target.title, candidate.title)
+    combined_target = f"{target.title} {target.snippet} {' '.join(target.related_tickers)} {' '.join(target.related_indexes)}"
+    combined_candidate = f"{candidate.title} {candidate.snippet} {' '.join(candidate.related_tickers)} {' '.join(candidate.related_indexes)}"
+    theme_bonus = 0.18 if _has_theme_overlap(combined_target, combined_candidate) else 0.0
+    ticker_bonus = 0.12 if set(target.related_tickers).intersection(candidate.related_tickers) else 0.0
+    source_bonus = 0.05 if _same_domain_family(target.primary_url, candidate.primary_url) else 0.0
+    return title_score + theme_bonus + ticker_bonus + source_bonus
+
+
+def _fetch_fallback_search_candidates(config: RunConfig, target: FullTextTarget, remaining_budget: int) -> dict[str, Any]:
+    candidates: list[dict[str, Any]] = []
+    query_count = 0
+    if remaining_budget <= 0:
+        return {"candidates": [], "targets": [], "query_count": 0}
+
+    serpapi_key = config.env.get("SERPAPI_API_KEY", "").strip()
+    tavily_key = config.env.get("TAVILY_API_KEY", "").strip()
+    queries = _fallback_queries(target)[: min(MAX_FALLBACK_QUERIES_PER_ARTICLE, remaining_budget)]
+    for query in queries:
+        if query_count >= remaining_budget:
+            break
+        fetched: list[dict[str, Any]] = []
+        if _is_configured_api_key(serpapi_key, "serpapi"):
+            fetched = _fetch_serpapi_fallback(serpapi_key, query)
+            query_count += 1
+        elif _is_configured_api_key(tavily_key, "tavily"):
+            fetched = _fetch_tavily_fallback(tavily_key, query)
+            query_count += 1
+        if not fetched:
+            continue
+        candidates.extend(fetched)
+
+    normalized = _dedupe_candidate_items(candidates)
+    targets = [target_item for item in normalized if (target_item := _target_from_search_item(item))]
+    return {"candidates": normalized, "targets": targets, "query_count": query_count}
+
+
+def _fetch_serpapi_fallback(api_key: str, query: str) -> list[dict[str, Any]]:
+    try:
+        response = requests.get(
+            "https://serpapi.com/search.json",
+            params={"engine": "google", "q": query, "api_key": api_key, "num": 4},
+            timeout=10,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except Exception:
+        return []
+
+    items: list[dict[str, Any]] = []
+    for result in payload.get("organic_results", [])[:4]:
+        items.append(
+            {
+                "title": _clean(result.get("title")),
+                "source": "SerpAPI",
+                "published_at": _clean(result.get("date")),
+                "url": _clean(result.get("link")),
+                "snippet": _clean(result.get("snippet")),
+                "query": query,
+                "search_role": "article_fulltext_fallback",
+            }
+        )
+    return [item for item in items if item.get("title") and item.get("url") and item.get("snippet")]
+
+
+def _fetch_tavily_fallback(api_key: str, query: str) -> list[dict[str, Any]]:
+    try:
+        response = requests.post(
+            "https://api.tavily.com/search",
+            json={"api_key": api_key, "query": query, "search_depth": "basic", "max_results": 4, "include_raw_content": False},
+            timeout=10,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except Exception:
+        return []
+
+    items: list[dict[str, Any]] = []
+    for result in payload.get("results", [])[:4]:
+        items.append(
+            {
+                "title": _clean(result.get("title")),
+                "source": "Tavily",
+                "published_at": _clean(result.get("published_date")),
+                "url": _clean(result.get("url")),
+                "snippet": _clean(result.get("content")),
+                "query": query,
+                "search_role": "article_fulltext_fallback",
+            }
+        )
+    return [item for item in items if item.get("title") and item.get("url") and item.get("snippet")]
+
+
+def _fallback_queries(target: FullTextTarget) -> list[str]:
+    title = target.title.strip()
+    if not title:
+        return []
+    queries: list[str] = []
+    lowered = f"{target.source} {target.primary_url}".lower()
+    if "reuters" in lowered:
+        queries.extend([f"{title} Yahoo Finance", f"{title} Nasdaq"])
+    elif "cnbc" in lowered:
+        queries.extend([f'"{title}"', f"{title} Yahoo Finance"])
+    else:
+        queries.extend([f'"{title}"', f"{title} Barchart"])
+    return _dedupe_strings(queries)[:MAX_FALLBACK_QUERIES_PER_ARTICLE]
+
+
+def _candidate_alternates(target: FullTextTarget, all_targets: list[FullTextTarget]) -> list[FullTextTarget]:
+    alternates: list[tuple[float, FullTextTarget]] = []
+    for candidate in all_targets:
+        if candidate.primary_url == target.primary_url:
+            continue
+        if not _same_content_candidate(target, candidate):
+            continue
+        alternates.append((_word_overlap_score(target.title, candidate.title), candidate))
+    alternates.sort(key=lambda row: row[0], reverse=True)
+    return [candidate for _, candidate in alternates[:1]]
+
+
+def _same_content_candidate(a: FullTextTarget, b: FullTextTarget) -> bool:
+    title_score = _word_overlap_score(a.title, b.title)
+    if title_score >= 0.72:
+        return True
+    return title_score >= 0.45 and _has_theme_overlap(a.title + " " + a.snippet, b.title + " " + b.snippet)
+
+
+def _word_overlap_score(left: str, right: str) -> float:
+    left_words = _meaningful_words(left)
+    right_words = _meaningful_words(right)
+    if not left_words or not right_words:
+        return 0.0
+    return len(left_words & right_words) / max(len(left_words), len(right_words))
+
+
+def _meaningful_words(value: str) -> set[str]:
+    stop = {"the", "and", "for", "with", "from", "that", "this", "into", "says", "may", "are", "was", "why"}
+    return {word for word in re.findall(r"[a-z0-9]{3,}", value.lower()) if word not in stop}
+
+
+def _has_theme_overlap(left: str, right: str) -> bool:
+    left_text = left.lower()
+    right_text = right.lower()
+    return any(term in left_text and term in right_text for term in THEME_TERMS)
+
+
+def _quality_url(value: str) -> bool:
+    host = urlparse(value).netloc.lower().removeprefix("www.")
+    return any(host == domain or host.endswith(f".{domain}") for domain in QUALITY_DOMAINS)
+
+
+def _rejected_url(value: str) -> bool:
+    parsed = urlparse(value)
+    host = parsed.netloc.lower().removeprefix("www.")
+    text = value.lower()
+    if not parsed.scheme.startswith("http") or not host:
+        return True
+    if any(host == domain or host.endswith(f".{domain}") for domain in REJECT_DOMAINS):
+        return True
+    rejected_markers = (
+        "/quote/",
+        "finance.yahoo.com/quote",
+        "facebook.com",
+        "twitter.com",
+        "x.com/",
+        "linkedin.com/posts",
+        "reuters.com/plus",
+    )
+    return any(marker in text for marker in rejected_markers)
+
+
+def _same_domain_family(left: str, right: str) -> bool:
+    left_host = urlparse(left).netloc.lower().removeprefix("www.")
+    right_host = urlparse(right).netloc.lower().removeprefix("www.")
+    if not left_host or not right_host:
+        return False
+    return left_host == right_host or left_host.endswith(right_host) or right_host.endswith(left_host)
+
+
+def _published_dates_close(left: str, right: str) -> bool:
+    left_date = _parse_date(left)
+    right_date = _parse_date(right)
+    if left_date is None or right_date is None:
+        return True
+    return abs((left_date - right_date).days) <= 45
+
+
+def _parse_date(value: Any):
+    text = _clean(value)
+    if not text:
+        return None
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+        return parsed.astimezone(timezone.utc).date() if parsed.tzinfo else parsed.date()
+    except ValueError:
+        pass
+    try:
+        parsed = parsedate_to_datetime(text)
+        return parsed.astimezone(timezone.utc).date() if parsed.tzinfo else parsed.date()
+    except (TypeError, ValueError, IndexError, OverflowError):
+        pass
+    for fmt in ("%Y-%m-%d", "%b %d, %Y", "%B %d, %Y", "%m/%d/%Y"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
+def _related_indexes_from_text(value: str) -> list[str]:
+    text = value.lower()
+    indexes = []
+    if "nasdaq" in text:
+        indexes.append("NASDAQ")
+    if "sox" in text or "semiconductor" in text or "chip" in text:
+        indexes.append("SOX")
+    return indexes
+
+
+def _summary_from_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    summary = payload.get("summary")
+    if isinstance(summary, dict):
+        return summary
+    items = payload.get("items", [])
+    unreadable = payload.get("unreadable", [])
+    return {
+        "target_count": len(items) + len(unreadable),
+        "readable_count": sum(1 for item in items if item.get("access_status") == "readable"),
+        "alternate_readable_count": sum(1 for item in items if item.get("access_status") == "alternate_readable"),
+        "unreadable_count": len(unreadable),
+        "total_full_text_chars": sum(int(item.get("full_text_char_count") or 0) for item in items),
+        "readable_count_before_fallback": payload.get("summary", {}).get("readable_count_before_fallback", 0) if isinstance(payload.get("summary"), dict) else 0,
+        "unreadable_count_before_fallback": payload.get("summary", {}).get("unreadable_count_before_fallback", 0) if isinstance(payload.get("summary"), dict) else len(unreadable),
+        "fallback_attempted_count": payload.get("summary", {}).get("fallback_attempted_count", 0) if isinstance(payload.get("summary"), dict) else 0,
+        "fallback_success_count": payload.get("summary", {}).get("fallback_success_count", 0) if isinstance(payload.get("summary"), dict) else 0,
+        "fallback_failed_count": payload.get("summary", {}).get("fallback_failed_count", 0) if isinstance(payload.get("summary"), dict) else 0,
+        "fallback_query_count": payload.get("summary", {}).get("fallback_query_count", 0) if isinstance(payload.get("summary"), dict) else 0,
+    }
+
+
+def _empty_payload(target_date: str) -> dict[str, Any]:
+    return {
+        "date": target_date,
+        "generated_at_jst": _now_jst(),
+        "collector": "article_fulltext_collector",
+        "summary": {
+            "target_count": 0,
+            "readable_count": 0,
+            "alternate_readable_count": 0,
+            "unreadable_count": 0,
+            "total_full_text_chars": 0,
+            "readable_count_before_fallback": 0,
+            "unreadable_count_before_fallback": 0,
+            "fallback_attempted_count": 0,
+            "fallback_success_count": 0,
+            "fallback_failed_count": 0,
+            "fallback_query_count": 0,
+        },
+        "items": [],
+        "unreadable": [],
+        "fallback_search_supplements": [],
+        "fallback_attempts": [],
+    }
+
+
+def _article_id(target: FullTextTarget) -> str:
+    digest = hashlib.sha1(target.primary_url.encode("utf-8")).hexdigest()[:10]
+    prefix = {"must": "must", "optional": "optional", "supplement": "supplement"}.get(target.review_priority, "article")
+    return f"{prefix}-{digest}"
+
+
+def _valid_http_url(value: str) -> bool:
+    parsed = urlparse(value)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _dedupe_join(lines: list[str]) -> str:
+    seen: set[str] = set()
+    output: list[str] = []
+    for line in lines:
+        normalized = _clean_text(line)
+        key = normalized.lower()
+        if not normalized or key in seen:
+            continue
+        seen.add(key)
+        output.append(normalized)
+    return "\n\n".join(output)
+
+
+def _append_rescue_note(existing: str, note: str) -> str:
+    existing_clean = _clean(existing)
+    if not existing_clean:
+        return note
+    if note in existing_clean:
+        return existing_clean
+    return f"{existing_clean} {note}"
+
+
+def _dedupe_candidate_items(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: set[tuple[str, str]] = set()
+    output: list[dict[str, Any]] = []
+    for item in items:
+        title = _clean(item.get("title"))
+        url = _clean(item.get("url"))
+        if not title or not url:
+            continue
+        key = (title.lower(), url.lower())
+        if key in seen:
+            continue
+        seen.add(key)
+        output.append(item)
+    return output
+
+
+def _dedupe_strings(items: list[str]) -> list[str]:
+    seen: set[str] = set()
+    output: list[str] = []
+    for item in items:
+        cleaned = _clean(item)
+        key = cleaned.lower()
+        if cleaned and key not in seen:
+            seen.add(key)
+            output.append(cleaned)
+    return output
+
+
+def _is_configured_api_key(value: str, provider: str) -> bool:
+    key = value.strip()
+    if not key:
+        return False
+    lowered = key.lower()
+    if lowered in INVALID_KEY_VALUES:
+        return False
+    return lowered != f"your_{provider}_api_key"
+
+
+def _clean_text(value: str) -> str:
+    text = re.sub(r"\s+", " ", value or "").strip()
+    text = text.replace("\u00a0", " ")
+    return re.sub(r" +", " ", text).strip()
+
+
+def _clean_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    output: list[str] = []
+    for item in value:
+        cleaned = _clean(item)
+        if cleaned and cleaned not in output:
+            output.append(cleaned)
+    return output
+
+
+def _clean(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _now_jst() -> str:
+    jst = ZoneInfo("Asia/Tokyo") if ZoneInfo else timezone(timedelta(hours=9))
+    return datetime.now(UTC).astimezone(jst).replace(microsecond=0).isoformat()
