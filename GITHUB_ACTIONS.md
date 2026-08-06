@@ -11,8 +11,8 @@ Each run uploads only the safe handoff files below for 14 days:
 - `prompt_input.md`
 - `CHATGPT_HANDOFF_YYYY-MM-DD.md`
 
-Raw article HTML/PDF/text, full-text handoff files, local caches, and
-credentials are intentionally excluded from artifacts and commits.
+Raw article HTML/PDF/text, full-text handoff files, local caches, OAuth files,
+and credentials are intentionally excluded from artifacts and commits.
 
 ## Recommended configuration
 
@@ -23,6 +23,8 @@ secrets in priority order:
 2. `FRED_API_KEY` - US interest-rate and macroeconomic data
 3. `SERPAPI_API_KEY` - supplementary web/news search (optional)
 4. `FMP_API_KEY` - supplementary market/company news (optional)
+5. `LONGBRIDGE_CLI_AUTH_B64` - Base64 of the OAuth CLI session file
+6. `LONGBRIDGE_SECRET_ROTATOR_TOKEN` - fine-grained PAT limited to this repository with `Secrets: Read and write`
 
 Add `SEC_USER_AGENT` as a repository **variable**, not a secret. It is not an
 API key; use an identifiable contact value such as:
@@ -31,16 +33,51 @@ API key; use an identifiable contact value such as:
 nasdaq-cafe/1.0 your-email@example.com
 ```
 
-Do not add `LONGBRIDGE_APP_KEY`, `LONGBRIDGE_APP_SECRET`, or
-`LONGBRIDGE_ACCESS_TOKEN`. The current GitHub-hosted workflow has neither the
-Longbridge CLI nor an enabled SDK fetch path, so those credentials would not be
-used.
+Missing optional data-source keys are recorded in `missing_data`. If
+`LONGBRIDGE_CLI_AUTH_B64` is absent, the run continues and records Longbridge as
+missing. If a configured Longbridge OAuth session is invalid, bound to a live
+account, lacks the US OpenAPI quote package, or cannot reach an OpenAPI endpoint,
+the run fails before collection.
 
-Missing optional keys are recorded in `missing_data` and do not stop the run.
+## Longbridge OAuth setup
+
+The workflow uses the official Longbridge CLI and OAuth session created by:
+
+```powershell
+longbridge auth login
+longbridge auth status --format json
+longbridge check --format json
+```
+
+The approved account channel is `lb_papertrading`. The workflow rejects a live
+account token before any market-data collection. The collector itself only
+allows the Longbridge commands `auth status` and `quote`; order, account,
+position, portfolio, and trade commands remain blocked.
+
+On Windows, create the repository secret without printing the OAuth file:
+
+```powershell
+$path = "$env:USERPROFILE\.longbridge\openapi\cli-auth"
+$encoded = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes($path))
+Set-Clipboard -Value $encoded
+```
+
+Store the clipboard value as `LONGBRIDGE_CLI_AUTH_B64`.
+
+The scheduled runner restores the file to
+`$HOME/.longbridge/openapi/cli-auth`, validates the token and paper account,
+executes quote-only collection, and compares the OAuth file hash before and
+after collection. If Longbridge refreshes or rewrites the session, the workflow
+updates `LONGBRIDGE_CLI_AUTH_B64` using `LONGBRIDGE_SECRET_ROTATOR_TOKEN`.
+Secret values are never uploaded as artifacts or committed.
+
+Do not add `LONGBRIDGE_APP_KEY`, `LONGBRIDGE_APP_SECRET`, or
+`LONGBRIDGE_ACCESS_TOKEN`; this workflow uses OAuth, not the legacy API-key
+credential path.
 
 ## Public repository note
 
 GitHub may disable scheduled workflows in a public repository after 60 days
-without repository activity. Manual runs remain available from the Actions
-tab, and making the repository private avoids exposing the source and Actions
+without repository activity. Manual runs remain available from the Actions tab,
+and making the repository private avoids exposing the source and Actions
 artifacts to the public.
