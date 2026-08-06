@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import importlib.util
-import io
 import json
 import tempfile
 import unittest
@@ -185,13 +184,22 @@ class LongbridgeOAuthWorkflowContractTests(unittest.TestCase):
         self.assertIn("scripts/prepare_longbridge_oauth_session.py", self.workflow)
         self.assertNotIn("longbridge auth login", self.workflow)
 
+    def test_rotator_write_is_proven_before_oauth_refresh(self) -> None:
+        rotate_call = "gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN"
+        prepare_call = "python scripts/prepare_longbridge_oauth_session.py"
+        first_rotate = self.workflow.index(rotate_call)
+        prepare = self.workflow.index(prepare_call)
+        second_rotate = self.workflow.index(rotate_call, first_rotate + 1)
+        self.assertLess(first_rotate, prepare)
+        self.assertGreater(second_rotate, prepare)
+
     def test_rotated_refresh_token_is_persisted_before_validation_and_collection(self) -> None:
         rotate_call = "gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN"
         validator_call = "python scripts/validate_longbridge_auth_status.py"
         collect_call = "python -m nasdaq_cafe.run collect"
-        self.assertIn(rotate_call, self.workflow)
-        self.assertLess(self.workflow.index(rotate_call), self.workflow.index(validator_call))
-        self.assertLess(self.workflow.index(rotate_call), self.workflow.index(collect_call))
+        final_rotate = self.workflow.rindex(rotate_call)
+        self.assertLess(final_rotate, self.workflow.index(validator_call))
+        self.assertLess(final_rotate, self.workflow.index(collect_call))
 
     def test_workflow_is_serialized_to_prevent_refresh_races(self) -> None:
         self.assertIn("group: daily-nasdaq-cafe", self.workflow)
