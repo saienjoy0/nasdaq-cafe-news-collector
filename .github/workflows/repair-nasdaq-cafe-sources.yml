@@ -1,0 +1,57 @@
+name: One-time NASDAQ Cafe source repair
+
+on:
+  push:
+    branches:
+      - feat/longbridge-oauth-actions
+    paths:
+      - .repair/nasdaq_cafe_py_only.zip
+      - .github/workflows/repair-nasdaq-cafe-sources.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repair-nasdaq-cafe-sources
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: feat/longbridge-oauth-actions
+          fetch-depth: 0
+
+      - name: Restore clean Python sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          repair_dir="$RUNNER_TEMP/nasdaq-cafe-source-repair"
+          mkdir -p "$repair_dir"
+          unzip -q .repair/nasdaq_cafe_py_only.zip -d "$repair_dir"
+          test -d "$repair_dir/nasdaq_cafe"
+          find "$repair_dir/nasdaq_cafe" -type f ! -name '*.py' -print -quit | grep -q . && {
+            echo '::error::Repair archive contains a non-Python file.'
+            exit 1
+          } || true
+          cp -a "$repair_dir/nasdaq_cafe/." nasdaq_cafe/
+          python -m compileall -q nasdaq_cafe
+          git diff --check
+
+      - name: Commit repaired sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add nasdaq_cafe
+          if git diff --cached --quiet; then
+            echo 'No source repair changes were required.'
+            exit 0
+          fi
+          git commit -m 'Restore clean NASDAQ Cafe Python sources'
+          git push origin HEAD:feat/longbridge-oauth-actions
