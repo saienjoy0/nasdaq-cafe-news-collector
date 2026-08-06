@@ -35,7 +35,7 @@ python -m nasdaq_cafe.run retry-failed --date 2026-07-10
 - SEC EDGAR・企業IR: 公式開示
 - Tavily・SerpAPI・RSS: ニュース候補と本文取得
 
-Longbridgeはペーパー口座のOAuthセッションだけを許可します。collectorが実行できるLongbridgeコマンドは`auth status`と`quote`だけで、注文、残高、ポジション、Portfolio、Trade APIはコード上で拒否します。GitHub ActionsでのOAuth復元・自動更新については`GITHUB_ACTIONS.md`を参照してください。
+Longbridgeはペーパー口座のOAuthセッションだけを許可します。collectorが実行できるLongbridgeコマンドは`auth status`と`quote`だけで、注文、残高、ポジション、Portfolio、Trade APIはコード上で拒否します。GitHub-hosted Actionsでは、ローカルCLIのmachine-bound認証ファイルをコピーせず、portableなOAuth client IDとrefresh tokenから実行ごとに一時セッションを生成します。初回設定と自動更新については`GITHUB_ACTIONS.md`を参照してください。
 
 ## Raw Archive
 
