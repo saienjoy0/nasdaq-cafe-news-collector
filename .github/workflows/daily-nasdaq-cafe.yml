@@ -89,7 +89,7 @@ jobs:
 
           echo "$(dirname "$longbridge_bin")" >> "$GITHUB_PATH"
           echo "binary=$longbridge_bin" >> "$GITHUB_OUTPUT"
-          "$longbridge_bin" -v
+          "$longbridge_bin" -V
 
       - name: Restore and validate Longbridge OAuth session
         id: longbridge_auth
@@ -102,18 +102,26 @@ jobs:
 
           if [[ -z "${LONGBRIDGE_CLI_AUTH_B64:-}" ]]; then
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Longbridge OAuth secret is not configured; collection will record Longbridge as missing."
+            echo "Longbridge OAuth archive secret is not configured; collection will record Longbridge as missing."
             exit 0
           fi
 
           auth_dir="$HOME/.longbridge/openapi"
-          auth_path="$auth_dir/cli-auth"
+          archive_path="$RUNNER_TEMP/longbridge-openapi-auth.zip"
+          rm -rf "$auth_dir"
           mkdir -p "$auth_dir"
           umask 077
-          printf '%s' "$LONGBRIDGE_CLI_AUTH_B64" | base64 --decode > "$auth_path"
-          chmod 600 "$auth_path"
+          printf '%s' "$LONGBRIDGE_CLI_AUTH_B64" | base64 --decode > "$archive_path"
+          unzip -q "$archive_path" -d "$auth_dir"
+          rm -f "$archive_path"
+          chmod -R go-rwx "$auth_dir"
 
-          before_sha="$(sha256sum "$auth_path" | awk '{print $1}')"
+          if [[ ! -d "$auth_dir/tokens" ]] || ! find "$auth_dir/tokens" -type f -print -quit | grep -q .; then
+            echo "::error::Longbridge OAuth archive does not contain openapi/tokens/<client_id>."
+            exit 1
+          fi
+
+          before_sha="$({ find "$auth_dir" -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum; } | sha256sum | awk '{print $1}')"
           echo "before_sha=$before_sha" >> "$GITHUB_OUTPUT"
 
           "$LONGBRIDGE_BIN" auth status --format json > "$RUNNER_TEMP/longbridge-auth-status.json"
@@ -154,14 +162,14 @@ jobs:
           BEFORE_SHA: ${{ steps.longbridge_auth.outputs.before_sha }}
         run: |
           set -euo pipefail
-          auth_path="$HOME/.longbridge/openapi/cli-auth"
+          auth_dir="$HOME/.longbridge/openapi"
 
-          if [[ ! -s "$auth_path" ]]; then
-            echo "::error::Longbridge OAuth session disappeared after collection."
+          if [[ ! -d "$auth_dir/tokens" ]] || ! find "$auth_dir/tokens" -type f -print -quit | grep -q .; then
+            echo "::error::Longbridge OAuth token directory disappeared after collection."
             exit 1
           fi
 
-          after_sha="$(sha256sum "$auth_path" | awk '{print $1}')"
+          after_sha="$({ find "$auth_dir" -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum; } | sha256sum | awk '{print $1}')"
           if [[ "$after_sha" == "$BEFORE_SHA" ]]; then
             echo "Longbridge OAuth session did not change; repository secret rotation is unnecessary."
             exit 0
@@ -172,9 +180,13 @@ jobs:
             exit 1
           fi
 
-          encoded="$(base64 -w 0 "$auth_path")"
+          archive_path="$RUNNER_TEMP/longbridge-openapi-auth.zip"
+          rm -f "$archive_path"
+          (cd "$auth_dir" && zip -qr "$archive_path" .)
+          encoded="$(base64 -w 0 "$archive_path")"
           echo "::add-mask::$encoded"
           printf '%s' "$encoded" | gh secret set LONGBRIDGE_CLI_AUTH_B64 --repo "$GITHUB_REPOSITORY"
+          rm -f "$archive_path"
           echo "Longbridge OAuth repository secret was rotated successfully."
 
       - name: Upload safe daily package
