@@ -389,4 +389,720 @@ def _fetch_direct(config: RunConfig, document: dict[str, Any]) -> dict[str, Any]
             "read_url": read_url,
             "raw_file": raw_display,
             "http_status": int(response.status_code),
-            "content_type": content_tãu¶‰žËkºwµçI•…‘…‰±”ˆ(€€€€¤(€€€Õ¹É•Í½±Ù•‘}…™Ñ•É}™…±±‰…¬€ôÍÕ´ (€€€€€€€€Ä™½È‘½Õµ•¹Ð¥¸…ÑÑ•µÁÑ•¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰™…¥±•ˆ(€€€€¤(€€€É•ÑÕÉ¸ì(€€€€€€€€‰Ñ…É•Ñ}½Õ¹Ðˆè±•¸¡Ù…±¥‘}‘½Õµ•¹ÑÌ¤°(€€€€€€€€‰…ÑÑ•µÁÑ•‘}½Õ¹Ðˆè±•¸¡…ÑÑ•µÁÑ•¤°(€€€€€€€€‰½µÁ±•Ñ•}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰½µÁ±•Ñ”ˆ¤°(€€€€€€€€‰É•…‘…‰±•}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰…•ÍÍ}ÍÑ…ÑÕÌˆ¤€ôô€‰É•…‘…‰±”ˆ¤°(€€€€€€€€‰…±Ñ•É¹…Ñ•}É•…‘…‰±•}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰…•ÍÍ}ÍÑ…ÑÕÌˆ¤€ôô€‰…±Ñ•É¹…Ñ•}É•…‘…‰±”ˆ¤°(€€€€€€€€‰™…¥±•‘}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰™…¥±•ˆ¤°(€€€€€€€€‰•á±Õ‘•‘}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰•á±Õ‘•ˆ¤°(€€€€€€€€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ñ}½Õ¹ÐˆèÍÕ´ (€€€€€€€€€€€€Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ðˆ(€€€€€€€€¤°(€€€€€€€€‰Á•¹‘¥¹}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰Á•¹‘¥¹œˆ¤°(€€€€€€€€‰É…Ý}¡Ñµ±}½Õ¹ÐˆèÍÕ´ (€€€€€€€€€€€€Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜ÍÑÈ¡‘½Õµ•¹Ð¹•Ð ‰É…Ý}™¥±”ˆ¤½È€ˆˆ¤¹±½Ý•È ¤¹•¹‘ÍÝ¥Ñ  ˆ¹¡Ñµ°ˆ¤(€€€€€€€€¤°(€€€€€€€€‰•áÑÉ…Ñ•‘}Ñ•áÑ}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰•áÑÉ…Ñ•‘}Ñ•áÑ}™¥±”ˆ¤¤°(€€€€€€€€‰Ñ½Ñ…±}™Õ±±}Ñ•áÑ}¡…ÉÌˆèÍÕ´¡¥¹Ð¡¥Ñ•´¹•Ð ‰™Õ±±}Ñ•áÑ}¡…É}½Õ¹Ðˆ¤½È€À¤™½È¥Ñ•´¥¸¥Ñ•µÌ¤°(€€€€€€€€‰Ñ…Ù¥±å}…ÑÑ•µÁÑ•‘}½Õ¹Ðˆè±•¸¡Ñ…Ù¥±å}…ÑÑ•µÁÑÌ¤°(€€€€€€€€‰Ñ…Ù¥±å}ÍÕ•ÍÍ}½Õ¹ÐˆèÑ…Ù¥±å}ÍÕ•ÍÍ}½Õ¹Ð°(€€€€€€€€‰Ñ…Ù¥±å}™…¥±•‘}½Õ¹ÐˆèÕ¹É•Í½±Ù•‘}…™Ñ•É}™…±±‰…¬°(€€€€€€€€Œ½µÁ…Ñ¥‰¥±¥Ñä™¥•±‘ÌÕÍ•‰ä½±‘•È½ÕÑÁÕÐÉ•¹‘•É•ÉÌ¸(€€€€€€€€‰É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆèÍÕ´ (€€€€€€€€€€€€Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰…•ÍÍ}ÍÑ…ÑÕÌˆ¤€ôô€‰É•…‘…‰±”ˆ(€€€€€€€€¤°(€€€€€€€€‰Õ¹É•…‘…‰±•}½Õ¹Ñ}‰•™½É•}™…±±‰…¬ˆè±•¸¡…ÑÑ•µÁÑ•¤(€€€€€€€€´ÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥‘}‘½Õµ•¹ÑÌ¥˜‘½Õµ•¹Ð¹•Ð ‰…•ÍÍ}ÍÑ…ÑÕÌˆ¤€ôô€‰É•…‘…‰±”ˆ¤°(€€€€€€€€‰™…±±‰…­}…ÑÑ•µÁÑ•‘}½Õ¹Ðˆè±•¸¡Ñ…Ù¥±å}…ÑÑ•µÁÑÌ¤°(€€€€€€€€‰™…±±‰…­}ÍÕ•ÍÍ}½Õ¹ÐˆèÑ…Ù¥±å}ÍÕ•ÍÍ}½Õ¹Ð°(€€€€€€€€‰™…±±‰…­}™…¥±•‘}½Õ¹ÐˆèÕ¹É•Í½±Ù•‘}…™Ñ•É}™…±±‰…¬°(€€€€€€€€‰™…±±‰…­}ÅÕ•Éå}½Õ¹Ðˆè€À°(€€€ô(()‘•˜}•±¥¥‰±•}ÍÑ…ÑÕÌ¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°™½É”è‰½½°°É•ÑÉå}™…¥±•è‰½½°¤€´ø‰½½°è(€€€ÍÑ…ÑÕÌ€ôÍÑÈ¡‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤½È€‰Á•¹‘¥¹œˆ¤(€€€¥˜™½É”è(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€¥˜É•ÑÉå}™…¥±•è(€€€€€€€É•ÑÕÉ¸ÍÑ…ÑÕÌ¥¸ì‰™…¥±•ˆ°€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ðˆ°€‰Á•¹‘¥¹œ‰ô(€€€É•ÑÕÉ¸ÍÑ…ÑÕÌ€ôô€‰Á•¹‘¥¹œˆ(()‘•˜}ÁÉ•™±¥¡Ñ}•á±ÕÍ¥½¸¡ÕÉ°èÍÑÈ°•¹Øè‘¥ÑmÍÑÈ°ÍÑÉt¤€´øÍÑÈè(€€€Á…ÉÍ•€ôÕÉ±Á…ÉÍ”¡ÕÉ°¤(€€€¥˜Á…ÉÍ•¹Í¡•µ”¹½Ð¥¸ì‰¡ÑÑÀˆ°€‰¡ÑÑÁÌ‰ô½È¹½ÐÁ…ÉÍ•¹¹•Ñ±½Œè(€€€€€€€É•ÑÕÉ¸€‰¥¹Ù…±¥‘}ÕÉ°ˆ(€€€¡½ÍÐ€ôÁ…ÉÍ•¹¹•Ñ±½Œ¹±½Ý•È ¤¹ÍÁ±¥Ð ˆèˆ°€Ä¥lÁt¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(€€€¥˜…¹ä¡¡½ÍÐ€ôô¥Ñ•´½È¡½ÍÐ¹•¹‘ÍÝ¥Ñ ¡˜ˆ¹í¥Ñ•µôˆ¤™½È¥Ñ•´¥¸a1U}!=MQL¤è(€€€€€€€É•ÑÕÉ¸€‰Í½¥…±}½É}Ù¥‘•½}ÕÉ°ˆ(€€€±½Ý•É•€ôÕÉ°¹±½Ý•È ¤(€€€¥˜€ˆ½ÅÕ½Ñ”¼ˆ¥¸±½Ý•É•½È€‰™¥¹…¹”¹å…¡½¼¹½´½ÅÕ½Ñ”ˆ¥¸±½Ý•É•è(€€€€€€€É•ÑÕÉ¸€‰ÅÕ½Ñ•}Á…•}¹½Ñ}…ÉÑ¥±”ˆ(€€€‘¥Í…±±½Ý•€ôì(€€€€€€€¥Ñ•´¹ÍÑÉ¥À ¤¹±½Ý•È ¤¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(€€€€€€€™½È¥Ñ•´¥¸ÍÑÈ¡•¹Ø¹•Ð ‰9ME}}U11QaQ}%M11=]}=5%9Lˆ¤½È€ˆˆ¤¹ÍÁ±¥Ð ˆ°ˆ¤(€€€€€€€¥˜¥Ñ•´¹ÍÑÉ¥À ¤(€€€ô(€€€¥˜…¹ä¡¡½ÍÐ€ôô¥Ñ•´½È¡½ÍÐ¹•¹‘ÍÝ¥Ñ ¡˜ˆ¹í¥Ñ•µôˆ¤™½È¥Ñ•´¥¸‘¥Í…±±½Ý•¤è(€€€€€€€É•ÑÕÉ¸€‰½¹™¥ÕÉ•‘}‘¥Í…±±½Ý•‘}‘½µ…¥¸ˆ(€€€É•ÑÕÉ¸€ˆˆ(()‘•˜}µ…É­}•á±Õ‘•¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°É•…Í½¸èÍÑÈ¤€´ø9½¹”è(€€€‘½Õµ•¹Ð¹ÕÁ‘…Ñ” (€€€€€€€ì(€€€€€€€€€€€€‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆè€‰•á±Õ‘•ˆ°(€€€€€€€€€€€€‰…•ÍÍ}ÍÑ…ÑÕÌˆè€‰¹½Ñ}…ÑÑ•µÁÑ•ˆ°(€€€€€€€€€€€€‰™…¥±ÕÉ•}É•…Í½¸ˆèÉ•…Í½¸°(€€€€€€€€€€€€‰É•ÑÉ¥•Ù•‘}…Ðˆè}¹½Ý}©ÍÐ ¤°(€€€€€€€ô(€€€€¤(€€€}…ÁÁ•¹‘}…ÑÑ•µÁÐ¡‘½Õµ•¹Ð°ì‰É½ÕÑ”ˆè€‰ÁÉ•™±¥¡Ðˆ°€‰ÍÑ…ÑÕÌˆè€‰•á±Õ‘•ˆ°€‰É•…Í½¸ˆèÉ•…Í½¹ô¤(()‘•˜}µ…É­}¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ð¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°±¥µ¥Ðè¥¹Ð¤€´ø9½¹”è(€€€¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰½µÁ±•Ñ”ˆè(€€€€€€€}…ÁÁ•¹‘}…ÑÑ•µÁÐ (€€€€€€€€€€€‘½Õµ•¹Ð°(€€€€€€€€€€€ì(€€€€€€€€€€€€€€€€‰É½ÕÑ”ˆè€‰É•ÅÕ•ÍÑÌˆ°(€€€€€€€€€€€€€€€€‰ÍÑ…ÑÕÌˆè€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ðˆ°(€€€€€€€€€€€€€€€€‰É•…Í½¸ˆè€‰½¹™¥ÕÉ•‘}™Õ±±Ñ•áÑ}…ÑÑ•µÁÑ}±¥µ¥ÐìÁÉ•Ù¥½ÕÍ±ä½µÁ±•Ñ•…¡”É•Ñ…¥¹•ˆ°(€€€€€€€€€€€ô°(€€€€€€€€¤(€€€€€€€É•ÑÕÉ¸(€€€‘½Õµ•¹Ð¹ÕÁ‘…Ñ” (€€€€€€€ì(€€€€€€€€€€€€‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆè€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ðˆ°(€€€€€€€€€€€€‰…•ÍÍ}ÍÑ…ÑÕÌˆè€‰¹½Ñ}…ÑÑ•µÁÑ•ˆ°(€€€€€€€€€€€€‰™…¥±ÕÉ•}É•…Í½¸ˆè˜‰½¹™¥ÕÉ•™Õ±°µÑ•áÐ…ÑÑ•µÁÐ±¥µ¥ÐÉ•…¡•€¡í±¥µ¥Ñô¤ìUI0É•Ñ…¥¹•™½ÈÉ•ÑÉäˆ°(€€€€€€€€€€€€‰É•ÑÉ¥•Ù•‘}…Ðˆè9½¹”°(€€€€€€€ô(€€€€¤(€€€}…ÁÁ•¹‘}…ÑÑ•µÁÐ (€€€€€€€‘½Õµ•¹Ð°(€€€€€€€ì(€€€€€€€€€€€€‰É½ÕÑ”ˆè€‰É•ÅÕ•ÍÑÌˆ°(€€€€€€€€€€€€‰ÍÑ…ÑÕÌˆè€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ðˆ°(€€€€€€€€€€€€‰É•…Í½¸ˆè€‰½¹™¥ÕÉ•‘}™Õ±±Ñ•áÑ}…ÑÑ•µÁÑ}±¥µ¥Ðˆ°(€€€€€€€ô°(€€€€¤(()‘•˜}Õ¹•áÁ•Ñ•‘}™…¥±ÕÉ•}Á…Ñ ¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°•áŒèá•ÁÑ¥½¸¤€´ø‘¥ÑmÍÑÈ°¹åtè(€€€…ÑÑ•µÁÑ•‘}…Ð€ô}¹½Ý}©ÍÐ ¤(€€€É•ÑÕÉ¸ì(€€€€€€€€‰É•ÑÉ¥•Ù•‘}…Ðˆè…ÑÑ•µÁÑ•‘}…Ð°(€€€€€€€€‰É•ÑÉ¥•Ù…±}É½ÕÑ”ˆè€‰É•ÅÕ•ÍÑÌˆ°(€€€€€€€€‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆè€‰™…¥±•ˆ°(€€€€€€€€‰…•ÍÍ}ÍÑ…ÑÕÌˆè€‰™…¥±•ˆ°(€€€€€€€€‰™…¥±ÕÉ•}É•…Í½¸ˆè˜‰¥¹Ñ•É¹…°½±±•Ñ½È•ÉÉ½ÈèíÑåÁ”¡•áŒ¤¹}}¹…µ•}}ôèí•áôˆ°(€€€€€€€€‰…ÑÑ•µÁÐˆèì(€€€€€€€€€€€€‰É½ÕÑ”ˆè€‰É•ÅÕ•ÍÑÌˆ°(€€€€€€€€€€€€‰…ÑÑ•µÁÑ•‘}…Ðˆè…ÑÑ•µÁÑ•‘}…Ð°(€€€€€€€€€€€€‰ÍÑ…ÑÕÌˆè€‰™…¥±•ˆ°(€€€€€€€€€€€€‰É•…Í½¸ˆè˜‰¥¹Ñ•É¹…°½±±•Ñ½È•ÉÉ½ÈèíÑåÁ”¡•áŒ¤¹}}¹…µ•}}ôèí•áôˆ°(€€€€€€€ô°(€€€ô(()‘•˜}…ÁÁ±å}‘½Õµ•¹Ñ}Á…Ñ ¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°Á…Ñ è‘¥ÑmÍÑÈ°¹åt¤€´ø9½¹”è(€€€…ÑÑ•µÁÐ€ôÁ…Ñ ¹Á½À ‰…ÑÑ•µÁÐˆ°9½¹”¤(€€€É½ÕÑ”€ôÁ…Ñ ¹Á½À ‰É•ÑÉ¥•Ù…±}É½ÕÑ”ˆ°9½¹”¤(€€€‘½Õµ•¹Ð¹ÕÁ‘…Ñ”¡Á…Ñ ¤(€€€¥˜É½ÕÑ”è(€€€€€€€}…ÁÁ•¹‘}Õ¹¥ÅÕ”¡‘½Õµ•¹Ð°€‰É•ÑÉ¥•Ù…±}É½ÕÑ•Ìˆ°ÍÑÈ¡É½ÕÑ”¤¤(€€€¥˜¥Í¥¹ÍÑ…¹”¡…ÑÑ•µÁÐ°‘¥Ð¤è(€€€€€€€…ÑÑ•µÁÐ¹Í•Ñ‘•™…Õ±Ð ‰ÍÑ…ÑÕÌˆ°‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤¤(€€€€€€€…ÑÑ•µÁÐ¹Í•Ñ‘•™…Õ±Ð ‰É•…Í½¸ˆ°‘½Õµ•¹Ð¹•Ð ‰™…¥±ÕÉ•}É•…Í½¸ˆ¤¤(€€€€€€€}…ÁÁ•¹‘}…ÑÑ•µÁÐ¡‘½Õµ•¹Ð°…ÑÑ•µÁÐ¤(()‘•˜}ÝÉ¥Ñ•}‘½Õµ•¹Ñ}µ•Ñ…‘…Ñ„¡½¹™¥œèIÕ¹½¹™¥œ°‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt¤€´ø9½¹”è(€€€‘½Õµ•¹Ñ}¥€ôÍÑÈ¡‘½Õµ•¹Ð¹•Ð ‰‘½Õµ•¹Ñ}¥ˆ¤½È€ˆˆ¤(€€€¥˜¹½Ð‘½Õµ•¹Ñ}¥è(€€€€€€€É•ÑÕÉ¸(€€€Á…Ñ €ô½¹™¥œ¹É…Ý}‘¥È€¼€‰…ÉÑ¥±•Ìˆ€¼˜‰í‘½Õµ•¹Ñ}¥‘ô¹©Í½¸ˆ(€€€‘½Õµ•¹Ñl‰µ•Ñ…‘…Ñ…}™¥±”‰t€ô}‘¥ÍÁ±…å}Á…Ñ ¡Á…Ñ ¤(€€€ÝÉ¥Ñ•}©Í½¸¡Á…Ñ °‘½Õµ•¹Ð¤(()‘•˜}É•…‘}É•ÍÁ½¹Í•}‰åÑ•Ì¡É•ÍÁ½¹Í”è¹ä°µ…á}‰åÑ•Ìè¥¹Ð¤€´øÑÕÁ±•m‰åÑ•Ì°‰½½±tè(€€€¡Õ¹­Ìè±¥ÍÑm‰åÑ•Ít€ômt(€€€Ñ½Ñ…°€ô€À(€€€¥˜¡…Í…ÑÑÈ¡É•ÍÁ½¹Í”°€‰¥Ñ•É}½¹Ñ•¹Ðˆ¤è(€€€€€€€¥Ñ•É…Ñ½È€ôÉ•ÍÁ½¹Í”¹¥Ñ•É}½¹Ñ•¹Ð¡¡Õ¹­}Í¥é”ôØÕ|ÔÌØ¤(€€€•±Í”è€€ŒM¥µÁ±”É•ÍÁ½¹Í”‘½Õ‰±•ÌÕÍ•¥¸Ñ•ÍÑÌ¸(€€€€€€€¥Ñ•É…Ñ½È€ôm•Ñ…ÑÑÈ¡É•ÍÁ½¹Í”°€‰½¹Ñ•¹Ðˆ°ˆˆˆ¥t(€€€™½È¡Õ¹¬¥¸¥Ñ•É…Ñ½Èè(€€€€€€€¥˜¹½Ð¡Õ¹¬è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€Ñ½Ñ…°€¬ô±•¸¡¡Õ¹¬¤(€€€€€€€¥˜Ñ½Ñ…°€øµ…á}‰åÑ•Ìè(€€€€€€€€€€€É•µ…¥¹¥¹œ€ôµ…à À°µ…á}‰åÑ•Ì€´ÍÕ´¡±•¸¡¥Ñ•´¤™½È¥Ñ•´¥¸¡Õ¹­Ì¤¤(€€€€€€€€€€€¥˜É•µ…¥¹¥¹œè(€€€€€€€€€€€€€€€¡Õ¹­Ì¹…ÁÁ•¹¡¡Õ¹­léÉ•µ…¥¹¥¹t¤(€€€€€€€€€€€É•ÑÕÉ¸ˆˆˆ¹©½¥¸¡¡Õ¹­Ì¤°QÉÕ”(€€€€€€€¡Õ¹­Ì¹…ÁÁ•¹¡¡Õ¹¬¤(€€€É•ÑÕÉ¸ˆˆˆ¹©½¥¸¡¡Õ¹­Ì¤°…±Í”(()‘•˜}‘•½‘•}É•ÍÁ½¹Í”¡½¹Ñ•¹Ðè‰åÑ•Ì°½¹Ñ•¹Ñ}ÑåÁ”èÍÑÈ¤€´øÍÑÈè(€€€µ…Ñ €ôÉ”¹Í•…É ¡È‰¡…ÉÍ•Ðô¡mxíqÍt¬¤ˆ°½¹Ñ•¹Ñ}ÑåÁ”°™±…ÌõÉ”¹%9=IM¤(€€€•¹½‘¥¹Ì€ômµ…Ñ ¹É½ÕÀ Ä¤¹ÍÑÉ¥À œ‰pœœ¥t¥˜µ…Ñ •±Í”mt(€€€•¹½‘¥¹Ì¹•áÑ•¹¡l‰ÕÑ˜´àˆ°€‰ÀÄÈÔÈ‰t¤(€€€™½È•¹½‘¥¹œ¥¸•¹½‘¥¹Ìè(€€€€€€€ÑÉäè(€€€€€€€€€€€É•ÑÕÉ¸½¹Ñ•¹Ð¹‘•½‘”¡•¹½‘¥¹œ¤(€€€€€€€•á•ÁÐ€¡1½½­ÕÁÉÉ½È°U¹¥½‘••½‘•ÉÉ½È¤è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€É•ÑÕÉ¸½¹Ñ•¹Ð¹‘•½‘” ‰ÕÑ˜´àˆ°•ÉÉ½ÉÌô‰É•Á±…”ˆ¤(()‘•˜}•áÑÉ…Ñ}Á‘™}Ñ•áÐ¡½¹Ñ•¹Ðè‰åÑ•Ì¤€´øÑÕÁ±•mÍÑÈ°ÍÑÉtè(€€€ÑÉäè(€€€€€€€™É½´ÁåÁ‘˜¥µÁ½ÉÐA‘™I•…‘•È€€ŒÑåÁ”è¥¹½É”(€€€•á•ÁÐ%µÁ½ÉÑÉÉ½Èè(€€€€€€€É•ÑÕÉ¸€ˆˆ°€‰AÝ…ÌÍ…Ù•°‰ÕÐÁåÁ‘˜¥Ì¹½Ð¥¹ÍÑ…±±•™½ÈÑ•áÐ•áÑÉ…Ñ¥½¸ˆ(€€€ÑÉäè(€€€€€€€É•…‘•È€ôA‘™I•…‘•È¡¥¼¹	åÑ•Í%<¡½¹Ñ•¹Ð¤¤(€€€€€€€Á…•Ì€ôl¡Á…”¹•áÑÉ…Ñ}Ñ•áÐ ¤½È€ˆˆ¤¹ÍÑÉ¥À ¤™½ÈÁ…”¥¸É•…‘•È¹Á…•Ít(€€€€€€€Ñ•áÐ€ô€‰q¹q¸ˆ¹©½¥¸¡Á…”™½ÈÁ…”¥¸Á…•Ì¥˜Á…”¤(€€€•á•ÁÐá•ÁÑ¥½¸…Ì•áŒè(€€€€€€€É•ÑÕÉ¸€ˆˆ°˜‰A•áÑÉ…Ñ¥½¸™…¥±•èíÑåÁ”¡•áŒ¤¹}}¹…µ•}}ôèí•áôˆ(€€€¥˜±•¸¡Ñ•áÐ¤€ð5%9}IQ%1}!ILè(€€€€€€€É•ÑÕÉ¸€ˆˆ°˜‰AÑ•áÐÝ…ÌÑ½¼Í¡½ÉÐ€¡í±•¸¡Ñ•áÐ¥ô¡…ÉÌ¤ˆ(€€€É•ÑÕÉ¸Ñ•áÐ°€ˆˆ(()‘•˜}Á±…¥¹}Ñ•áÑ}‰±½­}ÍÑ…ÑÕÌ¡Ñ•áÐèÍÑÈ¤€´øÍÑÈè(€€€±½Ý•É•€ôÑ•áÐ¹±½Ý•È ¤(€€€¥˜…¹ä¡µ…É­•È¥¸±½Ý•É•™½Èµ…É­•È¥¸Ae]11}QaQ}5I-IL¤è(€€€€€€€É•ÑÕÉ¸€‰Á…åÝ…±°µ…É­•È‘•Ñ•Ñ•¥¸Q…Ù¥±äÉ•ÍÁ½¹Í”ˆ(€€€¥˜…¹ä¡µ…É­•È¥¸±½Ý•É•™½Èµ…É­•È¥¸	1=-}QaQ}5I-IL¤è(€€€€€€€É•ÑÕÉ¸€‰‰±½¬½±½¥¸½AQ!µ…É­•È‘•Ñ•Ñ•¥¸Q…Ù¥±äÉ•ÍÁ½¹Í”ˆ(€€€É•ÑÕÉ¸€ˆˆ(()‘•˜}¥Í}Á‘˜¡½¹Ñ•¹Ñ}ÑåÁ”èÍÑÈ°ÕÉ°èÍÑÈ¤€´ø‰½½°è(€€€É•ÑÕÉ¸€‰…ÁÁ±¥…Ñ¥½¸½Á‘˜ˆ¥¸½¹Ñ•¹Ñ}ÑåÁ”¹±½Ý•È ¤½ÈÕÉ±Á…ÉÍ”¡ÕÉ°¤¹Á…Ñ ¹±½Ý•È ¤¹•¹‘ÍÝ¥Ñ  ˆ¹Á‘˜ˆ¤(()‘•˜}…¹½¹¥…±¥é•}ÕÉ°¡Ù…±Õ”èÍÑÈ¤€´øÍÑÈè(€€€Ñ•áÐ€ôÙ…±Õ”¹ÍÑÉ¥À ¤(€€€Á…ÉÍ•€ôÕÉ±Á…ÉÍ”¡Ñ•áÐ¤(€€€¥˜¹½ÐÁ…ÉÍ•¹Í¡•µ”½È¹½ÐÁ…ÉÍ•¹¹•Ñ±½Œè(€€€€€€€É•ÑÕÉ¸Ñ•áÐ(€€€Í¡•µ”€ôÁ…ÉÍ•¹Í¡•µ”¹±½Ý•È ¤(€€€¡½ÍÐ€ôÁ…ÉÍ•¹¹•Ñ±½Œ¹±½Ý•È ¤(€€€¥˜Í¡•µ”€ôô€‰¡ÑÑÀˆ…¹¡½ÍÐ¹•¹‘ÍÝ¥Ñ  ˆèàÀˆ¤è(€€€€€€€¡½ÍÐ€ô¡½ÍÑlè´Ít(€€€¥˜Í¡•µ”€ôô€‰¡ÑÑÁÌˆ…¹¡½ÍÐ¹•¹‘ÍÝ¥Ñ  ˆèÐÐÌˆ¤è(€€€€€€€¡½ÍÐ€ô¡½ÍÑlè´Ñt(€€€ÅÕ•Éä€ôl(€€€€€€€€¡­•ä°Ù…°¤(€€€€€€€™½È­•ä°Ù…°¥¸Á…ÉÍ•}ÅÍ°¡Á…ÉÍ•¹ÅÕ•Éä°­••Á}‰±…¹­}Ù…±Õ•ÌõQÉÕ”¤(€€€€€€€¥˜¹½Ð­•ä¹±½Ý•È ¤¹ÍÑ…ÉÑÍÝ¥Ñ  ‰ÕÑµ|ˆ¤…¹­•ä¹±½Ý•È ¤¹½Ð¥¸QI-%9}EUIe}-eL(€€€t(€€€Á…Ñ €ôÁ…ÉÍ•¹Á…Ñ ½È€ˆ¼ˆ(€€€¥˜Á…Ñ €„ô€ˆ¼ˆè(€€€€€€€Á…Ñ €ôÁ…Ñ ¹ÉÍÑÉ¥À ˆ¼ˆ¤(€€€É•ÑÕÉ¸ÕÉ±Õ¹Á…ÉÍ” ¡Í¡•µ”°¡½ÍÐ°Á…Ñ °€ˆˆ°ÕÉ±•¹½‘”¡ÅÕ•Éä°‘½Í•ÄõQÉÕ”¤°€ˆˆ¤¤(()‘•˜}…ÍÍ¥¹}‘ÕÁ±¥…Ñ•}É½ÕÁÌ¡‘½Õµ•¹ÑÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø9½¹”è(€€€‰å}¡…Í è‘¥ÑmÍÑÈ°±¥ÍÑm‘¥ÑmÍÑÈ°¹åuut€ôíô(€€€™½È‘½Õµ•¹Ð¥¸‘½Õµ•¹ÑÌè(€€€€€€€‘½Õµ•¹Ñl‰‘ÕÁ±¥…Ñ•}É½ÕÁ}¥‰t€ô9½¹”(€€€€€€€‘½Õµ•¹Ñl‰‘ÕÁ±¥…Ñ•}½˜‰t€ô9½¹”(€€€€€€€‘½Õµ•¹Ñl‰Íå¹‘¥…Ñ•‘}½Áä‰t€ô…±Í”(€€€€€€€½¹Ñ•¹Ñ}¡…Í €ôÍÑÈ¡‘½Õµ•¹Ð¹•Ð ‰½¹Ñ•¹Ñ}¡…Í ˆ¤½È€ˆˆ¤(€€€€€€€¥˜½¹Ñ•¹Ñ}¡…Í è(€€€€€€€€€€€‰å}¡…Í ¹Í•Ñ‘•™…Õ±Ð¡½¹Ñ•¹Ñ}¡…Í °mt¤¹…ÁÁ•¹¡‘½Õµ•¹Ð¤(€€€™½È½¹Ñ•¹Ñ}¡…Í °µ•µ‰•ÉÌ¥¸‰å}¡…Í ¹¥Ñ•µÌ ¤è(€€€€€€€¥˜±•¸¡µ•µ‰•ÉÌ¤€ð€Èè(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€É½ÕÁ}¥€ô€‰‘ÕÁ|ˆ€¬½¹Ñ•¹Ñ}¡…Í¡lèÄÉt(€€€€€€€É•ÁÉ•Í•¹Ñ…Ñ¥Ù•}¥€ôÍÑÈ¡µ•µ‰•ÉÍlÁt¹•Ð ‰‘½Õµ•¹Ñ}¥ˆ¤½È€ˆˆ¤(€€€€€€€™½È¥¹‘•à°µ•µ‰•È¥¸•¹Õµ•É…Ñ”¡µ•µ‰•ÉÌ¤è(€€€€€€€€€€€µ•µ‰•Él‰‘ÕÁ±¥…Ñ•}É½ÕÁ}¥‰t€ôÉ½ÕÁ}¥(€€€€€€€€€€€µ•µ‰•Él‰‘ÕÁ±¥…Ñ•}½˜‰t€ô9½¹”¥˜¥¹‘•à€ôô€À•±Í”É•ÁÉ•Í•¹Ñ…Ñ¥Ù•}¥(€€€€€€€€€€€µ•µ‰•Él‰Íå¹‘¥…Ñ•‘}½Áä‰t€ô¥¹‘•à€ø€À(()‘•˜}µ…¹¥™•ÍÑ}ÍÕµµ…Éä¡‘½Õµ•¹ÑÌè±¥ÍÑm¹åt¤€´ø‘¥ÑmÍÑÈ°¥¹Ñtè(€€€Ù…±¥€ôm‘½Õµ•¹Ð™½È‘½Õµ•¹Ð¥¸‘½Õµ•¹ÑÌ¥˜¥Í¥¹ÍÑ…¹”¡‘½Õµ•¹Ð°‘¥Ð¥t(€€€É•ÑÕÉ¸ì(€€€€€€€€‰‘½Õµ•¹Ñ}½Õ¹Ðˆè±•¸¡Ù…±¥¤°(€€€€€€€€‰½µÁ±•Ñ•}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰½µÁ±•Ñ”ˆ¤°(€€€€€€€€‰™…¥±•‘}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰™…¥±•ˆ¤°(€€€€€€€€‰•á±Õ‘•‘}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰•á±Õ‘•ˆ¤°(€€€€€€€€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ñ}½Õ¹ÐˆèÍÕ´ (€€€€€€€€€€€€Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰¹½Ñ}…ÑÑ•µÁÑ•‘}±¥µ¥Ðˆ(€€€€€€€€¤°(€€€€€€€€‰Á•¹‘¥¹}½Õ¹ÐˆèÍÕ´ Ä™½È‘½Õµ•¹Ð¥¸Ù…±¥¥˜‘½Õµ•¹Ð¹•Ð ‰™Õ±±Ñ•áÑ}ÍÑ…ÑÕÌˆ¤€ôô€‰Á•¹‘¥¹œˆ¤°(€€€€€€€€‰‘ÕÁ±¥…Ñ•}É½ÕÁ}½Õ¹Ðˆè±•¸ (€€€€€€€€€€€í‘½Õµ•¹Ð¹•Ð ‰‘ÕÁ±¥…Ñ•}É½ÕÁ}¥ˆ¤™½È‘½Õµ•¹Ð¥¸Ù…±¥¥˜‘½Õµ•¹Ð¹•Ð ‰‘ÕÁ±¥…Ñ•}É½ÕÁ}¥ˆ¥ô(€€€€€€€€¤°(€€€ô(()‘•˜}¹½Éµ…±¥é•}‘¥Í½Ù•Éå}½Õ¹ÑÌ¡‘½Õµ•¹ÑÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø9½¹”è(€€€™•Ñ¡}É½ÕÑ•Ì€ôì‰É•ÅÕ•ÍÑÌˆ°€‰Ñ…Ù¥±å}•áÑÉ…Ñ}‰…Í¥Œˆ°€‰Ñ…Ù¥±å}•áÑÉ…Ñ}…‘Ù…¹•‰ô(€€€™½È‘½Õµ•¹Ð¥¸‘½Õµ•¹ÑÌè(€€€€€€€É½ÕÑ•Ì€ôì(€€€€€€€€€€€ÍÑÈ¡É½ÕÑ”¤(€€€€€€€€€€€™½ÈÉ½ÕÑ”¥¸‘½Õµ•¹Ð¹•Ð ‰É•ÑÉ¥•Ù…±}É½ÕÑ•Ìˆ°mt¤(€€€€€€€€€€€¥˜ÍÑÈ¡É½ÕÑ”¤¹½Ð¥¸™•Ñ¡}É½ÕÑ•Ì(€€€€€€€ô(€€€€€€€ÕÉ±Ì€ôíÍÑÈ¡ÕÉ°¤™½ÈÕÉ°¥¸‘½Õµ•¹Ð¹•Ð ‰‘¥Í½Ù•É•‘}ÕÉ±Ìˆ°mt¤¥˜ÍÑÈ¡ÕÉ°¥ô(€€€€€€€‘½Õµ•¹Ñl‰‘¥Í½Ù•Éå}½Õ¹Ð‰t€ôµ…à Ä°±•¸¡É½ÕÑ•Ì¤°±•¸¡ÕÉ±Ì¤¤(()‘•˜}•µÁÑå}µ…¹¥™•ÍÐ¡Ñ…É•Ñ}‘…Ñ”èÍÑÈ¤€´ø‘¥ÑmÍÑÈ°¹åtè(€€€É•ÑÕÉ¸ì(€€€€€€€€‰‘…Ñ”ˆèÑ…É•Ñ}‘…Ñ”°(€€€€€€€€‰•¹•É…Ñ•‘}…Ðˆè}¹½Ý}©ÍÐ ¤°(€€€€€€€€‰½±±•Ñ¥½¹}Ý¥¹‘½Üˆè}½±±•Ñ¥½¹}Ý¥¹‘½Ü¡Ñ…É•Ñ}‘…Ñ”¤°(€€€€€€€€‰‘½Õµ•¹ÑÌˆèmt°(€€€€€€€€‰ÍÕµµ…Éäˆè}µ…¹¥™•ÍÑ}ÍÕµµ…Éä¡mt¤°(€€€ô(()‘•˜}½±±•Ñ¥½¹}Ý¥¹‘½Ü¡Ñ…É•Ñ}‘…Ñ”èÍÑÈ¤€´ø‘¥ÑmÍÑÈ°ÍÑÉtè(€€€©ÍÐ€ôi½¹•%¹™¼ ‰Í¥„½Q½­å¼ˆ¤¥˜i½¹•%¹™¼•±Í”Ñ¥µ•é½¹”¡Ñ¥µ•‘•±Ñ„¡¡½ÕÉÌôä¤¤(€€€ÑÉäè(€€€€€€€ÍÑ…ÉÐ€ô‘…Ñ•Ñ¥µ”¹™É½µ¥Í½™½Éµ…Ð¡Ñ…É•Ñ}‘…Ñ”¤¹É•Á±…”¡Ñé¥¹™¼õ©ÍÐ¤(€€€•á•ÁÐY…±Õ•ÉÉ½Èè(€€€€€€€ÍÑ…ÉÐ€ô‘…Ñ•Ñ¥µ”¹¹½Ü¡©ÍÐ¤¹É•Á±…”¡¡½ÕÈôÀ°µ¥¹ÕÑ”ôÀ°Í•½¹ôÀ°µ¥É½Í•½¹ôÀ¤(€€€•¹€ôÍÑ…ÉÐ€¬Ñ¥µ•‘•±Ñ„¡‘…åÌôÄ¤(€€€É•ÑÕÉ¸ì(€€€€€€€€‰ÍÑ…ÉÐˆèÍÑ…ÉÐ¹¥Í½™½Éµ…Ð ¤°(€€€€€€€€‰•¹ˆè•¹¹¥Í½™½Éµ…Ð ¤°(€€€€€€€€‰Ñ¥µ•é½¹”ˆè€‰Í¥„½Q½­å¼ˆ°(€€€ô(()‘•˜}Í½ÕÉ•}ÑåÁ”¡ÕÉ°èÍÑÈ¤€´øÍÑÈè(€€€¡½ÍÐ€ô}‘½µ…¥¸¡ÕÉ°¤(€€€¥˜¡½ÍÐ€ôô€‰Í•Œ¹½Øˆ½È¡½ÍÐ¹•¹‘ÍÝ¥Ñ  ˆ¹Í•Œ¹½Øˆ¤è(€€€€€€€É•ÑÕÉ¸€‰Í•}™¥±¥¹œˆ(€€€¥˜¡½ÍÐ¹•¹‘ÍÝ¥Ñ  ˆ¹½Øˆ¤½È¡½ÍÐ¥¸ì‰™•‘•É…±É•Í•ÉÙ”¹½Øˆ°€‰Ý¡¥Ñ•¡½ÕÍ”¹½Ø‰ôè(€€€€€€€É•ÑÕÉ¸€‰½™™¥¥…±}‘½Õµ•¹Ðˆ(€€€¥˜ÕÉ±Á…ÉÍ”¡ÕÉ°¤¹Á…Ñ ¹±½Ý•È ¤¹•¹‘ÍÝ¥Ñ  ˆ¹Á‘˜ˆ¤è(€€€€€€€É•ÑÕÉ¸€‰Á‘™}‘½Õµ•¹Ðˆ(€€€É•ÑÕÉ¸€‰¹•ÝÍ}…ÉÑ¥±”ˆ(()‘•˜}‘¥ÍÁ±…å}Á…Ñ ¡Á…Ñ èA…Ñ ¤€´øÍÑÈè(€€€ÑÉäè(€€€€€€€É•ÑÕÉ¸Á…Ñ ¹É•Í½±Ù” ¤¹É•±…Ñ¥Ù•}Ñ¼¡I==Q}%H¹É•Í½±Ù” ¤¤¹…Í}Á½Í¥à ¤(€€€•á•ÁÐY…±Õ•ÉÉ½Èè(€€€€€€€É•ÑÕÉ¸ÍÑÈ¡Á…Ñ ¹É•Í½±Ù” ¤¤(()‘•˜}É•…‘}Ý½É­ÍÁ…•}Ñ•áÐ¡Ù…±Õ”è¹ä¤€´øÍÑÈè(€€€Ñ•áÐ€ôÍÑÈ¡Ù…±Õ”½È€ˆˆ¤¹ÍÑÉ¥À ¤(€€€¥˜¹½ÐÑ•áÐè(€€€€€€€É•ÑÕÉ¸€ˆˆ(€€€Á…Ñ €ôA…Ñ ¡Ñ•áÐ¤(€€€¥˜¹½ÐÁ…Ñ ¹¥Í}…‰Í½±ÕÑ” ¤è(€€€€€€€Á…Ñ €ôI==Q}%H€¼Á…Ñ (€€€ÑÉäè(€€€€€€€É•ÑÕÉ¸Á…Ñ ¹É•…‘}Ñ•áÐ¡•¹½‘¥¹œô‰ÕÑ˜´àˆ¤(€€€•á•ÁÐ=MÉÉ½Èè(€€€€€€€É•ÑÕÉ¸€ˆˆ(()‘•˜}…ÁÁ•¹‘}Õ¹¥ÅÕ”¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°­•äèÍÑÈ°Ù…±Õ”èÍÑÈ¤€´ø9½¹”è(€€€¥Ñ•µÌ€ô‘½Õµ•¹Ð¹•Ð¡­•ä¤(€€€¥˜¹½Ð¥Í¥¹ÍÑ…¹”¡¥Ñ•µÌ°±¥ÍÐ¤è(€€€€€€€¥Ñ•µÌ€ômt(€€€€€€€‘½Õµ•¹Ñm­•åt€ô¥Ñ•µÌ(€€€¥˜Ù…±Õ”…¹Ù…±Õ”¹½Ð¥¸¥Ñ•µÌè(€€€€€€€¥Ñ•µÌ¹…ÁÁ•¹¡Ù…±Õ”¤(()‘•˜}…ÁÁ•¹‘}…ÑÑ•µÁÐ¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt°…ÑÑ•µÁÐè‘¥ÑmÍÑÈ°¹åt¤€´ø9½¹”è(€€€…ÑÑ•µÁÑÌ€ô‘½Õµ•¹Ð¹•Ð ‰…ÑÑ•µÁÑÌˆ¤(€€€¥˜¹½Ð¥Í¥¹ÍÑ…¹”¡…ÑÑ•µÁÑÌ°±¥ÍÐ¤è(€€€€€€€…ÑÑ•µÁÑÌ€ômt(€€€€€€€‘½Õµ•¹Ñl‰…ÑÑ•µÁÑÌ‰t€ô…ÑÑ•µÁÑÌ(€€€…ÑÑ•µÁÑÌ¹…ÁÁ•¹¡…ÑÑ•µÁÐ¤(()‘•˜}™¥ÉÍÐ¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt°­•åÌè%Ñ•É…‰±•mÍÑÉt¤€´ø¹äè(€€€™½È­•ä¥¸­•åÌè(€€€€€€€¥˜¥Ñ•´¹•Ð¡­•ä¤¹½Ð¥¸€¡9½¹”°€ˆˆ¤è(€€€€€€€€€€€É•ÑÕÉ¸¥Ñ•´¹•Ð¡­•ä¤(€€€É•ÑÕÉ¸€ˆˆ(()‘•˜}™¥ÉÍÑ}É½ÕÑ”¡‘½Õµ•¹Ðè‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€É½ÕÑ•Ì€ô‘½Õµ•¹Ð¹•Ð ‰É•ÑÉ¥•Ù…±}É½ÕÑ•Ìˆ°mt¤(€€€¥˜¹½Ð¥Í¥¹ÍÑ…¹”¡É½ÕÑ•Ì°±¥ÍÐ¤è(€€€€€€€É•ÑÕÉ¸€ˆˆ(€€€™½ÈÉ½ÕÑ”¥¸É½ÕÑ•Ìè(€€€€€€€¥˜É½ÕÑ”¹½Ð¥¸ì‰É•ÅÕ•ÍÑÌˆ°€‰Ñ…Ù¥±å}•áÑÉ…Ñ}‰…Í¥Œˆ°€‰Ñ…Ù¥±å}•áÑÉ…Ñ}…‘Ù…¹•‰ôè(€€€€€€€€€€€É•ÑÕÉ¸ÍÑÈ¡É½ÕÑ”¤(€€€É•ÑÕÉ¸ÍÑÈ¡É½ÕÑ•ÍlÁt¤¥˜É½ÕÑ•Ì•±Í”€ˆˆ(()‘•˜}‘½µ…¥¸¡ÕÉ°èÍÑÈ¤€´øÍÑÈè(€€€É•ÑÕÉ¸ÕÉ±Á…ÉÍ”¡ÕÉ°¤¹¹•Ñ±½Œ¹±½Ý•È ¤¹ÍÁ±¥Ð ˆèˆ°€Ä¥lÁt¹É•µ½Ù•ÁÉ•™¥à ‰ÝÝÜ¸ˆ¤(()‘•˜}•¹Ù}¹½¹¹•…Ñ¥Ù•}¥¹Ð¡•¹Øè‘¥ÑmÍÑÈ°ÍÑÉt°­•äèÍÑÈ°‘•™…Õ±Ðè¥¹Ð¤€´ø¥¹Ðè(€€€ÑÉäè(€€€€€€€Ù…±Õ”€ô¥¹Ð¡ÍÑÈ¡•¹Ø¹•Ð¡­•ä°‘•™…Õ±Ð¤¤¹ÍÑÉ¥À ¤¤(€€€•á•ÁÐ€¡QåÁ•ÉÉ½È°Y…±Õ•ÉÉ½È¤è(€€€€€€€É•ÑÕÉ¸‘•™…Õ±Ð(€€€É•ÑÕÉ¸µ…à À°Ù…±Õ”¤(()‘•˜}•¹Ù}Á½Í¥Ñ¥Ù•}¥¹Ð (€€€•¹Øè‘¥ÑmÍÑÈ°ÍÑÉt°(€€€­•äèÍÑÈ°(€€€‘•™…Õ±Ðè¥¹Ð°(€€€€¨°(€€€µ…á¥µÕ´è¥¹Ð°(¤€´ø¥¹Ðè(€€€Ù…±Õ”€ô}•¹Ù}¹½¹¹•…Ñ¥Ù•}¥¹Ð¡•¹Ø°­•ä°‘•™…Õ±Ð¤(€€€¥˜Ù…±Õ”€ðô€Àè(€€€€€€€Ù…±Õ”€ô‘•™…Õ±Ð(€€€É•ÑÕÉ¸µ¥¸¡Ù…±Õ”°µ…á¥µÕ´¤(()‘•˜}½¹™¥ÕÉ•‘}Ñ…Ù¥±å}­•ä¡Ù…±Õ”èÍÑÈ¤€´ø‰½½°è(€€€É•ÑÕÉ¸‰½½°¡Ù…±Õ”…¹Ù…±Õ”¹±½Ý•È ¤¹½Ð¥¸%9Y1%}-e}Y1UL¤(()‘•˜}¹½Ý}©ÍÐ ¤€´øÍÑÈè(€€€©ÍÐ€ôi½¹•%¹™¼ ‰Í¥„½Q½­å¼ˆ¤¥˜i½¹•%¹™¼•±Í”Ñ¥µ•é½¹”¡Ñ¥µ•‘•±Ñ„¡¡½ÕÉÌôä¤¤(€€€É•ÑÕÉ¸‘…Ñ•Ñ¥µ”¹¹½Ü¡UQ¤¹…ÍÑ¥µ•é½¹”¡©ÍÐ¤¹É•Á±…”¡µ¥É½Í•½¹ôÀ¤¹¥Í½™½Éµ…Ð ¤(
+            "content_type": content_type,
+        }
+        common["attempt"].update(
+            {
+                "read_url": read_url,
+                "http_status": int(response.status_code),
+                "content_type": content_type,
+                "raw_file": raw_display,
+            }
+        )
+        if exceeded:
+            return {
+                **common,
+                "fulltext_status": "failed",
+                "access_status": "failed",
+                "failure_reason": f"configured max article size exceeded ({max_bytes} bytes)",
+            }
+        if response.status_code == 429:
+            return {**common, "fulltext_status": "failed", "access_status": "rate_limited", "failure_reason": "HTTP 429"}
+        if response.status_code in {401, 403, 451}:
+            return {**common, "fulltext_status": "failed", "access_status": "blocked", "failure_reason": f"HTTP {response.status_code}"}
+        if response.status_code == 402:
+            return {**common, "fulltext_status": "failed", "access_status": "paywalled", "failure_reason": "HTTP 402"}
+        if response.status_code < 200 or response.status_code >= 300:
+            return {**common, "fulltext_status": "failed", "access_status": "failed", "failure_reason": f"HTTP {response.status_code}"}
+
+        if _is_pdf(content_type, read_url):
+            text, pdf_error = _extract_pdf_text(content)
+            if pdf_error:
+                return {**common, "fulltext_status": "failed", "access_status": "extraction_failed", "failure_reason": pdf_error}
+        elif "html" in content_type.lower() or "text" in content_type.lower() or not content_type:
+            html = _decode_response(content, content_type)
+            blocked_status = _detect_blocked_or_paywalled(html)
+            if blocked_status:
+                return {
+                    **common,
+                    "fulltext_status": "failed",
+                    "access_status": blocked_status,
+                    "failure_reason": "paywall/login/CAPTCHA marker detected; no bypass attempted",
+                }
+            text = _extract_article_text(html)
+        else:
+            return {
+                **common,
+                "fulltext_status": "failed",
+                "access_status": "failed",
+                "failure_reason": f"unsupported content-type: {content_type or 'unknown'}",
+            }
+
+        if len(text) < MIN_ARTICLE_CHARS:
+            return {
+                **common,
+                "fulltext_status": "failed",
+                "access_status": "extraction_failed",
+                "failure_reason": f"extracted article text was too short ({len(text)} chars)",
+            }
+        text_path = config.raw_dir / "articles" / f"{document_id}.txt"
+        text_path.write_text(text, encoding="utf-8")
+        return {
+            **common,
+            "fulltext_status": "complete",
+            "access_status": "readable",
+            "extracted_text_file": _display_path(text_path),
+            "content_hash": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "char_count": len(text),
+            "failure_reason": None,
+        }
+    finally:
+        try:
+            response.close()
+        except Exception:
+            pass
+
+
+def _rescue_with_tavily(config: RunConfig, documents: list[dict[str, Any]]) -> dict[str, int]:
+    key = str(config.env.get("TAVILY_API_KEY") or "").strip()
+    basic_limit = _env_nonnegative_int(
+        config.env,
+        "NASDAQ_CAFE_TAVILY_EXTRACT_BASIC_LIMIT",
+        DEFAULT_TAVILY_BASIC_LIMIT,
+    )
+    advanced_limit = _env_nonnegative_int(
+        config.env,
+        "NASDAQ_CAFE_TAVILY_EXTRACT_ADVANCED_LIMIT",
+        DEFAULT_TAVILY_ADVANCED_LIMIT,
+    )
+    usage = {
+        "basic_limit": basic_limit,
+        "advanced_limit": advanced_limit,
+        "basic_attempted": 0,
+        "advanced_attempted": 0,
+        "success_count": 0,
+        "failed_count": 0,
+    }
+    failed = [document for document in documents if document.get("fulltext_status") == "failed"]
+    if not _configured_tavily_key(key):
+        return usage
+
+    for document in failed:
+        rescued = False
+        if usage["basic_attempted"] < basic_limit:
+            usage["basic_attempted"] += 1
+            rescued = _attempt_tavily_extract(config, document, key, "basic")
+        else:
+            _append_attempt(
+                document,
+                {
+                    "route": "tavily_extract_basic",
+                    "status": "not_attempted_limit",
+                    "reason": "configured Tavily basic extract limit reached",
+                },
+            )
+        if not rescued:
+            if usage["advanced_attempted"] < advanced_limit:
+                usage["advanced_attempted"] += 1
+                rescued = _attempt_tavily_extract(config, document, key, "advanced")
+            else:
+                _append_attempt(
+                    document,
+                    {
+                        "route": "tavily_extract_advanced",
+                        "status": "not_attempted_limit",
+                        "reason": "configured Tavily advanced extract limit reached",
+                    },
+                )
+        if rescued:
+            usage["success_count"] += 1
+        else:
+            usage["failed_count"] += 1
+    return usage
+
+
+def _attempt_tavily_extract(
+    config: RunConfig,
+    document: dict[str, Any],
+    api_key: str,
+    depth: str,
+) -> bool:
+    route = f"tavily_extract_{depth}"
+    attempted_at = _now_jst()
+    url = str(document.get("url") or "")
+    document_id = str(document.get("document_id") or "")
+    attempt = {"route": route, "attempted_at": attempted_at, "url": url}
+    try:
+        response = requests.post(
+            "https://api.tavily.com/extract",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "urls": [url],
+                "extract_depth": depth,
+                "format": "text",
+                "include_images": False,
+                "include_usage": True,
+            },
+            timeout=45 if depth == "advanced" else 20,
+        )
+        status_code = int(response.status_code)
+        payload = response.json()
+    except Exception as exc:
+        attempt.update({"status": "failed", "reason": f"{type(exc).__name__}: {exc}"})
+        _append_attempt(document, attempt)
+        return False
+
+    response_path = config.raw_dir / "articles" / f"{document_id}.tavily-{depth}.json"
+    write_json(response_path, payload)
+    attempt.update(
+        {
+            "http_status": status_code,
+            "response_file": _display_path(response_path),
+            "request_id": payload.get("request_id") if isinstance(payload, dict) else None,
+            "usage": payload.get("usage") if isinstance(payload, dict) else None,
+        }
+    )
+    if status_code < 200 or status_code >= 300 or not isinstance(payload, dict):
+        attempt.update({"status": "failed", "reason": f"HTTP {status_code}"})
+        _append_attempt(document, attempt)
+        return False
+
+    results = payload.get("results", [])
+    result = results[0] if isinstance(results, list) and results and isinstance(results[0], dict) else {}
+    text = str(result.get("raw_content") or "")
+    marker_status = _plain_text_block_status(text)
+    if marker_status or len(text) < MIN_ARTICLE_CHARS:
+        reason = marker_status or f"Tavily text was too short ({len(text)} chars)"
+        attempt.update({"status": "failed", "reason": reason})
+        _append_attempt(document, attempt)
+        return False
+
+    text_path = config.raw_dir / "articles" / f"{document_id}.txt"
+    text_path.write_text(text, encoding="utf-8")
+    document.update(
+        {
+            "retrieved_at": attempted_at,
+            "fulltext_status": "complete",
+            "access_status": "alternate_readable",
+            "extracted_text_file": _display_path(text_path),
+            "tavily_response_file": _display_path(response_path),
+            "content_hash": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "char_count": len(text),
+            "failure_reason": None,
+        }
+    )
+    _append_unique(document, "retrieval_routes", route)
+    attempt["status"] = "complete"
+    _append_attempt(document, attempt)
+    return True
+
+
+def _article_fulltext_payload(
+    config: RunConfig,
+    manifest: dict[str, Any],
+) -> dict[str, Any]:
+    items: list[dict[str, Any]] = []
+    unreadable: list[dict[str, Any]] = []
+    documents = manifest.get("documents", []) if isinstance(manifest, dict) else []
+    for document in documents:
+        if not isinstance(document, dict):
+            continue
+        if document.get("fulltext_status") == "complete":
+            text = _read_workspace_text(document.get("extracted_text_file"))
+            items.append(
+                {
+                    "article_id": document.get("document_id", ""),
+                    "review_priority": "unranked",
+                    "source_group": _first_route(document),
+                    "title": document.get("title", ""),
+                    "source": document.get("publisher", ""),
+                    "published_at": document.get("published_at", ""),
+                    "primary_url": document.get("url", ""),
+                    "read_url": document.get("read_url", document.get("url", "")),
+                    "access_status": document.get("access_status", "readable"),
+                    "used_alternate_source": document.get("access_status") == "alternate_readable",
+                    "alternate_sources": [],
+                    "related_tickers": [],
+                    "related_indexes": [],
+                    "full_text": text,
+                    "full_text_char_count": len(text),
+                    "retrieved_at_jst": document.get("retrieved_at"),
+                    "notes_for_chatgpt": "Full text is stored without summarization or shortening.",
+                    "raw_file": document.get("raw_file"),
+                    "extracted_text_file": document.get("extracted_text_file"),
+                    "content_hash": document.get("content_hash"),
+                    "retrieval_routes": document.get("retrieval_routes", []),
+                }
+            )
+        else:
+            unreadable.append(
+                {
+                    "article_id": document.get("document_id", ""),
+                    "review_priority": "unranked",
+                    "source_group": _first_route(document),
+                    "title": document.get("title", ""),
+                    "source": document.get("publisher", ""),
+                    "published_at": document.get("published_at", ""),
+                    "primary_url": document.get("url", ""),
+                    "access_status": document.get("access_status", "failed"),
+                    "fulltext_status": document.get("fulltext_status", "pending"),
+                    "reason": document.get("failure_reason") or "full text was not retrieved",
+                    "notes_for_chatgpt": document.get("failure_reason") or "full text was not retrieved",
+                }
+            )
+    summary = _fulltext_summary(documents, items)
+    return {
+        "date": config.target_date,
+        "generated_at_jst": _now_jst(),
+        "collector": "raw_archive_fulltext_collector",
+        "manifest_path": f"output/{config.target_date}/raw/{MANIFEST_FILE_NAME}",
+        "summary": summary,
+        "items": items,
+        "unreadable": unreadable,
+        "fallback_search_supplements": [],
+        "fallback_attempts": [
+            attempt
+            for document in documents
+            if isinstance(document, dict)
+            for attempt in document.get("attempts", [])
+            if isinstance(attempt, dict) and str(attempt.get("route", "")).startswith("tavily_extract")
+        ],
+    }
+
+
+def _fulltext_summary(
+    documents: list[Any],
+    items: list[dict[str, Any]],
+) -> dict[str, int]:
+    valid_documents = [document for document in documents if isinstance(document, dict)]
+    attempted = [
+        document
+        for document in valid_documents
+        if any(
+            isinstance(attempt, dict)
+            and attempt.get("route") == "requests"
+            and attempt.get("status") != "not_attempted_limit"
+            for attempt in document.get("attempts", [])
+        )
+    ]
+    tavily_attempts = [
+        attempt
+        for document in valid_documents
+        for attempt in document.get("attempts", [])
+        if isinstance(attempt, dict)
+        and str(attempt.get("route") or "").startswith("tavily_extract_")
+        and attempt.get("status") != "not_attempted_limit"
+    ]
+    tavily_attempted_documents = [
+        document
+        for document in valid_documents
+        if any(
+            isinstance(attempt, dict)
+            and str(attempt.get("route") or "").startswith("tavily_extract_")
+            and attempt.get("status") != "not_attempted_limit"
+            for attempt in document.get("attempts", [])
+        )
+    ]
+    tavily_success_count = sum(
+        1 for document in tavily_attempted_documents if document.get("access_status") == "alternate_readable"
+    )
+    unresolved_after_fallback = sum(
+        1 for document in attempted if document.get("fulltext_status") == "failed"
+    )
+    return {
+        "target_count": len(valid_documents),
+        "attempted_count": len(attempted),
+        "complete_count": sum(1 for document in valid_documents if document.get("fulltext_status") == "complete"),
+        "readable_count": sum(1 for document in valid_documents if document.get("access_status") == "readable"),
+        "alternate_readable_count": sum(1 for document in valid_documents if document.get("access_status") == "alternate_readable"),
+        "failed_count": sum(1 for document in valid_documents if document.get("fulltext_status") == "failed"),
+        "excluded_count": sum(1 for document in valid_documents if document.get("fulltext_status") == "excluded"),
+        "not_attempted_limit_count": sum(
+            1 for document in valid_documents if document.get("fulltext_status") == "not_attempted_limit"
+        ),
+        "pending_count": sum(1 for document in valid_documents if document.get("fulltext_status") == "pending"),
+        "raw_html_count": sum(
+            1 for document in valid_documents if str(document.get("raw_file") or "").lower().endswith(".html")
+        ),
+        "extracted_text_count": sum(1 for document in valid_documents if document.get("extracted_text_file")),
+        "total_full_text_chars": sum(int(item.get("full_text_char_count") or 0) for item in items),
+        "tavily_attempted_count": len(tavily_attempts),
+        "tavily_success_count": tavily_success_count,
+        "tavily_failed_count": unresolved_after_fallback,
+        # Compatibility fields used by older output renderers.
+        "readable_count_before_fallback": sum(
+            1 for document in valid_documents if document.get("access_status") == "readable"
+        ),
+        "unreadable_count_before_fallback": len(attempted)
+        - sum(1 for document in valid_documents if document.get("access_status") == "readable"),
+        "fallback_attempted_count": len(tavily_attempts),
+        "fallback_success_count": tavily_success_count,
+        "fallback_failed_count": unresolved_after_fallback,
+        "fallback_query_count": 0,
+    }
+
+
+def _eligible_status(document: dict[str, Any], force: bool, retry_failed: bool) -> bool:
+    status = str(document.get("fulltext_status") or "pending")
+    if force:
+        return True
+    if retry_failed:
+        return status in {"failed", "not_attempted_limit", "pending"}
+    return status == "pending"
+
+
+def _preflight_exclusion(url: str, env: dict[str, str]) -> str:
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        return "invalid_url"
+    host = parsed.netloc.lower().split(":", 1)[0].removeprefix("www.")
+    if any(host == item or host.endswith(f".{item}") for item in EXCLUDED_HOSTS):
+        return "social_or_video_url"
+    lowered = url.lower()
+    if "/quote/" in lowered or "finance.yahoo.com/quote" in lowered:
+        return "quote_page_not_article"
+    disallowed = {
+        item.strip().lower().removeprefix("www.")
+        for item in str(env.get("NASDAQ_CAFE_FULLTEXT_DISALLOWED_DOMAINS") or "").split(",")
+        if item.strip()
+    }
+    if any(host == item or host.endswith(f".{item}") for item in disallowed):
+        return "configured_disallowed_domain"
+    return ""
+
+
+def _mark_excluded(document: dict[str, Any], reason: str) -> None:
+    document.update(
+        {
+            "fulltext_status": "excluded",
+            "access_status": "not_attempted",
+            "failure_reason": reason,
+            "retrieved_at": _now_jst(),
+        }
+    )
+    _append_attempt(document, {"route": "preflight", "status": "excluded", "reason": reason})
+
+
+def _mark_not_attempted_limit(document: dict[str, Any], limit: int) -> None:
+    if document.get("fulltext_status") == "complete":
+        _append_attempt(
+            document,
+            {
+                "route": "requests",
+                "status": "not_attempted_limit",
+                "reason": "configured_fulltext_attempt_limit; previously completed cache retained",
+            },
+        )
+        return
+    document.update(
+        {
+            "fulltext_status": "not_attempted_limit",
+            "access_status": "not_attempted",
+            "failure_reason": f"configured full-text attempt limit reached ({limit}); URL retained for retry",
+            "retrieved_at": None,
+        }
+    )
+    _append_attempt(
+        document,
+        {
+            "route": "requests",
+            "status": "not_attempted_limit",
+            "reason": "configured_fulltext_attempt_limit",
+        },
+    )
+
+
+def _unexpected_failure_patch(document: dict[str, Any], exc: Exception) -> dict[str, Any]:
+    attempted_at = _now_jst()
+    return {
+        "retrieved_at": attempted_at,
+        "retrieval_route": "requests",
+        "fulltext_status": "failed",
+        "access_status": "failed",
+        "failure_reason": f"internal collector error: {type(exc).__name__}: {exc}",
+        "attempt": {
+            "route": "requests",
+            "attempted_at": attempted_at,
+            "status": "failed",
+            "reason": f"internal collector error: {type(exc).__name__}: {exc}",
+        },
+    }
+
+
+def _apply_document_patch(document: dict[str, Any], patch: dict[str, Any]) -> None:
+    attempt = patch.pop("attempt", None)
+    route = patch.pop("retrieval_route", None)
+    document.update(patch)
+    if route:
+        _append_unique(document, "retrieval_routes", str(route))
+    if isinstance(attempt, dict):
+        attempt.setdefault("status", document.get("fulltext_status"))
+        attempt.setdefault("reason", document.get("failure_reason"))
+        _append_attempt(document, attempt)
+
+
+def _write_document_metadata(config: RunConfig, document: dict[str, Any]) -> None:
+    document_id = str(document.get("document_id") or "")
+    if not document_id:
+        return
+    path = config.raw_dir / "articles" / f"{document_id}.json"
+    document["metadata_file"] = _display_path(path)
+    write_json(path, document)
+
+
+def _read_response_bytes(response: Any, max_bytes: int) -> tuple[bytes, bool]:
+    chunks: list[bytes] = []
+    total = 0
+    if hasattr(response, "iter_content"):
+        iterator = response.iter_content(chunk_size=65_536)
+    else:  # Simple response doubles used in tests.
+        iterator = [getattr(response, "content", b"")]
+    for chunk in iterator:
+        if not chunk:
+            continue
+        total += len(chunk)
+        if total > max_bytes:
+            remaining = max(0, max_bytes - sum(len(item) for item in chunks))
+            if remaining:
+                chunks.append(chunk[:remaining])
+            return b"".join(chunks), True
+        chunks.append(chunk)
+    return b"".join(chunks), False
+
+
+def _decode_response(content: bytes, content_type: str) -> str:
+    match = re.search(r"charset=([^;\s]+)", content_type, flags=re.IGNORECASE)
+    encodings = [match.group(1).strip('"\'')] if match else []
+    encodings.extend(["utf-8", "cp1252"])
+    for encoding in encodings:
+        try:
+            return content.decode(encoding)
+        except (LookupError, UnicodeDecodeError):
+            continue
+    return content.decode("utf-8", errors="replace")
+
+
+def _extract_pdf_text(content: bytes) -> tuple[str, str]:
+    try:
+        from pypdf import PdfReader  # type: ignore
+    except ImportError:
+        return "", "PDF was saved, but pypdf is not installed for text extraction"
+    try:
+        reader = PdfReader(io.BytesIO(content))
+        pages = [(page.extract_text() or "").strip() for page in reader.pages]
+        text = "\n\n".join(page for page in pages if page)
+    except Exception as exc:
+        return "", f"PDF extraction failed: {type(exc).__name__}: {exc}"
+    if len(text) < MIN_ARTICLE_CHARS:
+        return "", f"PDF text was too short ({len(text)} chars)"
+    return text, ""
+
+
+def _plain_text_block_status(text: str) -> str:
+    lowered = text.lower()
+    if any(marker in lowered for marker in PAYWALL_TEXT_MARKERS):
+        return "paywall marker detected in Tavily response"
+    if any(marker in lowered for marker in BLOCKED_TEXT_MARKERS):
+        return "block/login/CAPTCHA marker detected in Tavily response"
+    return ""
+
+
+def _is_pdf(content_type: str, url: str) -> bool:
+    return "application/pdf" in content_type.lower() or urlparse(url).path.lower().endswith(".pdf")
+
+
+def _canonicalize_url(value: str) -> str:
+    text = value.strip()
+    parsed = urlparse(text)
+    if not parsed.scheme or not parsed.netloc:
+        return text
+    scheme = parsed.scheme.lower()
+    host = parsed.netloc.lower()
+    if scheme == "http" and host.endswith(":80"):
+        host = host[:-3]
+    if scheme == "https" and host.endswith(":443"):
+        host = host[:-4]
+    query = [
+        (key, val)
+        for key, val in parse_qsl(parsed.query, keep_blank_values=True)
+        if not key.lower().startswith("utm_") and key.lower() not in TRACKING_QUERY_KEYS
+    ]
+    path = parsed.path or "/"
+    if path != "/":
+        path = path.rstrip("/")
+    return urlunparse((scheme, host, path, "", urlencode(query, doseq=True), ""))
+
+
+def _assign_duplicate_groups(documents: list[dict[str, Any]]) -> None:
+    by_hash: dict[str, list[dict[str, Any]]] = {}
+    for document in documents:
+        document["duplicate_group_id"] = None
+        document["duplicate_of"] = None
+        document["syndicated_copy"] = False
+        content_hash = str(document.get("content_hash") or "")
+        if content_hash:
+            by_hash.setdefault(content_hash, []).append(document)
+    for content_hash, members in by_hash.items():
+        if len(members) < 2:
+            continue
+        group_id = "dup_" + content_hash[:12]
+        representative_id = str(members[0].get("document_id") or "")
+        for index, member in enumerate(members):
+            member["duplicate_group_id"] = group_id
+            member["duplicate_of"] = None if index == 0 else representative_id
+            member["syndicated_copy"] = index > 0
+
+
+def _manifest_summary(documents: list[Any]) -> dict[str, int]:
+    valid = [document for document in documents if isinstance(document, dict)]
+    return {
+        "document_count": len(valid),
+        "complete_count": sum(1 for document in valid if document.get("fulltext_status") == "complete"),
+        "failed_count": sum(1 for document in valid if document.get("fulltext_status") == "failed"),
+        "excluded_count": sum(1 for document in valid if document.get("fulltext_status") == "excluded"),
+        "not_attempted_limit_count": sum(
+            1 for document in valid if document.get("fulltext_status") == "not_attempted_limit"
+        ),
+        "pending_count": sum(1 for document in valid if document.get("fulltext_status") == "pending"),
+        "duplicate_group_count": len(
+            {document.get("duplicate_group_id") for document in valid if document.get("duplicate_group_id")}
+        ),
+    }
+
+
+def _normalize_discovery_counts(documents: list[dict[str, Any]]) -> None:
+    fetch_routes = {"requests", "tavily_extract_basic", "tavily_extract_advanced"}
+    for document in documents:
+        routes = {
+            str(route)
+            for route in document.get("retrieval_routes", [])
+            if str(route) not in fetch_routes
+        }
+        urls = {str(url) for url in document.get("discovered_urls", []) if str(url)}
+        document["discovery_count"] = max(1, len(routes), len(urls))
+
+
+def _empty_manifest(target_date: str) -> dict[str, Any]:
+    return {
+        "date": target_date,
+        "generated_at": _now_jst(),
+        "collection_window": _collection_window(target_date),
+        "documents": [],
+        "summary": _manifest_summary([]),
+    }
+
+
+def _collection_window(target_date: str) -> dict[str, str]:
+    jst = ZoneInfo("Asia/Tokyo") if ZoneInfo else timezone(timedelta(hours=9))
+    try:
+        start = datetime.fromisoformat(target_date).replace(tzinfo=jst)
+    except ValueError:
+        start = datetime.now(jst).replace(hour=0, minute=0, second=0, microsecond=0)
+    end = start + timedelta(days=1)
+    return {
+        "start": start.isoformat(),
+        "end": end.isoformat(),
+        "timezone": "Asia/Tokyo",
+    }
+
+
+def _source_type(url: str) -> str:
+    host = _domain(url)
+    if host == "sec.gov" or host.endswith(".sec.gov"):
+        return "sec_filing"
+    if host.endswith(".gov") or host in {"federalreserve.gov", "whitehouse.gov"}:
+        return "official_document"
+    if urlparse(url).path.lower().endswith(".pdf"):
+        return "pdf_document"
+    return "news_article"
+
+
+def _display_path(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT_DIR.resolve()).as_posix()
+    except ValueError:
+        return str(path.resolve())
+
+
+def _read_workspace_text(value: Any) -> str:
+    text = str(value or "").strip()
+    if not text:
+        return ""
+    path = Path(text)
+    if not path.is_absolute():
+        path = ROOT_DIR / path
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError:
+        return ""
+
+
+def _append_unique(document: dict[str, Any], key: str, value: str) -> None:
+    items = document.get(key)
+    if not isinstance(items, list):
+        items = []
+        document[key] = items
+    if value and value not in items:
+        items.append(value)
+
+
+def _append_attempt(document: dict[str, Any], attempt: dict[str, Any]) -> None:
+    attempts = document.get("attempts")
+    if not isinstance(attempts, list):
+        attempts = []
+        document["attempts"] = attempts
+    attempts.append(attempt)
+
+
+def _first(item: dict[str, Any], keys: Iterable[str]) -> Any:
+    for key in keys:
+        if item.get(key) not in (None, ""):
+            return item.get(key)
+    return ""
+
+
+def _first_route(document: dict[str, Any]) -> str:
+    routes = document.get("retrieval_routes", [])
+    if not isinstance(routes, list):
+        return ""
+    for route in routes:
+        if route not in {"requests", "tavily_extract_basic", "tavily_extract_advanced"}:
+            return str(route)
+    return str(routes[0]) if routes else ""
+
+
+def _domain(url: str) -> str:
+    return urlparse(url).netloc.lower().split(":", 1)[0].removeprefix("www.")
+
+
+def _env_nonnegative_int(env: dict[str, str], key: str, default: int) -> int:
+    try:
+        value = int(str(env.get(key, default)).strip())
+    except (TypeError, ValueError):
+        return default
+    return max(0, value)
+
+
+def _env_positive_int(
+    env: dict[str, str],
+    key: str,
+    default: int,
+    *,
+    maximum: int,
+) -> int:
+    value = _env_nonnegative_int(env, key, default)
+    if value <= 0:
+        value = default
+    return min(value, maximum)
+
+
+def _configured_tavily_key(value: str) -> bool:
+    return bool(value and value.lower() not in INVALID_KEY_VALUES)
+
+
+def _now_jst() -> str:
+    jst = ZoneInfo("Asia/Tokyo") if ZoneInfo else timezone(timedelta(hours=9))
+    return datetime.now(UTC).astimezone(jst).replace(microsecond=0).isoformat()

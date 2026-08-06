@@ -27,6 +27,16 @@ python -m nasdaq_cafe.run fetch-url "https://example.com/article" --date 2026-07
 python -m nasdaq_cafe.run retry-failed --date 2026-07-10
 ```
 
+## 市場データ経路
+
+- Longbridge CLI OAuth: NASDAQ、ETF、大型テックなどのQuote取得
+- FRED: 米10年債などのマクロ系列
+- FMP: 補助的な企業・市場データ
+- SEC EDGAR・企業IR: 公式開示
+- Tavily・SerpAPI・RSS: ニュース候補と本文取得
+
+Longbridgeはペーパー口座のOAuthセッションだけを許可します。collectorが実行できるLongbridgeコマンドは`auth status`と`quote`だけで、注文、残高、ポジション、Portfolio、Trade APIはコード上で拒否します。GitHub-hosted Actionsでは、ローカルCLIのmachine-bound認証ファイルをコピーせず、portableなOAuth client IDとrefresh tokenから実行ごとに一時セッションを生成します。初回設定と自動更新については`GITHUB_ACTIONS.md`を参照してください。
+
 ## Raw Archive
 
 日付ごとに次を生成します。
@@ -42,7 +52,7 @@ output/YYYY-MM-DD/raw/articles/<document_id>.json
 
 collectorが発見した記事URLは、関連度・review priority・handoff選定・GDELTのaccepted/rejectedに関係なくmanifestへ登録し、原則として全URLへ全文取得を試行します。成功本文は要約・抜粋・短縮せず保存します。失敗、block、paywall、抽出失敗もmanifestへ残します。
 
-明示的な通信上限を設定した場合だけ取得件数を制限できます。上限を超えたURLは削除されず、`fulltext_status: not_attempted_limit` として残ります。
+明示的な通信上限を設定した場合だけ取得件数を制限できます。上限を超えたURLは削除されず、`fulltext_status: not_attempted_limit`として残ります。
 
 ## 出力
 
@@ -66,10 +76,11 @@ output/latest/chatgpt_fulltext_handoff.md
 
 ## 設定
 
-`.env.example` を `.env` にコピーし、必要なkeyだけ設定します。key値をログや成果物へ表示しないでください。
+`.env.example`を`.env`にコピーし、必要なkeyだけ設定します。key値をログや成果物へ表示しないでください。
 
-- `FMP_API_KEY` が未設定の場合、FMPは `skipped` をrawへ保存して継続します。
-- `SEC_USER_AGENT` が未設定の場合、SEC EDGARへは接続せず `skipped` を保存します。
+- `FMP_API_KEY`が未設定の場合、FMPは`skipped`をrawへ保存して継続します。
+- `SEC_USER_AGENT`が未設定の場合、SEC EDGARへは接続せず`skipped`を保存します。
+- ローカルLongbridgeは`longbridge auth login`でOAuth認証します。
 
 Raw Archiveの主な保護設定:
 
@@ -87,8 +98,8 @@ Raw Archiveの主な保護設定:
 2. requests + ElementTree
 
 公開GitHubリポジトリには第三者のvendorコードを同梱しません。ローカルに
-`vendor/finance-news-aggregator` が存在する場合だけ互換経路として利用し、
-そのcommit hashとfeedごとの経路を `raw/rss_news.json` に記録します。
+`vendor/finance-news-aggregator`が存在する場合だけ互換経路として利用し、
+そのcommit hashとfeedごとの経路を`raw/rss_news.json`に記録します。
 
 ## 禁止事項
 

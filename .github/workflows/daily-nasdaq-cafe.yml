@@ -22,6 +22,7 @@ permissions:
   contents: read
 
 concurrency:
+  # Refresh tokens may rotate. Never let two jobs refresh the same secret at once.
   group: daily-nasdaq-cafe
   cancel-in-progress: false
 
@@ -62,6 +63,95 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s tests -v
 
+      - name: Install Longbridge CLI
+        id: install_longbridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://open.longbridge.com/longbridge/longbridge-terminal/install | sh
+
+          longbridge_bin="$(command -v longbridge || true)"
+          if [[ -z "$longbridge_bin" ]]; then
+            for candidate in \
+              "$HOME/.local/bin/longbridge" \
+              "$HOME/bin/longbridge" \
+              "/usr/local/bin/longbridge"; do
+              if [[ -x "$candidate" ]]; then
+                longbridge_bin="$candidate"
+                break
+              fi
+            done
+          fi
+
+          if [[ -z "$longbridge_bin" ]]; then
+            echo "::error::Longbridge CLI installation completed without a discoverable executable."
+            exit 1
+          fi
+
+          echo "$(dirname "$longbridge_bin")" >> "$GITHUB_PATH"
+          echo "binary=$longbridge_bin" >> "$GITHUB_OUTPUT"
+          "$longbridge_bin" -V
+
+      - name: Refresh, persist, and validate portable Longbridge OAuth
+        id: longbridge_auth
+        shell: bash
+        env:
+          LONGBRIDGE_OAUTH_CLIENT_ID: ${{ secrets.LONGBRIDGE_OAUTH_CLIENT_ID }}
+          LONGBRIDGE_OAUTH_REFRESH_TOKEN: ${{ secrets.LONGBRIDGE_OAUTH_REFRESH_TOKEN }}
+          LONGBRIDGE_BIN: ${{ steps.install_longbridge.outputs.binary }}
+          GH_TOKEN: ${{ secrets.LONGBRIDGE_SECRET_ROTATOR_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${LONGBRIDGE_OAUTH_CLIENT_ID:-}" && -z "${LONGBRIDGE_OAUTH_REFRESH_TOKEN:-}" ]]; then
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Portable Longbridge OAuth secrets are not configured; collection will record Longbridge as missing."
+            exit 0
+          fi
+
+          if [[ -z "${LONGBRIDGE_OAUTH_CLIENT_ID:-}" || -z "${LONGBRIDGE_OAUTH_REFRESH_TOKEN:-}" ]]; then
+            echo "::error::Both LONGBRIDGE_OAUTH_CLIENT_ID and LONGBRIDGE_OAUTH_REFRESH_TOKEN are required."
+            exit 1
+          fi
+
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo "::error::LONGBRIDGE_SECRET_ROTATOR_TOKEN is required before refreshing OAuth."
+            exit 1
+          fi
+
+          # Prove that the rotator token can update repository secrets before
+          # consuming a refresh token that the OAuth server may rotate.
+          echo "::add-mask::$LONGBRIDGE_OAUTH_REFRESH_TOKEN"
+          printf '%s' "$LONGBRIDGE_OAUTH_REFRESH_TOKEN" | \
+            gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          echo "Longbridge refresh-token write preflight succeeded."
+
+          next_refresh_path="$RUNNER_TEMP/longbridge-next-refresh-token"
+          export LONGBRIDGE_NEXT_REFRESH_TOKEN_PATH="$next_refresh_path"
+          python scripts/prepare_longbridge_oauth_session.py
+
+          if [[ ! -s "$next_refresh_path" ]]; then
+            echo "::error::Longbridge OAuth refresh did not produce a reusable refresh token."
+            exit 1
+          fi
+
+          # Persist a possibly rotated refresh token before any later network or
+          # collection step can fail. This makes the refresh operation crash-safe.
+          next_refresh_token="$(cat "$next_refresh_path")"
+          echo "::add-mask::$next_refresh_token"
+          printf '%s' "$next_refresh_token" | \
+            gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          rm -f "$next_refresh_path"
+          echo "Longbridge OAuth refresh token was persisted successfully."
+
+          "$LONGBRIDGE_BIN" auth status --format json > "$RUNNER_TEMP/longbridge-auth-status.json"
+          python scripts/validate_longbridge_auth_status.py "$RUNNER_TEMP/longbridge-auth-status.json"
+
+          "$LONGBRIDGE_BIN" check --format json > "$RUNNER_TEMP/longbridge-check.json"
+          python scripts/validate_longbridge_check.py "$RUNNER_TEMP/longbridge-check.json"
+
+          echo "available=true" >> "$GITHUB_OUTPUT"
+
       - name: Resolve target date
         id: target
         shell: bash
@@ -95,3 +185,12 @@ jobs:
             output/${{ steps.target.outputs.date }}/CHATGPT_HANDOFF_*.md
           if-no-files-found: error
           retention-days: 14
+
+      - name: Remove temporary Longbridge OAuth material
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          rm -rf "$HOME/.longbridge/openapi"
+          rm -f "$RUNNER_TEMP/longbridge-next-refresh-token"
+          rm -f "$RUNNER_TEMP/longbridge-auth-status.json"
+          rm -f "$RUNNER_TEMP/longbridge-check.json"

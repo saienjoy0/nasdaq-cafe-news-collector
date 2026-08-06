@@ -440,38 +440,575 @@ def _render_gdelt_radar_status(
                 [
                     "title: " + _clean(item.get("title")),
                     "category: " + _clean(item.get("category")),
-                    "source: " + _cÛ®v¶‰Ëkºwµçq•…¸¡¥Ñ•´¹•Ğ ‰Í½ÕÉ”ˆ¤¤°(€€€€€€€€€€€€€€€€‰ÕÉ°è€ˆ€¬}±•…¸¡¥Ñ•´¹•Ğ ‰ÕÉ°ˆ¤¤°(€€€€€€€€€€€€€€€€‰É•…Í½¹}Ñ½}É•Ù¥•Üè€ˆ€¬}±•…¸¡¥Ñ•´¹•Ğ ‰É•…Í½¹}Ñ½}É•Ù¥•Üˆ¤¤°(€€€€€€€€€€€€€€€€‰•áÁ•Ñ•‘}ÕÍ”è€ˆ€¬}±•…¸¡¥Ñ•´¹•Ğ ‰•áÁ•Ñ•‘}ÕÍ”ˆ¤¤°(€€€€€€€€€€€€€€€€‰É•±…Ñ•‘}Ñ¥­•ÉÌè€ˆ€¬€ ˆ°€ˆ¹©½¥¸¡É•±…Ñ•¤¥˜É•±…Ñ••±Í”€ˆˆ¤°(€€€€€€€€€€€€€€€€ˆˆ°(€€€€€€€€€€€t(€€€€€€€€¤(€€€É•ÑÕÉ¸±¥¹•Ílè´Åt(()‘•˜}É•¹‘•É}•á±Õ‘•‘}ÍÕµµ…Éä¡¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø±¥ÍÑmÍÑÉtè(€€€¥˜¹½Ğ¥Ñ•µÌè(€€€€€€€É•ÑÕÉ¸lˆ´ƒ’ö;¦Z‹¦/—ó
-ç«_‰t(€€€½Õ¹ÑÌè‘¥ÑmÍÑÈ°¥¹Ñt€ôíô(€€€™½È¥Ñ•´¥¸¥Ñ•µÌè(€€€€€€€É•…Í½¸€ô}•á±Õ‘•‘}‰Õ­•Ğ¡¥Ñ•´¤(€€€€€€€½Õ¹ÑÍmÉ•…Í½¹t€ô½Õ¹ÑÌ¹•Ğ¡É•…Í½¸°€À¤€¬€Ä(€€€É•ÑÕÉ¸m˜ˆ´íÉ•…Í½¹ôèí½Õ¹Ñ÷’îØˆ™½ÈÉ•…Í½¸°½Õ¹Ğ¥¸Í½ÉÑ•¡½Õ¹ÑÌ¹¥Ñ•µÌ ¤°­•äõ±…µ‰‘„É½ÜèÉ½İlÁt¥t(()‘•˜}•á±Õ‘•‘}‰Õ­•Ğ¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€Ñ•áĞ€ô}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤(€€€¥˜}¡…Í}¹½¥Í•}­•åİ½É¡Ñ•áĞ¤è(€€€€€€€É•ÑÕÉ¸€‰½µµ½‘¥Ñä…É¥Õ±ÑÕÉ”€¼Á•ÉÍ½¹…°™¥¹…¹”€¼Õ¹É•±…Ñ•¹½¥Í”¸9MGï–6+–Â;’öOí'š‚«£»–nƒšzs»š¦/3–òÇ
-¦f“–’Xˆ(€€€É•…Í½¸€ô}±•…¸¡¥Ñ•´¹•Ğ ‰™¥±Ñ•É}É•…Í½¸ˆ¤¤(€€€¥˜€‰•…É¹¥¹Ìˆ¥¸É•…Í½¸¹±½İ•È ¤è(€€€€€€€É•ÑÕÉ¸€‰Õ¹É•±…Ñ••…É¹¥¹Ì¸ƒ–në–ºk
-›
-§«
-ç#í5…É­•Ğ5½Ù•ÉÏï–’Ÿ–z/
-¿£»nÓš:—¦Z‹’ş3–òÇ
-¦f“–’Xˆ(€€€¥˜€‰…ÕÍ…°‰É¥‘”ˆ¥¸É•…Í½¸¹±½İ•È ¤½È¹½Ğ}±•…¸¡¥Ñ•´¹•Ğ ‰…ÕÍ…±}‰É¥‘”ˆ¤¤è(€€€€€€€É•ÑÕÉ¸€‰İ•…¬…ÕÍ…°‰É¥‘”¸ƒ’âïšvCšZg£_›’öÿ¯¿–nƒšzs»š¦/3–òÇ
-¦f“–’Xˆ(€€€É•ÑÕÉ¸É•…Í½¸½È€‰±½Ü•áÁ±…¹…Ñ½ÉäÙ…±Õ”¸ƒšrw¹9MG
-¯W
-Ÿ»’âïšvCšZg£_›’ö;¦Z‹¦Œˆ(()‘•˜}Ñ¥•É}¹•İÍ}¥Ñ•µÌ¡¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´øÑÕÁ±•m±¥ÍÑm‘¥ÑmÍÑÈ°¹åut°±¥ÍÑm‘¥ÑmÍÑÈ°¹åut°±¥ÍÑm‘¥ÑmÍÑÈ°¹åuutè(€€€Ù…±¥€ôm¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜}¡…Í}É•ÅÕ¥É•‘}¹•İÍ}™¥•±‘Ì¡¥Ñ•´¤…¹¹½Ğ}¥Í}‰±½­•‘}¹•İÍ}ÕÉ°¡¥Ñ•´¹•Ğ ‰ÕÉ°ˆ¤¥t(€€€½É”€ôÍ½ÉÑ• (€€€€€€€m¥Ñ•´™½È¥Ñ•´¥¸Ù…±¥¥˜¥Ñ•´¹•Ğ ‰‘É¥Ù•É}ÑåÁ”ˆ¤€ôô€‰½É•}‘É¥Ù•È‰t°(€€€€€€€­•äõ±…µ‰‘„¥Ñ•´è€¡¥Ñ•´¹•Ğ ‰Í•±•Ñ•‘}™½É}¡…¹‘½™˜ˆ¤¥ÌQÉÕ”°¥Ñ•´¹•Ğ ‰É•±•Ù…¹•}Í½É”ˆ°€À¤°}±•…¸¡¥Ñ•´¹•Ğ ‰ÁÕ‰±¥Í¡•‘}…Ğˆ¤¤¤°(€€€€€€€É•Ù•ÉÍ”õQÉÕ”°(€€€€¥lèát(€€€½¹Ñ•áĞ€ôÍ½ÉÑ• (€€€€€€€m¥Ñ•´™½È¥Ñ•´¥¸Ù…±¥¥˜¥Ñ•´¹•Ğ ‰‘É¥Ù•É}ÑåÁ”ˆ¤€ôô€‰½¹Ñ•áÑ}…¹‘¥‘…Ñ”‰t°(€€€€€€€­•äõ±…µ‰‘„¥Ñ•´è€¡¥Ñ•´¹•Ğ ‰Í•±•Ñ•‘}™½É}¡…¹‘½™˜ˆ¤¥ÌQÉÕ”°¥Ñ•´¹•Ğ ‰É•±•Ù…¹•}Í½É”ˆ°€À¤°}±•…¸¡¥Ñ•´¹•Ğ ‰ÁÕ‰±¥Í¡•‘}…Ğˆ¤¤¤°(€€€€€€€É•Ù•ÉÍ”õQÉÕ”°(€€€€¥lèÄÁt(€€€±½Ü€ôm¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜¥Ñ•´¹•Ğ ‰‘É¥Ù•É}ÑåÁ”ˆ¤€ôô€‰±½İ}Ù…±Õ•}½É}¥ÉÉ•±•Ù…¹Ğˆ½È¥Ñ•´¹½Ğ¥¸Ù…±¥‘t(€€€É•ÑÕÉ¸½É”°½¹Ñ•áĞ°±½Ü(()‘•˜}¡…Í}É•ÅÕ¥É•‘}¹•İÍ}™¥•±‘Ì¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´ø‰½½°è(€€€É•ÑÕÉ¸‰½½°¡¥Ñ•´¹•Ğ ‰Ñ¥Ñ±”ˆ¤…¹¥Ñ•´¹•Ğ ‰Í½ÕÉ”ˆ¤…¹¥Ñ•´¹•Ğ ‰ÁÕ‰±¥Í¡•‘}…Ğˆ¤…¹¥Ñ•´¹•Ğ ‰ÕÉ°ˆ¤…¹€¡¥Ñ•´¹•Ğ ‰Í¹¥ÁÁ•Ğˆ¤½È¥Ñ•´¹•Ğ ‰Ñ¥Ñ±”ˆ¤¤¤(()‘•˜}µ¥ÍÍ¥¹}±¥¹•Ì¡Á…¬è‘¥ÑmÍÑÈ°¹åt°µ½Ù•ÉÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø±¥ÍÑmÍÑÉtè(€€€±¥¹•Ì€ômt(€€€µ…É­•Ñ}‘…Ñ„€ôÁ…¬¹•Ğ ‰µ…É­•Ñ}‘…Ñ„ˆ°íô¤(€€€™½È­•ä°±…‰•°¥¸l(€€€€€€€€ ‰9MDˆ°€‰9MGŞ?–B#š2šVÀˆ¤°(€€€€€€€€ ‰M=`ˆ°€‰M=cš2šVÀˆ¤°(€€€€€€€€ ‰UM)Adˆ°€‹'¯–ˆ¤°(€€€€€€€€ ‰EEDˆ°€‰EEDˆ¤°(€€€€€€€€ ‰M5 ˆ°€‰M5 ˆ¤°(€€€€€€€€ ‰MAdˆ°€‰MAdˆ¤°(€€€€€€€€ ‰a1,ˆ°€‰a1,ˆ¤°(€€€€€€€€ ‰Y%`ˆ°€‰Y%`ˆ¤°(€€€€€€€€ ‰ULÉdˆ°€‹ÆÌË–æÓ¦G–"¤ˆ¤°(€€€tè(€€€€€€€¥˜µ…É­•Ñ}‘…Ñ„¹•Ğ¡­•ä¤¥Ì9½¹”è(€€€€€€€€€€€±¥¹•Ì¹…ÁÁ•¹¡˜ˆ´í±…‰•±÷¿šr«–>[–ú\ˆ¤((€€€¥˜Á…¬¹•Ğ ‰µ…É¼ˆ°íô¤¹•Ğ ‰LÄÀˆ¤è(€€€€€€€±¥¹•Ì¹…ÁÁ•¹ ˆ´ƒÆÌÄÃ–æÓ¦G–"§½IšršZÃ–>[–ú_š^—»–“Ÿ
-+–öOš^—«
-‹¯
-ÿ
-“ƒ–“Ÿ¿«ˆ¤(€€€•±Í”è(€€€€€€€±¥¹•Ì¹…ÁÁ•¹ ˆ´ƒÆÌÄÃ–æÓ¦G–"¤LÄÀƒ¿šr«–>[–ú\ˆ¤((€€€™½È¥Ñ•´¥¸Á…¬¹•Ğ ‰µ¥ÍÍ¥¹}‘…Ñ„ˆ°mt¤è(€€€€€€€Í½ÕÉ”€ô}±•…¸¡¥Ñ•´¹•Ğ ‰Í½ÕÉ”ˆ¤¤(€€€€€€€É•…Í½¸€ô}±•…¸¡¥Ñ•´¹•Ğ ‰É•…Í½¸ˆ¤¤(€€€€€€€Í•Ù•É¥Ñä€ô}±•…¸¡¥Ñ•´¹•Ğ ‰Í•Ù•É¥Ñäˆ¤¤(€€€€€€€¥˜µ½Ù•ÉÌ…¹Í½ÕÉ”€ôô€‰5…É­•Ğ5½Ù•ÉÌˆ…¹€‰5…É­•Ğ5½Ù•ÉÌˆ¥¸É•…Í½¸…¹€‰AÉ•µ…É­•Ğˆ¹½Ğ¥¸É•…Í½¸…¹€‰™Ñ•È!½ÕÉÌˆ¹½Ğ¥¸É•…Í½¸è(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€€€€€¥˜µ½Ù•ÉÌ…¹Í½ÕÉ”€ôô€‰1½¹‰É¥‘”ˆ…¹€‰5…É­•Ğµ½Ù•ÉÌÉ…Ü)M=8¥Ìµ¥ÍÍ¥¹œˆ¥¸É•…Í½¸è(€€€€€€€€€€€É•…Í½¸€ô€‰1½¹‰É¥‘—–/–"•É…Üµ…É­•Ñ}µ½Ù•ÉÏ¿šr«š*W–—¾ò#ÖÇ–B!5…É­•Ğ5½Ù•ÉÏ–g¢s¿–>[–ú_šâ#ÿ¾ò$ˆ(€€€€€€€±¥¹•Ì¹…ÁÁ•¹¡˜ˆ´íÍ½ÕÉ•ôèíÉ•…Í½¹ô€¡íÍ•Ù•É¥Ñåô¤ˆ¤((€€€É•ÑÕÉ¸}‘•‘ÕÁ•}ÁÉ•Í•ÉÙ•}½É‘•È¡±¥¹•Ì¤½Èlˆ´ƒ«\‰t(()‘•˜}½É‘•É•‘}İ…Ñ¡±¥ÍĞ¡¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€‰å}Ñ¥­•È€ôí}±•…¸¡¥Ñ•´¹•Ğ ‰Ñ¥­•Èˆ¤¤è¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÍô(€€€½É‘•É•è±¥ÍÑm‘¥ÑmÍÑÈ°¹åut€ômt(€€€™½ÈÑ¥­•È¥¸]Q!1%MQ}=IHè(€€€€€€€¥Ñ•´€ô‘¥Ğ¡‰å}Ñ¥­•È¹•Ğ¡Ñ¥­•È°ì‰Ñ¥­•ÈˆèÑ¥­•È°€‰Í½ÕÉ•}Íåµ‰½°ˆè˜‰íÑ¥­•Éô¹UL‰ô¤¤(€€€€€€€½É‘•É•¹…ÁÁ•¹¡¥Ñ•´¤(€€€É•ÑÕÉ¸½É‘•É•(()‘•˜}Í•±•Ñ}™¥á•‘}¹½Ñ…‰±”¡İ…Ñ¡±¥ÍĞè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€ÅÕ½Ñ•€ôm¥Ñ•´™½È¥Ñ•´¥¸İ…Ñ¡±¥ÍĞ¥˜}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰¡…¹•}Á•É•¹Ğˆ¤¤¥Ì¹½Ğ9½¹•t(€€€ÅÕ½Ñ•¹Í½ÉĞ¡­•äõ±…µ‰‘„¥Ñ•´è…‰Ì¡}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰¡…¹•}Á•É•¹Ğˆ¤¤½È€À¤°É•Ù•ÉÍ”õQÉÕ”¤(€€€É•ÑÕÉ¸ÅÕ½Ñ•‘lèÉt(()‘•˜}Í•±•Ñ}µ…É­•Ñ}µ½Ù•ÉÌ¡¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€™¥±Ñ•É•€ôm¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜}¥¹±Õ‘•}µ½Ù•È¡¥Ñ•´¥t(€€€™¥±Ñ•É•¹Í½ÉĞ¡­•äõ}µ½Ù•É}Í½É”°É•Ù•ÉÍ”õQÉÕ”¤(€€€É•ÑÕÉ¸™¥±Ñ•É•‘lèÄÁt(()‘•˜}¥¹±Õ‘•}µ½Ù•È¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´ø‰½½°è(€€€Ñ¥­•È€ô}±•…¸¡¥Ñ•´¹•Ğ ‰Ñ¥­•Èˆ¤¤¹ÕÁÁ•È ¤¹É•Á±…” ˆ¹ULˆ°€ˆˆ¤(€€€ÁÉ¥”€ô}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰ÁÉ¥”ˆ¤¤(€€€¥˜ÁÉ¥”¥Ì¹½Ğ9½¹”…¹ÁÉ¥”€ğ€Ôè(€€€€€€€É•ÑÕÉ¸…±Í”(€€€Ñ•áĞ€ô}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤(€€€¥˜}¡…Í}¹½¥Í•}­•åİ½É¡Ñ•áĞ¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜Ñ¥­•È¥¸M5%}Q%-ILè(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€É•ÑÕÉ¸}¡…Í}ÍÑÉ½¹}Ñ•¡}­•åİ½É¡Ñ•áĞ¤½È}¥Í}±…É•}…À¡¥Ñ•´¤½È€‰¹…Í‘…Ä€ÄÀÀˆ¥¸Ñ•áĞ½È€‰Í½à½µÁ½¹•¹Ğˆ¥¸Ñ•áĞ(()‘•˜}µ½Ù•É}Í½É”¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´ø™±½…Ğè(€€€Ñ¥­•È€ô}±•…¸¡¥Ñ•´¹•Ğ ‰Ñ¥­•Èˆ¤¤¹ÕÁÁ•È ¤¹É•Á±…” ˆ¹ULˆ°€ˆˆ¤(€€€…Ñ•½Éä€ô}±•…¸¡¥Ñ•´¹•Ğ ‰…Ñ•½Éäˆ¤¤¹±½İ•È ¤(€€€Ñ•áĞ€ô}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤(€€€Í½É”€ô…‰Ì¡}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰¡…¹•}Á•É•¹Ğˆ¤¤½È€À¤(€€€¥˜€‰Í½à½µÁ½¹•¹Ğˆ¥¸…Ñ•½Éäè(€€€€€€€Í½É”€¬ô€äÀ(€€€¥˜€‰¹…Í‘…Ä€ÄÀÀˆ¥¸…Ñ•½Éäè(€€€€€€€Í½É”€¬ô€àÀ(€€€¥˜Ñ¥­•È¥¸M5%}Q%-ILè(€€€€€€€Í½É”€¬ô€ÜÀ(€€€¥˜}¡…Í}ÍÑÉ½¹}Ñ•¡}­•åİ½É¡Ñ•áĞ¤è(€€€€€€€Í½É”€¬ô€ĞÀ(€€€¥˜}¥Í}±…É•}…À¡¥Ñ•´¤è(€€€€€€€Í½É”€¬ô€ÈÀ(€€€É•ÑÕÉ¸Í½É”(()‘•˜}Í•±•Ñ}¹•İÍ}¥Ñ•µÌ¡¥Ñ•µÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut°µ½Ù•ÉÌè±¥ÍÑm‘¥ÑmÍÑÈ°¹åut°Ñ…É•Ñ}‘…Ñ”èÍÑÈ¤€´ø±¥ÍÑm‘¥ÑmÍÑÈ°¹åutè(€€€Í•±•Ñ•€ôm¥Ñ•´™½È¥Ñ•´¥¸¥Ñ•µÌ¥˜}¥¹±Õ‘•}¹•İÌ¡¥Ñ•´°Ñ…É•Ñ}‘…Ñ”¥t(€€€µ½Ù•É}Ñ¥­•ÉÌ€ôí}±•…¸¡µ½Ù•È¹•Ğ ‰Ñ¥­•Èˆ¤¤¹ÕÁÁ•È ¤¹É•Á±…” ˆ¹ULˆ°€ˆˆ¤™½Èµ½Ù•È¥¸µ½Ù•ÉÍô(€€€Í•±•Ñ•¹Í½ÉĞ¡­•äõ±…µ‰‘„¥Ñ•´è}¹•İÍ}Í½É”¡¥Ñ•´°µ½Ù•É}Ñ¥­•ÉÌ¤°É•Ù•ÉÍ”õQÉÕ”¤(€€€É•ÑÕÉ¸Í•±•Ñ•‘lèÄÉt(()‘•˜}¥¹±Õ‘•}¹•İÌ¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt°Ñ…É•Ñ}‘…Ñ”èÍÑÈ¤€´ø‰½½°è(€€€¥˜¹½Ğ¥Ñ•´¹•Ğ ‰ÁÕ‰±¥Í¡•‘}…Ğˆ¤½È¹½Ğ¥Ñ•´¹•Ğ ‰ÕÉ°ˆ¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜¹½Ğ€¡¥Ñ•´¹•Ğ ‰Í¹¥ÁÁ•Ğˆ¤½È¥Ñ•´¹•Ğ ‰Ñ¥Ñ±”ˆ¤¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜¹½Ğ}¥Í}É••¹Ñ}¹•İÍ}‘…Ñ”¡¥Ñ•´¹•Ğ ‰ÁÕ‰±¥Í¡•‘}…Ğˆ¤°Ñ…É•Ñ}‘…Ñ”¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€¥˜}¥Í}‰±½­•‘}¹•İÍ}ÕÉ°¡¥Ñ•´¹•Ğ ‰ÕÉ°ˆ¤¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€Ñ•áĞ€ô}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤(€€€¥˜}¡…Í}¹½¥Í•}­•åİ½É¡Ñ•áĞ¤…¹¹½Ğ}¡…Í}ÍÑÉ½¹}Ñ•¡}­•åİ½É¡Ñ•áĞ¤è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€É•ÑÕÉ¸}¡…Í}ÍÑÉ½¹}Ñ•¡}­•åİ½É¡Ñ•áĞ¤½È‰½½°¡}É•±…Ñ•‘}Ñ¥­•ÉÌ¡¥Ñ•´¤¤½È€‰µ…É­•Ğè¹…Í‘…Äˆ¥¸Ñ•áĞ½È€‰Ñ¡•µ”èÍ•µ¥½¹‘ÕÑ½ÉÌˆ¥¸Ñ•áĞ(()‘•˜}¥Í}‰±½­•‘}¹•İÍ}ÕÉ°¡Ù…±Õ”è¹ä¤€´ø‰½½°è(€€€ÕÉ°€ô}±•…¸¡Ù…±Õ”¤¹±½İ•È ¤(€€€¥˜¹½ĞÕÉ°è(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€‰±½­•€ô€ (€€€€€€€€‰™…•‰½½¬¹½´ˆ°(€€€€€€€€‰Ñİ¥ÑÑ•È¹½´ˆ°(€€€€€€€€‰à¹½´¼ˆ°(€€€€€€€€‰±¥¹­•‘¥¸¹½´½Á½ÍÑÌˆ°(€€€€€€€€‰É•ÕÑ•ÉÌ¹½´½Á±ÕÌˆ°(€€€€€€€€‰™¥¹…¹”¹å…¡½¼¹½´½ÅÕ½Ñ”ˆ°(€€€€€€€€ˆ½µ…É­•Ğµ…Ñ¥Ù¥Ñä½ÍÑ½­Ì¼ˆ°(€€€€€€€€ˆ½ÅÕ½Ñ”¼ˆ°(€€€€¤(€€€¥˜…¹ä¡µ…É­•È¥¸ÕÉ°™½Èµ…É­•È¥¸‰±½­•¤è(€€€€€€€É•ÑÕÉ¸QÉÕ”(€€€É•ÑÕÉ¸ÕÉ°¹ÉÍÑÉ¥À ˆ¼ˆ¤¹•¹‘Íİ¥Ñ   ‰É•ÕÑ•ÉÌ¹½´ˆ°€‰¹‰Œ¹½´ˆ°€‰µ…É­•Ñİ…Ñ ¹½´ˆ°€‰¹…Í‘…Ä¹½´ˆ°€‰™¥¹…¹”¹å…¡½¼¹½´ˆ¤¤(()‘•˜}¥Í}É••¹Ñ}¹•İÍ}‘…Ñ”¡Ù…±Õ”è¹ä°Ñ…É•Ñ}‘…Ñ”èÍÑÈ€ô€ˆˆ¤€´ø‰½½°è(€€€ÁÕ‰±¥Í¡•€ô}Á…ÉÍ•}¹•İÍ}‘…Ñ”¡Ù…±Õ”¤(€€€¥˜ÁÕ‰±¥Í¡•¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸…±Í”(€€€ÑÉäè(€€€€€€€Ñ…É•Ğ€ô‘…Ñ•Ñ¥µ”¹ÍÑÉÁÑ¥µ”¡Ñ…É•Ñ}‘…Ñ”°€ˆ•d´•´´•ˆ¤¹‘…Ñ” ¤¥˜Ñ…É•Ñ}‘…Ñ”•±Í”‘…Ñ•Ñ¥µ”¹¹½Ü¡Ñ¥µ•é½¹”¹ÕÑŒ¤¹‘…Ñ” ¤(€€€•á•ÁĞY…±Õ•ÉÉ½Èè(€€€€€€€Ñ…É•Ğ€ô‘…Ñ•Ñ¥µ”¹¹½Ü¡Ñ¥µ•é½¹”¹ÕÑŒ¤¹‘…Ñ” ¤(€€€É•ÑÕÉ¸Ñ…É•Ğ€´Ñ¥µ•‘•±Ñ„¡‘…åÌôÌÀ¤€ğôÁÕ‰±¥Í¡•€ğôÑ…É•Ğ€¬Ñ¥µ•‘•±Ñ„¡‘…åÌôÄ¤(()‘•˜}Á…ÉÍ•}¹•İÍ}‘…Ñ”¡Ù…±Õ”è¹ä¤è(€€€Ñ•áĞ€ô}±•…¸¡Ù…±Õ”¤(€€€¥˜¹½ĞÑ•áĞè(€€€€€€€É•ÑÕÉ¸9½¹”(€€€¥Í½}Ñ•áĞ€ôÑ•áÑlè´Åt€¬€ˆ¬ÀÀèÀÀˆ¥˜Ñ•áĞ¹•¹‘Íİ¥Ñ  ‰hˆ¤•±Í”Ñ•áĞ(€€€ÑÉäè(€€€€€€€Á…ÉÍ•€ô‘…Ñ•Ñ¥µ”¹™É½µ¥Í½™½Éµ…Ğ¡¥Í½}Ñ•áĞ¤(€€€€€€€É•ÑÕÉ¸Á…ÉÍ•¹…ÍÑ¥µ•é½¹”¡Ñ¥µ•é½¹”¹ÕÑŒ¤¹‘…Ñ” ¤¥˜Á…ÉÍ•¹Ñé¥¹™¼•±Í”Á…ÉÍ•¹‘…Ñ” ¤(€€€•á•ÁĞY…±Õ•ÉÉ½Èè(€€€€€€€Á…ÍÌ(€€€ÑÉäè(€€€€€€€Á…ÉÍ•€ôÁ…ÉÍ•‘…Ñ•}Ñ½}‘…Ñ•Ñ¥µ”¡Ñ•áĞ¤(€€€€€€€É•ÑÕÉ¸Á…ÉÍ•¹…ÍÑ¥µ•é½¹”¡Ñ¥µ•é½¹”¹ÕÑŒ¤¹‘…Ñ” ¤¥˜Á…ÉÍ•¹Ñé¥¹™¼•±Í”Á…ÉÍ•¹‘…Ñ” ¤(€€€•á•ÁĞ€¡QåÁ•ÉÉ½È°Y…±Õ•ÉÉ½È°%¹‘•áÉÉ½È°=Ù•É™±½İÉÉ½È¤è(€€€€€€€Á…ÍÌ(€€€™½È™µĞ¥¸€ ˆ•d´•´´•ˆ°€ˆ•ˆ€•°€•dˆ°€ˆ•€•°€•dˆ°€ˆ•´¼•¼•dˆ¤è(€€€€€€€ÑÉäè(€€€€€€€€€€€É•ÑÕÉ¸‘…Ñ•Ñ¥µ”¹ÍÑÉÁÑ¥µ”¡Ñ•áĞ°™µĞ¤¹‘…Ñ” ¤(€€€€€€€•á•ÁĞY…±Õ•ÉÉ½Èè(€€€€€€€€€€€½¹Ñ¥¹Õ”(€€€É•ÑÕÉ¸9½¹”(()‘•˜}¹•İÍ}Í½É”¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt°µ½Ù•É}Ñ¥­•ÉÌèÍ•ÑmÍÑÉt¤€´ø™±½…Ğè(€€€Ñ•áĞ€ô}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤(€€€Í½É”€ô€À¸À(€€€É•±…Ñ•€ôÍ•Ğ¡}É•±…Ñ•‘}Ñ¥­•ÉÌ¡¥Ñ•´¤¤(€€€¥˜É•±…Ñ•¹¥¹Ñ•ÉÍ•Ñ¥½¸¡]Q!1%MQ}=IH¤è(€€€€€€€Í½É”€¬ô€àÀ(€€€¥˜É•±…Ñ•¹¥¹Ñ•ÉÍ•Ñ¥½¸¡µ½Ù•É}Ñ¥­•ÉÌ¤è(€€€€€€€Í½É”€¬ô€ÜÀ(€€€¥˜€‰¹…Í‘…Äˆ¥¸Ñ•áĞ½È€‰Í½àˆ¥¸Ñ•áĞè(€€€€€€€Í½É”€¬ô€ÔÀ(€€€¥˜€‰Í•µ¥½¹‘ÕÑ½Èˆ¥¸Ñ•áĞ½È€‰¡¥Àˆ¥¸Ñ•áĞ½È€‰µ•µ½Éäˆ¥¸Ñ•áĞ½È€‰ÁÔˆ¥¸Ñ•áĞè(€€€€€€€Í½É”€¬ô€ĞÔ(€€€¥˜€‰‘…Ñ„•¹Ñ•Èˆ¥¸Ñ•áĞ½È€‰±½Õˆ¥¸Ñ•áĞ½È€‰‰½¹ˆ¥¸Ñ•áĞè(€€€€€€€Í½É”€¬ô€ÌÀ(€€€Í½ÕÉ•}É…¹¬€ôì‰e…¡½¼¥¹…¹”ˆè€à°€‰5…É­•Ñ]…Ñ ˆè€Ü°€‰9MDˆè€Ü°€‰9	ˆè€Ø°€‰M•ÉÁA$ˆè€Íô(€€€Í½É”€¬ôÍ½ÕÉ•}É…¹¬¹•Ğ¡}±•…¸¡¥Ñ•´¹•Ğ ‰Í½ÕÉ”ˆ¤¤°€À¤(€€€É•ÑÕÉ¸Í½É”(()‘•˜}‰É¥•™}ÅÕ½Ñ•}¹½Ñ”¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€Ñ¥­•È€ô}±•…¸¡¥Ñ•´¹•Ğ ‰Ñ¥­•Èˆ¤¤¹ÕÁÁ•È ¤(€€€¡…¹”€ô}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰¡…¹•}Á•É•¹Ğˆ¤¤(€€€¥˜¡…¹”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸€‹šVÃ–“šr«–>[–ú\ˆ(€€€¥˜…‰Ì¡¡…¹”¤€ğ€À¸Äè(€€€€€€€É•ÑÕÉ¸€‹š¢«Ãˆ(€€€¥˜Ñ¥­•È¥¸ì‰9Yˆ°€‰Y<ˆ°€‰QM4ˆ°€‰5‰ô…¹¡…¹”€ğô€´Ìè(€€€€€€€É•ÑÕÉ¸€‹–6+–Â;’öO¦Z‹¦£_›’â/¢B÷3n»®/ˆ(€€€¥˜Ñ¥­•È€ôô€‰QM1ˆ…¹¡…¹”€ğô€´Ìè(€€€€€€€É•ÑÕÉ¸€‰[¦Z‹¦£_›–òÇˆ(€€€¥˜¡…¹”€øô€Ìè(€€€€€€€É•ÑÕÉ¸€‹–’Ÿ–z/
-¿»’â·Ÿ’â+šb3n»®/ˆ(€€€¥˜¡…¹”€ø€Àè(€€€€€€€É•ÑÕÉ¸€‹–Â?–æ’â+šbˆ(€€€É•ÑÕÉ¸€‹–Â?–æ’â/¢Bôˆ(()‘•˜}™¥á•‘}É•…Í½¸¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€¡…¹”€ô}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰¡…¹•}Á•É•¹Ğˆ¤¤(€€€¥˜¡…¹”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸€‹–në–ºk
-›
-§¦*cš~ƒ3šVÃ–“šr«–>[–ú\ˆ(€€€É•ÑÕÉ¸˜‹–në–ºk
-›
-§¦*cš~–Ÿ–’'–.W3n»®/“¾ò!¡…¹•}Á•É•¹Ğõí¡…¹”è¸É™÷¾ò'–/–"—»šb;Šë«švCšZg¿Šë¢ª7Ÿ7›ûo
-Lˆ(()‘•˜}½¹™¥‘•¹•}™É½µ}ÅÕ½Ñ”¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€É•ÑÕÉ¸€‰µ•‘¥Õ´ˆ¥˜}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰¡…¹•}Á•É•¹Ğˆ¤¤¥Ì¹½Ğ9½¹”•±Í”€‰Õ¹­¹½İ¸ˆ(()‘•˜}Ù½±Õµ•}¥¹™¼¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€Ù½±Õµ”€ô}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰Ù½±Õµ”ˆ¤¤(€€€…Ù•É…”€ô}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰…Ù•É…•}Ù½±Õµ”ˆ¤¤(€€€¥˜Ù½±Õµ”¥Ì9½¹”…¹…Ù•É…”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸€‹šr«–>[–ú\ˆ(€€€¥˜Ù½±Õµ”¥Ì¹½Ğ9½¹”…¹…Ù•É…”è(€€€€€€€É•ÑÕÉ¸˜‰Ù½±Õµ”õíÙ½±Õµ”è¸Á™ô°…Ù•É…•}Ù½±Õµ”õí…Ù•É…”è¸Á™ô°É…Ñ¥¼õíÙ½±Õµ”€¼…Ù•É…”è¸É™ôˆ(€€€¥˜Ù½±Õµ”¥Ì¹½Ğ9½¹”è(€€€€€€€É•ÑÕÉ¸˜‰Ù½±Õµ”õíÙ½±Õµ”è¸Á™ôˆ(€€€É•ÑÕÉ¸˜‰…Ù•É…•}Ù½±Õµ”õí…Ù•É…”è¸Á™ôˆ(()‘•˜}µ½Ù•É}É•±•Ù…¹”¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€Ñ¥­•È€ô}±•…¸¡¥Ñ•´¹•Ğ ‰Ñ¥­•Èˆ¤¤¹ÕÁÁ•È ¤¹É•Á±…” ˆ¹ULˆ°€ˆˆ¤(€€€…Ñ•½Éä€ô}±•…¸¡¥Ñ•´¹•Ğ ‰…Ñ•½Éäˆ¤¤(€€€É•…Í½¸€ô}±•…¸¡¥Ñ•´¹•Ğ ‰É•…Í½¸ˆ¤¤(€€€¥˜Ñ¥­•È¥¸M5%}Q%-IL½È€‰M=`ˆ¥¸…Ñ•½Éäè(€€€€€€€É•ÑÕÉ¸˜‰í…Ñ•½Éå÷»–6+–Â;’öO¦Z‹¦–g¢s	íÉ•…Í½¹ôˆ(€€€¥˜€‰9…Í‘…Ä€ÄÀÀˆ¥¸…Ñ•½Éäè(€€€€€€€É•ÑÕÉ¸˜‰9…Í‘…Ä€ÄÀÃ¦Z‹¦¹5…É­•Ğ5½Ù•ÉÏ–g¢s	íÉ•…Í½¹ôˆ(€€€¥˜}¡…Í}ÍÑÉ½¹}Ñ•¡}­•åİ½É¡}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤¤è(€€€€€€€É•ÑÕÉ¸˜‰$¿
-¿§
-›$¿–’Ÿ–z/
-¿¦Z‹¦¹5…É­•Ğ5½Ù•ÉÏ–g¢s	íÉ•…Í½¹ôˆ(€€€É•ÑÕÉ¸É•…Í½¸½È€‰5…É­•Ğ5½Ù•ÉÏ–g¢sšb;Šë«–/–"—švCšZg¿Šë¢ª7Ÿ7›ûo
-Lˆ(()‘•˜}¹•İÍ}É•±•Ù…¹”¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€Ñ•áĞ€ô}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´¤(€€€•á¥ÍÑ¥¹œ€ô}±•…¸¡¥Ñ•´¹•Ğ ‰İ¡å}É•±•Ù…¹Ğˆ¤¤(€€€É•±…Ñ•€ô}É•±…Ñ•‘}Ñ¥­•ÉÌ¡¥Ñ•´¤(€€€¥˜€‰Í•µ¥½¹‘ÕÑ½Èˆ¥¸Ñ•áĞ½È€‰¡¥Àˆ¥¸Ñ•áĞ½È€‰µ•µ½Éäˆ¥¸Ñ•áĞ½È€‰ÁÔˆ¥¸Ñ•áĞ½È€‰Í…µÍÕ¹œˆ¥¸Ñ•áĞè(€€€€€€€É•ÑÕÉ¸€‹–6+–Â;’öL½'
-“ÏW§¦Z‹¦/—ó
-ç£_™9MGíM=c»–rÃ–B#Šë¢ª7¯šr'R ˆ(€€€¥˜€‰¹…Í‘…Äˆ¥¸Ñ•áĞè(€€€€€€€É•ÑÕÉ¸€‰9MGš2šVÃ£–’Ÿ–z/
-¿»–rÃ–B#švCšZdˆ(€€€¥˜€‰±½Õˆ¥¸Ñ•áĞ½È€‰‘…Ñ„•¹Ñ•Èˆ¥¸Ñ•áĞ½È€‰‰½¹ˆ¥¸Ñ•áĞè(€€€€€€€É•ÑÕÉ¸€‰'ï
-¿§
-›'š*W¢Î
-¢Î¦G¢ªÿ¦S»šÖ
-3
-KŠë¢ª7g
-/švCšZdˆ(€€€¥˜É•±…Ñ•è(€€€€€€€É•ÑÕÉ¸˜‹¦Z‹¦¦*cš~–g¢pèìœ°€œ¹©½¥¸¡É•±…Ñ•¥ôˆ(€€€É•ÑÕÉ¸•á¥ÍÑ¥¹œ½È€‹/—ó
-çšvCšZg£_›Šë¢ª7–¾û¢Æ„ˆ(()‘•˜}É•±…Ñ•‘}Ñ¥­•ÉÌ¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´ø±¥ÍÑmÍÑÉtè(€€€É•±…Ñ•€ôm}±•…¸¡Ñ¥­•È¤¹ÕÁÁ•È ¤¹É•Á±…” ˆ¹ULˆ°€ˆˆ¤™½ÈÑ¥­•È¥¸¥Ñ•´¹•Ğ ‰É•±…Ñ•‘}Ñ¥­•ÉÌˆ°mt¤¥˜}±•…¸¡Ñ¥­•È¥t(€€€É…İ}Ñ•áĞ€ô}¥Ñ•µ}É…İ}Ñ•áĞ¡¥Ñ•´¤(€€€™½ÈÑ¥­•È¥¸]Q!1%MQ}=IH€¬Í½ÉÑ•¡M5%}Q%-IL¤è(€€€€€€€¥˜}µ•¹Ñ¥½¹Í}Ñ¥­•È¡É…İ}Ñ•áĞ°Ñ¥­•È¤…¹Ñ¥­•È¹½Ğ¥¸É•±…Ñ•è(€€€€€€€€€€€É•±…Ñ•¹…ÁÁ•¹¡Ñ¥­•È¤(€€€É•ÑÕÉ¸}‘•‘ÕÁ•}ÁÉ•Í•ÉÙ•}½É‘•È¡mÑ¥­•È™½ÈÑ¥­•È¥¸É•±…Ñ•¥˜Ñ¥­•Ét¤(()‘•˜}µ•¹Ñ¥½¹Í}Ñ¥­•È¡Ñ•áĞèÍÑÈ°Ñ¥­•ÈèÍÑÈ¤€´ø‰½½°è(€€€Á…ÑÑ•É¸€ôÉ˜ˆ üğ…mµhÀ´åt¥pıíÉ”¹•Í…Á”¡Ñ¥­•È¥ô üép¹UL¤ü ü…mµhÀ´åt¤ˆ(€€€É•ÑÕÉ¸É”¹Í•…É ¡Á…ÑÑ•É¸°Ñ•áĞ¤¥Ì¹½Ğ9½¹”(()‘•˜}¡…Í}¹½¥Í•}­•åİ½É¡Ñ•áĞèÍÑÈ¤€´ø‰½½°è(€€€É•ÑÕÉ¸…¹ä¡­•åİ½É¥¸Ñ•áĞ™½È­•åİ½É¥¸9]M}a1U}-e]=IL¤(()‘•˜}¡…Í}ÍÑÉ½¹}Ñ•¡}­•åİ½É¡Ñ•áĞèÍÑÈ¤€´ø‰½½°è(€€€É•ÑÕÉ¸…¹ä¡­•åİ½É¥¸Ñ•áĞ™½È­•åİ½É¥¸9]M}MQI=9}Q!}-e]=IL¤(()‘•˜}¥Í}±…É•}…À¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´ø‰½½°è(€€€µ…É­•Ñ}…À€ô}Ñ½}™±½…Ğ¡¥Ñ•´¹•Ğ ‰µ…É­•Ñ}…Àˆ¤¤(€€€É•ÑÕÉ¸‰½½°¡µ…É­•Ñ}…À…¹µ…É­•Ñ}…À€øô€ÄÁ|ÀÀÁ|ÀÀÁ|ÀÀÀ¤(()‘•˜}¥Ñ•µ}Ñ•áĞ¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€É•ÑÕÉ¸}¥Ñ•µ}É…İ}Ñ•áĞ¡¥Ñ•´¤¹±½İ•È ¤(()‘•˜}¥Ñ•µ}É…İ}Ñ•áĞ¡¥Ñ•´è‘¥ÑmÍÑÈ°¹åt¤€´øÍÑÈè(€€€Ù…±Õ•Ì€ôl(€€€€€€€¥Ñ•´¹•Ğ ‰Ñ¥­•Èˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰¹…µ”ˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰…Ñ•½Éäˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰É•…Í½¸ˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰Ñ¥Ñ±”ˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰Í¹¥ÁÁ•Ğˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰İ¡å}É•±•Ù…¹Ğˆ¤°(€€€€€€€¥Ñ•´¹•Ğ ‰ÕÉ°ˆ¤°(€€€t(€€€É•ÑÕÉ¸€ˆ€ˆ¹©½¥¸¡}±•…¸¡Ù…±Õ”¤™½ÈÙ…±Õ”¥¸Ù…±Õ•Ì¥˜Ù…±Õ”¥Ì¹½Ğ9½¹”¤(()‘•˜}™½Éµ…Ñ}½µÁ…Ğ¡Ù…±Õ”è¹ä¤€´øÍÑÈè(€€€¥˜¥Í¥¹ÍÑ…¹”¡Ù…±Õ”°‘¥Ğ¤è(€€€€€€€É•ÑÕÉ¸€ˆ°€ˆ¹©½¥¸¡˜‰í­•åôõí}±•…¸¡Ù…°¥ôˆ™½È­•ä°Ù…°¥¸Ù…±Õ”¹¥Ñ•µÌ ¤¤(€€€É•ÑÕÉ¸}±•…¸¡Ù…±Õ”¤(()‘•˜}Í¡½ÉÑ}Í¹¥ÁÁ•Ğ¡Ù…±Õ”è¹ä°±¥µ¥Ğè¥¹Ğ€ô€ÈÈÀ¤€´øÍÑÈè(€€€Ñ•áĞ€ô€ˆ€ˆ¹©½¥¸¡}±•…¸¡Ù…±Õ”¤¹ÍÁ±¥Ğ ¤¤(€€€¥˜±•¸¡Ñ•áĞ¤€ğô±¥µ¥Ğè(€€€€€€€É•ÑÕÉ¸Ñ•áĞ(€€€É•ÑÕÉ¸Ñ•áÑlè±¥µ¥Ğ€´€Åt¹ÉÍÑÉ¥À ¤€¬€‹Š˜ˆ(()‘•˜}Ñ½}™±½…Ğ¡Ù…±Õ”è¹ä¤€´ø™±½…Ğğ9½¹”è(€€€¥˜Ù…±Õ”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸9½¹”(€€€¥˜¥Í¥¹ÍÑ…¹”¡Ù…±Õ”°€¡¥¹Ğ°™±½…Ğ¤¤è(€€€€€€€É•ÑÕÉ¸™±½…Ğ¡Ù…±Õ”¤(€€€ÑÉäè(€€€€€€€É•ÑÕÉ¸™±½…Ğ¡ÍÑÈ¡Ù…±Õ”¤¹É•Á±…” ˆ”ˆ°€ˆˆ¤¹É•Á±…” ˆ°ˆ°€ˆˆ¤¤(€€€•á•ÁĞY…±Õ•ÉÉ½Èè(€€€€€€€É•ÑÕÉ¸9½¹”(()‘•˜}±•…¸¡Ù…±Õ”è¹ä¤€´øÍÑÈè(€€€¥˜Ù…±Õ”¥Ì9½¹”è(€€€€€€€É•ÑÕÉ¸€ˆˆ(€€€É•ÑÕÉ¸ÍÑÈ¡Ù…±Õ”¤¹ÍÑÉ¥À ¤(()‘•˜}‘•‘ÕÁ•}ÁÉ•Í•ÉÙ•}½É‘•È¡¥Ñ•µÌè±¥ÍÑmÍÑÉt¤€´ø±¥ÍÑmÍÑÉtè(€€€Í••¸€ôÍ•Ğ ¤(€€€½ÕÑÁÕĞ€ômt(€€€™½È¥Ñ•´¥¸¥Ñ•µÌè(€€€€€€€¥˜¥Ñ•´¹½Ğ¥¸Í••¸è(€€€€€€€€€€€½ÕÑÁÕĞ¹…ÁÁ•¹¡¥Ñ•´¤(€€€€€€€€€€€Í••¸¹…‘¡¥Ñ•´¤(€€€É•ÑÕÉ¸½ÕÑÁÕĞ(
+                    "source: " + _clean(item.get("source")),
+                    "published_at: " + _clean(item.get("published_at")),
+                    "seen_at: " + _clean(item.get("seen_at")),
+                    "url: " + _clean(item.get("url")),
+                    "related_tickers: " + (", ".join(_clean(ticker) for ticker in related if _clean(ticker)) if isinstance(related, list) else ""),
+                    "radar_score: " + _clean(item.get("radar_score")),
+                    "decision_reason: " + _clean(item.get("decision_reason")),
+                    "fulltext_candidate: " + _clean(item.get("fulltext_candidate")),
+                    "body_verified: " + _clean(item.get("body_verified")),
+                    "use_as_script_evidence: " + _clean(item.get("use_as_script_evidence")),
+                    "needs_fulltext_before_script: " + _clean(item.get("needs_fulltext_before_script")),
+                    "market_causality_confirmed: " + _clean(item.get("market_causality_confirmed")),
+                    "",
+                ]
+            )
+        return lines[:-1]
+    lines.append("- none")
+    return lines
+
+
+def _top_gdelt_categories(categories: Any) -> list[tuple[str, dict[str, Any]]]:
+    if not isinstance(categories, dict):
+        return []
+    rows = [(str(category), counts) for category, counts in categories.items() if isinstance(counts, dict)]
+    rows.sort(
+        key=lambda row: (
+            int(row[1].get("accepted_count") or 0),
+            int(row[1].get("fulltext_candidate_count") or 0),
+            int(row[1].get("raw_count") or 0),
+        ),
+        reverse=True,
+    )
+    return rows[:5]
+
+
+def _join_clean(values: Any) -> str:
+    if not isinstance(values, list):
+        return ""
+    return ", ".join(_clean(value) for value in values if _clean(value))
+
+
+def _format_count_rows(rows: Any) -> str:
+    if not isinstance(rows, list):
+        return ""
+    return ", ".join(
+        f"{_clean(item.get('name'))}:{_clean(item.get('count'))}"
+        for item in rows
+        if isinstance(item, dict) and _clean(item.get("name"))
+    )
+
+
+def _render_economic_events(economic_events: dict[str, Any]) -> list[str]:
+    if not economic_events:
+        return ["### Past Events", "è©²å½“ã‚¤ãƒ™ãƒ³ãƒˆãªã—ã€‚", "", "### Upcoming Events", "è©²å½“ã‚¤ãƒ™ãƒ³ãƒˆãªã—ã€‚", "", "### Low Value Macro Summary", "- å–å¾—æ¸ˆã¿å€™è£œãªã—"]
+
+    lines: list[str] = ["### Past Events"]
+    lines.extend(_render_economic_event_items(economic_events.get("past_events", [])[:5], include_actual=True))
+    lines.extend(["", "### Upcoming Events"])
+    lines.extend(_render_economic_event_items(economic_events.get("upcoming_events", [])[:5], include_actual=False))
+    lines.extend(["", "### Low Value Macro Summary"])
+    summary = economic_events.get("low_value_macro_summary", [])
+    if summary:
+        for item in summary:
+            lines.append(f"- {item.get('source', '')}: count={item.get('count', '')}, reason={item.get('reason', '')}")
+    else:
+        lines.append("- ä½ä¾¡å€¤ãƒã‚¯ãƒ­å€™è£œãªã—")
+    return lines
+
+
+def _render_economic_event_items(items: list[dict[str, Any]], include_actual: bool) -> list[str]:
+    if not items:
+        return ["è©²å½“ã‚¤ãƒ™ãƒ³ãƒˆãªã—ã€‚"]
+    lines: list[str] = []
+    for item in items:
+        lines.extend(
+            [
+                "event_name: " + _clean(item.get("event_name")),
+                "event_date: " + _clean(item.get("event_date")),
+                "event_time: " + _clean(item.get("event_time")),
+                "event_window: " + _clean(item.get("event_window")),
+                "importance: " + _clean(item.get("importance")),
+                "event_impact_score: " + _clean(item.get("event_impact_score")),
+            ]
+        )
+        if include_actual:
+            lines.extend(
+                [
+                    "actual: " + _clean(item.get("actual")),
+                    "forecast: " + _clean(item.get("forecast")),
+                    "previous: " + _clean(item.get("previous")),
+                ]
+            )
+        lines.extend(
+            [
+                "market_expectation: " + _clean(item.get("market_expectation")),
+                "why_viewer_should_care: " + _clean(item.get("why_viewer_should_care")),
+                "driver_type: " + _clean(item.get("driver_type")),
+                "causal_bridge: " + _clean(item.get("causal_bridge")),
+                "filter_reason: " + _clean(item.get("filter_reason")),
+                "confidence: " + _clean(item.get("confidence")),
+                "source: " + _clean(item.get("source")),
+                "url: " + _clean(item.get("url")),
+                "",
+            ]
+        )
+    return lines[:-1]
+
+
+def _render_fixed_notables(items: list[dict[str, Any]]) -> list[str]:
+    if not items:
+        return ["- å–å¾—æ¸ˆã¿quoteã‹ã‚‰ã®å€™è£œãªã— / unknown"]
+    return [f"- {_clean(item.get('ticker'))}: {_fixed_reason(item)} / {_confidence_from_quote(item)}" for item in items]
+
+
+def _render_mover_notable(mover: dict[str, Any] | None) -> list[str]:
+    if not mover:
+        return ["- Market Moverså€™è£œãªã— / unknown"]
+    return [f"- {_clean(mover.get('ticker'))}: {_mover_relevance(mover)} / {_clean(mover.get('confidence'))}"]
+
+
+def _render_news_items(news_items: list[dict[str, Any]]) -> list[str]:
+    if not news_items:
+        return ["è©²å½“ãƒ‹ãƒ¥ãƒ¼ã‚¹å€™è£œãªã—ã€‚"]
+
+    lines: list[str] = []
+    for item in news_items:
+        related = _related_tickers(item)
+        lines.extend(
+            [
+                "title: " + _clean(item.get("title")),
+                "source: " + _clean(item.get("source")),
+                "published_at: " + _clean(item.get("published_at")),
+                "url: " + _clean(item.get("url")),
+                "snippet: " + _short_snippet(item.get("snippet") or item.get("title")),
+                "related_tickers: " + (", ".join(related) if related else ""),
+                "why_relevant: " + _news_relevance(item),
+                "confidence: " + _clean(item.get("confidence")),
+                "relevance_score: " + _clean(item.get("relevance_score")),
+                "driver_type: " + _clean(item.get("driver_type")),
+                "causal_bridge: " + _clean(item.get("causal_bridge")),
+                "filter_reason: " + _clean(item.get("filter_reason")),
+                "",
+            ]
+        )
+    return lines[:-1]
+
+
+def _render_article_review_targets(targets: dict[str, Any]) -> list[str]:
+    if not isinstance(targets, dict):
+        return [
+            "### Must Review",
+            "è©²å½“è¨˜äº‹ãªã—ã€‚",
+            "",
+            "### Optional Review",
+            "è©²å½“è¨˜äº‹ãªã—ã€‚",
+            "",
+            "### Usually Do Not Review",
+            "- Excluded / Low Value Summary ã¯é€šå¸¸ç¢ºèªä¸è¦ã€‚",
+        ]
+
+    lines: list[str] = ["### Must Review"]
+    lines.extend(_render_review_target_items(targets.get("must_review", [])))
+    lines.extend(["", "### Optional Review"])
+    lines.extend(_render_review_target_items(targets.get("optional_review", [])))
+    lines.extend(["", "### Usually Do Not Review"])
+    usually = targets.get("usually_do_not_review", [])
+    if usually:
+        for item in usually:
+            lines.append("- title: " + _clean(item.get("title")))
+            lines.append("  source: " + _clean(item.get("source")))
+            lines.append("  reason_to_review: " + _clean(item.get("reason_to_review")))
+            lines.append("  expected_use: " + _clean(item.get("expected_use")))
+    else:
+        lines.append("- none")
+    return lines
+
+
+def _render_review_target_items(items: list[dict[str, Any]]) -> list[str]:
+    if not items:
+        return ["è©²å½“è¨˜äº‹ãªã—ã€‚"]
+    lines: list[str] = []
+    for item in items:
+        related = [_clean(ticker) for ticker in item.get("related_tickers", []) if _clean(ticker)]
+        lines.extend(
+            [
+                "title: " + _clean(item.get("title")),
+                "source: " + _clean(item.get("source")),
+                "url: " + _clean(item.get("url")),
+                "reason_to_review: " + _clean(item.get("reason_to_review")),
+                "expected_use: " + _clean(item.get("expected_use")),
+                "related_tickers: " + (", ".join(related) if related else ""),
+                "",
+            ]
+        )
+    return lines[:-1]
+
+
+def _render_excluded_summary(items: list[dict[str, Any]]) -> list[str]:
+    if not items:
+        return ["- ä½é–¢é€£ãƒ‹ãƒ¥ãƒ¼ã‚¹ãªã—ã€‚"]
+    counts: dict[str, int] = {}
+    for item in items:
+        reason = _excluded_bucket(item)
+        counts[reason] = counts.get(reason, 0) + 1
+    return [f"- {reason}: {count}ä»¶" for reason, count in sorted(counts.items(), key=lambda row: row[0])]
+
+
+def _excluded_bucket(item: dict[str, Any]) -> str:
+    text = _item_text(item)
+    if _has_noise_keyword(text):
+        return "commodity agriculture / personal finance / unrelated noise. NASDAQãƒ»åŠå°ä½“ãƒ»AIæ ªã¨ã®å› æœã®æ©‹ãŒå¼±ã„ãŸã‚é™¤å¤–"
+    reason = _clean(item.get("filter_reason"))
+    if "earnings" in reason.lower():
+        return "unrelated earnings. å›ºå®šã‚¦ã‚©ãƒƒãƒãƒªã‚¹ãƒˆãƒ»Market Moversãƒ»å¤§å‹ãƒ†ãƒƒã‚¯ã¨ã®ç›´æ¥é–¢ä¿‚ãŒå¼±ã„ãŸã‚é™¤å¤–"
+    if "causal bridge" in reason.lower() or not _clean(item.get("causal_bridge")):
+        return "weak causal bridge. ä¸»ææ–™ã¨ã—ã¦ä½¿ã†ã«ã¯å› æœã®æ©‹ãŒå¼±ã„ãŸã‚é™¤å¤–"
+    return reason or "low explanatory value. æœã®NASDAQã‚«ãƒ•ã‚§ã®ä¸»ææ–™ã¨ã—ã¦ä½é–¢é€£"
+
+
+def _tier_news_items(items: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+    valid = [item for item in items if _has_required_news_fields(item) and not _is_blocked_news_url(item.get("url"))]
+    core = sorted(
+        [item for item in valid if item.get("driver_type") == "core_driver"],
+        key=lambda item: (item.get("selected_for_handoff") is True, item.get("relevance_score", 0), _clean(item.get("published_at"))),
+        reverse=True,
+    )[:8]
+    context = sorted(
+        [item for item in valid if item.get("driver_type") == "context_candidate"],
+        key=lambda item: (item.get("selected_for_handoff") is True, item.get("relevance_score", 0), _clean(item.get("published_at"))),
+        reverse=True,
+    )[:10]
+    low = [item for item in items if item.get("driver_type") == "low_value_or_irrelevant" or item not in valid]
+    return core, context, low
+
+
+def _has_required_news_fields(item: dict[str, Any]) -> bool:
+    return bool(item.get("title") and item.get("source") and item.get("published_at") and item.get("url") and (item.get("snippet") or item.get("title")))
+
+
+def _missing_lines(pack: dict[str, Any], movers: list[dict[str, Any]]) -> list[str]:
+    lines = []
+    market_data = pack.get("market_data", {})
+    for key, label in [
+        ("NASDAQ", "NASDAQç·åˆæŒ‡æ•°"),
+        ("SOX", "SOXæŒ‡æ•°"),
+        ("USDJPY", "ãƒ‰ãƒ«å††"),
+        ("QQQ", "QQQ"),
+        ("SMH", "SMH"),
+        ("SPY", "SPY"),
+        ("XLK", "XLK"),
+        ("VIX", "VIX"),
+        ("US2Y", "ç±³2å¹´é‡‘åˆ©"),
+    ]:
+        if market_data.get(key) is None:
+            lines.append(f"- {label}ã¯æœªå–å¾—")
+
+    if pack.get("macro", {}).get("DGS10"):
+        lines.append("- ç±³10å¹´é‡‘åˆ©ã¯FREDæœ€æ–°å–å¾—æ—¥ã®å€¤ã§ã‚ã‚Šã€å½“æ—¥ãƒªã‚¢ãƒ«ã‚¿ã‚¤ãƒ å€¤ã§ã¯ãªã„")
+    else:
+        lines.append("- ç±³10å¹´é‡‘åˆ© DGS10 ã¯æœªå–å¾—")
+
+    for item in pack.get("missing_data", []):
+        source = _clean(item.get("source"))
+        reason = _clean(item.get("reason"))
+        severity = _clean(item.get("severity"))
+        if movers and source == "Market Movers" and "Market Movers" in reason and "Premarket" not in reason and "After Hours" not in reason:
+            continue
+        if movers and source == "Longbridge" and "Market movers raw JSON is missing" in reason:
+            reason = "Longbridgeå€‹åˆ¥raw market_moversã¯æœªæŠ•å…¥ï¼ˆçµ±åˆMarket Moverså€™è£œã¯å–å¾—æ¸ˆã¿ï¼‰"
+        lines.append(f"- {source}: {reason} ({severity})")
+
+    return _dedupe_preserve_order(lines) or ["- ãªã—"]
+
+
+def _ordered_watchlist(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    by_ticker = {_clean(item.get("ticker")): item for item in items}
+    ordered: list[dict[str, Any]] = []
+    for ticker in WATCHLIST_ORDER:
+        item = dict(by_ticker.get(ticker, {"ticker": ticker, "source_symbol": f"{ticker}.US"}))
+        ordered.append(item)
+    return ordered
+
+
+def _select_fixed_notable(watchlist: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    quoted = [item for item in watchlist if _to_float(item.get("change_percent")) is not None]
+    quoted.sort(key=lambda item: abs(_to_float(item.get("change_percent")) or 0), reverse=True)
+    return quoted[:2]
+
+
+def _select_market_movers(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    filtered = [item for item in items if _include_mover(item)]
+    filtered.sort(key=_mover_score, reverse=True)
+    return filtered[:10]
+
+
+def _include_mover(item: dict[str, Any]) -> bool:
+    ticker = _clean(item.get("ticker")).upper().replace(".US", "")
+    price = _to_float(item.get("price"))
+    if price is not None and price < 5:
+        return False
+    text = _item_text(item)
+    if _has_noise_keyword(text):
+        return False
+    if ticker in SEMI_TICKERS:
+        return True
+    return _has_strong_tech_keyword(text) or _is_large_cap(item) or "nasdaq 100" in text or "sox component" in text
+
+
+def _mover_score(item: dict[str, Any]) -> float:
+    ticker = _clean(item.get("ticker")).upper().replace(".US", "")
+    category = _clean(item.get("category")).lower()
+    text = _item_text(item)
+    score = abs(_to_float(item.get("change_percent")) or 0)
+    if "sox component" in category:
+        score += 90
+    if "nasdaq 100" in category:
+        score += 80
+    if ticker in SEMI_TICKERS:
+        score += 70
+    if _has_strong_tech_keyword(text):
+        score += 40
+    if _is_large_cap(item):
+        score += 20
+    return score
+
+
+def _select_news_items(items: list[dict[str, Any]], movers: list[dict[str, Any]], target_date: str) -> list[dict[str, Any]]:
+    selected = [item for item in items if _include_news(item, target_date)]
+    mover_tickers = {_clean(mover.get("ticker")).upper().replace(".US", "") for mover in movers}
+    selected.sort(key=lambda item: _news_score(item, mover_tickers), reverse=True)
+    return selected[:12]
+
+
+def _include_news(item: dict[str, Any], target_date: str) -> bool:
+    if not item.get("published_at") or not item.get("url"):
+        return False
+    if not (item.get("snippet") or item.get("title")):
+        return False
+    if not _is_recent_news_date(item.get("published_at"), target_date):
+        return False
+    if _is_blocked_news_url(item.get("url")):
+        return False
+    text = _item_text(item)
+    if _has_noise_keyword(text) and not _has_strong_tech_keyword(text):
+        return False
+    return _has_strong_tech_keyword(text) or bool(_related_tickers(item)) or "market: nasdaq" in text or "theme: semiconductors" in text
+
+
+def _is_blocked_news_url(value: Any) -> bool:
+    url = _clean(value).lower()
+    if not url:
+        return True
+    blocked = (
+        "facebook.com",
+        "twitter.com",
+        "x.com/",
+        "linkedin.com/posts",
+        "reuters.com/plus",
+        "finance.yahoo.com/quote",
+        "/market-activity/stocks/",
+        "/quote/",
+    )
+    if any(marker in url for marker in blocked):
+        return True
+    return url.rstrip("/").endswith(("reuters.com", "cnbc.com", "marketwatch.com", "nasdaq.com", "finance.yahoo.com"))
+
+
+def _is_recent_news_date(value: Any, target_date: str = "") -> bool:
+    published = _parse_news_date(value)
+    if published is None:
+        return False
+    try:
+        target = datetime.strptime(target_date, "%Y-%m-%d").date() if target_date else datetime.now(timezone.utc).date()
+    except ValueError:
+        target = datetime.now(timezone.utc).date()
+    return target - timedelta(days=30) <= published <= target + timedelta(days=1)
+
+
+def _parse_news_date(value: Any):
+    text = _clean(value)
+    if not text:
+        return None
+    iso_text = text[:-1] + "+00:00" if text.endswith("Z") else text
+    try:
+        parsed = datetime.fromisoformat(iso_text)
+        return parsed.astimezone(timezone.utc).date() if parsed.tzinfo else parsed.date()
+    except ValueError:
+        pass
+    try:
+        parsed = parsedate_to_datetime(text)
+        return parsed.astimezone(timezone.utc).date() if parsed.tzinfo else parsed.date()
+    except (TypeError, ValueError, IndexError, OverflowError):
+        pass
+    for fmt in ("%Y-%m-%d", "%b %d, %Y", "%B %d, %Y", "%m/%d/%Y"):
+        try:
+            return datetime.strptime(text, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
+def _news_score(item: dict[str, Any], mover_tickers: set[str]) -> float:
+    text = _item_text(item)
+    score = 0.0
+    related = set(_related_tickers(item))
+    if related.intersection(WATCHLIST_ORDER):
+        score += 80
+    if related.intersection(mover_tickers):
+        score += 70
+    if "nasdaq" in text or "sox" in text:
+        score += 50
+    if "semiconductor" in text or "chip" in text or "memory" in text or "gpu" in text:
+        score += 45
+    if "data center" in text or "cloud" in text or "bond" in text:
+        score += 30
+    source_rank = {"Yahoo Finance": 8, "MarketWatch": 7, "NASDAQ": 7, "CNBC": 6, "SerpAPI": 3}
+    score += source_rank.get(_clean(item.get("source")), 0)
+    return score
+
+
+def _brief_quote_note(item: dict[str, Any]) -> str:
+    ticker = _clean(item.get("ticker")).upper()
+    change = _to_float(item.get("change_percent"))
+    if change is None:
+        return "æ•°å€¤æœªå–å¾—"
+    if abs(change) < 0.1:
+        return "æ¨ªã°ã„"
+    if ticker in {"NVDA", "AVGO", "TSM", "AMD"} and change <= -3:
+        return "åŠå°ä½“é–¢é€£ã¨ã—ã¦ä¸‹è½ãŒç›®ç«‹ã¤"
+    if ticker == "TSLA" and change <= -3:
+        return "EVé–¢é€£ã¨ã—ã¦å¼±ã„"
+    if change >= 3:
+        return "å¤§å‹ãƒ†ãƒƒã‚¯ã®ä¸­ã§ä¸Šæ˜‡ãŒç›®ç«‹ã¤"
+    if change > 0:
+        return "å°å¹…ä¸Šæ˜‡"
+    return "å°å¹…ä¸‹è½"
+
+
+def _fixed_reason(item: dict[str, Any]) -> str:
+    change = _to_float(item.get("change_percent"))
+    if change is None:
+        return "å›ºå®šã‚¦ã‚©ãƒƒãƒéŠ˜æŸ„ã ãŒæ•°å€¤æœªå–å¾—"
+    return f"å›ºå®šã‚¦ã‚©ãƒƒãƒéŠ˜æŸ„å†…ã§å¤‰å‹•ãŒç›®ç«‹ã¤ï¼ˆchange_percent={change:.2f}ï¼‰ã€‚å€‹åˆ¥ã®æ˜ç¢ºãªææ–™ã¯ç¢ºèªã§ãã¦ã„ã¾ã›ã‚“"
+
+
+def _confidence_from_quote(item: dict[str, Any]) -> str:
+    return "medium" if _to_float(item.get("change_percent")) is not None else "unknown"
+
+
+def _volume_info(item: dict[str, Any]) -> str:
+    volume = _to_float(item.get("volume"))
+    average = _to_float(item.get("average_volume"))
+    if volume is None and average is None:
+        return "æœªå–å¾—"
+    if volume is not None and average:
+        return f"volume={volume:.0f}, average_volume={average:.0f}, ratio={volume / average:.2f}"
+    if volume is not None:
+        return f"volume={volume:.0f}"
+    return f"average_volume={average:.0f}"
+
+
+def _mover_relevance(item: dict[str, Any]) -> str:
+    ticker = _clean(item.get("ticker")).upper().replace(".US", "")
+    category = _clean(item.get("category"))
+    reason = _clean(item.get("reason"))
+    if ticker in SEMI_TICKERS or "SOX" in category:
+        return f"{category}ã®åŠå°ä½“é–¢é€£å€™è£œã€‚{reason}"
+    if "Nasdaq 100" in category:
+        return f"Nasdaq 100é–¢é€£ã®Market Moverså€™è£œã€‚{reason}"
+    if _has_strong_tech_keyword(_item_text(item)):
+        return f"AI/ã‚¯ãƒ©ã‚¦ãƒ‰/å¤§å‹ãƒ†ãƒƒã‚¯é–¢é€£ã®Market Moverså€™è£œã€‚{reason}"
+    return reason or "Market Moverså€™è£œã€‚æ˜ç¢ºãªå€‹åˆ¥ææ–™ã¯ç¢ºèªã§ãã¦ã„ã¾ã›ã‚“"
+
+
+def _news_relevance(item: dict[str, Any]) -> str:
+    text = _item_text(item)
+    existing = _clean(item.get("why_relevant"))
+    related = _related_tickers(item)
+    if "semiconductor" in text or "chip" in text or "memory" in text or "gpu" in text or "samsung" in text:
+        return "åŠå°ä½“/AIã‚¤ãƒ³ãƒ•ãƒ©é–¢é€£ãƒ‹ãƒ¥ãƒ¼ã‚¹ã¨ã—ã¦NASDAQãƒ»SOXã®åœ°åˆã„ç¢ºèªã«æœ‰ç”¨"
+    if "nasdaq" in text:
+        return "NASDAQæŒ‡æ•°ã¨å¤§å‹ãƒ†ãƒƒã‚¯ã®åœ°åˆã„ææ–™"
+    if "cloud" in text or "data center" in text or "bond" in text:
+        return "AIãƒ»ã‚¯ãƒ©ã‚¦ãƒ‰æŠ•è³‡ã‚„è³‡é‡‘èª¿é”ã®æµã‚Œã‚’ç¢ºèªã™ã‚‹ææ–™"
+    if related:
+        return f"é–¢é€£éŠ˜æŸ„å€™è£œ: {', '.join(related)}"
+    return existing or "ãƒ‹ãƒ¥ãƒ¼ã‚¹ææ–™ã¨ã—ã¦ç¢ºèªå¯¾è±¡"
+
+
+def _related_tickers(item: dict[str, Any]) -> list[str]:
+    related = [_clean(ticker).upper().replace(".US", "") for ticker in item.get("related_tickers", []) if _clean(ticker)]
+    raw_text = _item_raw_text(item)
+    for ticker in WATCHLIST_ORDER + sorted(SEMI_TICKERS):
+        if _mentions_ticker(raw_text, ticker) and ticker not in related:
+            related.append(ticker)
+    return _dedupe_preserve_order([ticker for ticker in related if ticker])
+
+
+def _mentions_ticker(text: str, ticker: str) -> bool:
+    pattern = rf"(?<![A-Z0-9])\$?{re.escape(ticker)}(?:\.US)?(?![A-Z0-9])"
+    return re.search(pattern, text) is not None
+
+
+def _has_noise_keyword(text: str) -> bool:
+    return any(keyword in text for keyword in NEWS_EXCLUDE_KEYWORDS)
+
+
+def _has_strong_tech_keyword(text: str) -> bool:
+    return any(keyword in text for keyword in NEWS_STRONG_TECH_KEYWORDS)
+
+
+def _is_large_cap(item: dict[str, Any]) -> bool:
+    market_cap = _to_float(item.get("market_cap"))
+    return bool(market_cap and market_cap >= 10_000_000_000)
+
+
+def _item_text(item: dict[str, Any]) -> str:
+    return _item_raw_text(item).lower()
+
+
+def _item_raw_text(item: dict[str, Any]) -> str:
+    values = [
+        item.get("ticker"),
+        item.get("name"),
+        item.get("category"),
+        item.get("reason"),
+        item.get("title"),
+        item.get("snippet"),
+        item.get("why_relevant"),
+        item.get("url"),
+    ]
+    return " ".join(_clean(value) for value in values if value is not None)
+
+
+def _format_compact(value: Any) -> str:
+    if isinstance(value, dict):
+        return ", ".join(f"{key}={_clean(val)}" for key, val in value.items())
+    return _clean(value)
+
+
+def _short_snippet(value: Any, limit: int = 220) -> str:
+    text = " ".join(_clean(value).split())
+    if len(text) <= limit:
+        return text
+    return text[: limit - 1].rstrip() + "â€¦"
+
+
+def _to_float(value: Any) -> float | None:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    try:
+        return float(str(value).replace("%", "").replace(",", ""))
+    except ValueError:
+        return None
+
+
+def _clean(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value).strip()
+
+
+def _dedupe_preserve_order(items: list[str]) -> list[str]:
+    seen = set()
+    output = []
+    for item in items:
+        if item not in seen:
+            output.append(item)
+            seen.add(item)
+    return output
