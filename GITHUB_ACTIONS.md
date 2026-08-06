@@ -23,8 +23,9 @@ secrets in priority order:
 2. `FRED_API_KEY` - US interest-rate and macroeconomic data
 3. `SERPAPI_API_KEY` - supplementary web/news search (optional)
 4. `FMP_API_KEY` - supplementary market/company news (optional)
-5. `LONGBRIDGE_CLI_AUTH_B64` - Base64 of a ZIP archive containing the Longbridge `openapi` OAuth directory
-6. `LONGBRIDGE_SECRET_ROTATOR_TOKEN` - fine-grained PAT limited to this repository with `Secrets: Read and write`
+5. `LONGBRIDGE_OAUTH_CLIENT_ID` - portable OAuth public-client ID
+6. `LONGBRIDGE_OAUTH_REFRESH_TOKEN` - portable OAuth refresh token
+7. `LONGBRIDGE_SECRET_ROTATOR_TOKEN` - fine-grained PAT limited to this repository with `Secrets: Read and write`
 
 Add `SEC_USER_AGENT` as a repository **variable**, not a secret. It is not an
 API key; use an identifiable contact value such as:
@@ -33,63 +34,60 @@ API key; use an identifiable contact value such as:
 nasdaq-cafe/1.0 your-email@example.com
 ```
 
-Missing optional data-source keys are recorded in `missing_data`. If
-`LONGBRIDGE_CLI_AUTH_B64` is absent, the run continues and records Longbridge as
-missing. If a configured Longbridge OAuth session is invalid, bound to a live
-account, lacks the US OpenAPI quote package, or cannot reach an OpenAPI endpoint,
-the run fails before collection.
+Missing optional data-source keys are recorded in `missing_data`. If both
+portable Longbridge OAuth secrets are absent, the run continues and records
+Longbridge as missing. A partial, invalid, live-account, permission-deficient,
+or unreachable Longbridge configuration fails before collection.
 
-## Longbridge OAuth setup
+## Longbridge portable OAuth setup
 
-The workflow uses the official Longbridge CLI and OAuth session created by:
+Do not copy the local Longbridge CLI `cli-auth` file into GitHub. Longbridge CLI
+v0.26.0 encrypts that file with a machine-derived key, so a file created on a
+Windows PC cannot be decrypted by a GitHub-hosted Linux runner.
 
-```powershell
-longbridge auth login
-longbridge auth status --format json
-longbridge check --format json
-```
-
-The approved account channel is `lb_papertrading`. The workflow rejects a live
-account token before any market-data collection. The collector itself only
-allows the Longbridge commands `auth status` and `quote`; order, account,
-position, portfolio, and trade commands remain blocked.
-
-The CLI stores the actual OAuth token below the `tokens/<client_id>` directory.
-The whole `openapi` directory must therefore be archived; the `cli-auth` marker
-alone is not sufficient.
-
-On Windows, create the repository secret without printing the OAuth data:
+Run the repository bootstrap script once from PowerShell instead:
 
 ```powershell
-$source = "$env:USERPROFILE\.longbridge\openapi"
-$zip = "$env:TEMP\longbridge-openapi-auth.zip"
-
-if (-not (Test-Path "$source\tokens")) {
-    throw "Longbridge token directory was not found: $source\tokens"
-}
-if (Test-Path $zip) {
-    Remove-Item $zip -Force
-}
-
-tar.exe -a -c -f $zip -C $source .
-$encoded = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes($zip))
-Set-Clipboard -Value $encoded
-Remove-Item $zip -Force
-Write-Host "Longbridge OAuth archive was copied to the clipboard."
+powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap_longbridge_portable_oauth.ps1
 ```
 
-Store the clipboard value as `LONGBRIDGE_CLI_AUTH_B64`.
+The script performs the official OAuth 2.0 public-client flow with PKCE, opens
+the Longbridge authorization page, receives the localhost callback, exchanges
+the one-time authorization code, and writes these values directly through
+GitHub CLI without displaying them:
 
-The scheduled runner restores the archive to `$HOME/.longbridge/openapi`,
-requires at least one file under `tokens/<client_id>`, validates the token and
-paper account, and executes quote-only collection. It hashes the complete OAuth
-directory before and after collection. If Longbridge refreshes or rewrites the
-token files, the workflow creates a new ZIP archive and updates
-`LONGBRIDGE_CLI_AUTH_B64` using `LONGBRIDGE_SECRET_ROTATOR_TOKEN`.
-Secret values are never uploaded as artifacts or committed.
+- `LONGBRIDGE_OAUTH_CLIENT_ID`
+- `LONGBRIDGE_OAUTH_REFRESH_TOKEN`
+
+Prerequisites:
+
+```powershell
+gh auth status
+```
+
+The existing `LONGBRIDGE_SECRET_ROTATOR_TOKEN` remains required. The old
+`LONGBRIDGE_CLI_AUTH_B64` secret is unused and the bootstrap script removes it.
+
+## Scheduled refresh sequence
+
+Every run follows this order:
+
+1. Exchange `LONGBRIDGE_OAUTH_REFRESH_TOKEN` at the official OAuth token endpoint.
+2. Immediately persist the returned refresh token back to the repository secret.
+3. Create a plaintext CLI compatibility session only inside the ephemeral runner.
+4. Validate `lb_papertrading`, `US_QBBO_OpenAPI`, token status, and connectivity.
+5. Execute the quote-only collector.
+6. Delete temporary OAuth material with an `always()` cleanup step.
+
+Persisting the rotated refresh token before validation and collection avoids
+losing a single-use replacement token if a later step fails. Workflow
+concurrency is serialized so two jobs cannot refresh the same token at once.
+
+The collector itself permits only `auth status` and `quote`. Order, account,
+position, portfolio, balance, and trading commands remain blocked in code.
 
 Do not add `LONGBRIDGE_APP_KEY`, `LONGBRIDGE_APP_SECRET`, or
-`LONGBRIDGE_ACCESS_TOKEN`; this workflow uses OAuth, not the legacy API-key
+`LONGBRIDGE_ACCESS_TOKEN`; this workflow uses OAuth 2.0, not the legacy API-key
 credential path.
 
 ## Public repository note
