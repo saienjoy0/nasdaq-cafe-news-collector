@@ -64,6 +64,12 @@ jobs:
           test -n "${LONGBRIDGE_OAUTH_REFRESH_TOKEN:-}"
           test -n "${GH_TOKEN:-}"
 
+          # Verify repository-secret write access before the OAuth server can
+          # rotate and invalidate the currently stored refresh token.
+          echo "::add-mask::$LONGBRIDGE_OAUTH_REFRESH_TOKEN"
+          printf '%s' "$LONGBRIDGE_OAUTH_REFRESH_TOKEN" | \
+            gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+
           python scripts/prepare_longbridge_oauth_session.py > "$RUNNER_TEMP/oauth-safe-summary.json"
 
           next_refresh_token="$(cat "$LONGBRIDGE_NEXT_REFRESH_TOKEN_PATH")"
