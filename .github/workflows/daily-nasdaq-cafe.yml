@@ -22,6 +22,7 @@ permissions:
   contents: read
 
 concurrency:
+  # Refresh tokens may rotate. Never let two jobs refresh the same secret at once.
   group: daily-nasdaq-cafe
   cancel-in-progress: false
 
@@ -91,38 +92,50 @@ jobs:
           echo "binary=$longbridge_bin" >> "$GITHUB_OUTPUT"
           "$longbridge_bin" -V
 
-      - name: Restore and validate Longbridge OAuth session
+      - name: Refresh, persist, and validate portable Longbridge OAuth
         id: longbridge_auth
         shell: bash
         env:
-          LONGBRIDGE_CLI_AUTH_B64: ${{ secrets.LONGBRIDGE_CLI_AUTH_B64 }}
+          LONGBRIDGE_OAUTH_CLIENT_ID: ${{ secrets.LONGBRIDGE_OAUTH_CLIENT_ID }}
+          LONGBRIDGE_OAUTH_REFRESH_TOKEN: ${{ secrets.LONGBRIDGE_OAUTH_REFRESH_TOKEN }}
           LONGBRIDGE_BIN: ${{ steps.install_longbridge.outputs.binary }}
+          GH_TOKEN: ${{ secrets.LONGBRIDGE_SECRET_ROTATOR_TOKEN }}
         run: |
           set -euo pipefail
 
-          if [[ -z "${LONGBRIDGE_CLI_AUTH_B64:-}" ]]; then
+          if [[ -z "${LONGBRIDGE_OAUTH_CLIENT_ID:-}" && -z "${LONGBRIDGE_OAUTH_REFRESH_TOKEN:-}" ]]; then
             echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "Longbridge OAuth archive secret is not configured; collection will record Longbridge as missing."
+            echo "Portable Longbridge OAuth secrets are not configured; collection will record Longbridge as missing."
             exit 0
           fi
 
-          auth_dir="$HOME/.longbridge/openapi"
-          archive_path="$RUNNER_TEMP/longbridge-openapi-auth.zip"
-          rm -rf "$auth_dir"
-          mkdir -p "$auth_dir"
-          umask 077
-          printf '%s' "$LONGBRIDGE_CLI_AUTH_B64" | base64 --decode > "$archive_path"
-          unzip -q "$archive_path" -d "$auth_dir"
-          rm -f "$archive_path"
-          chmod -R go-rwx "$auth_dir"
-
-          if [[ ! -d "$auth_dir/tokens" ]] || ! find "$auth_dir/tokens" -type f -print -quit | grep -q .; then
-            echo "::error::Longbridge OAuth archive does not contain openapi/tokens/<client_id>."
+          if [[ -z "${LONGBRIDGE_OAUTH_CLIENT_ID:-}" || -z "${LONGBRIDGE_OAUTH_REFRESH_TOKEN:-}" ]]; then
+            echo "::error::Both LONGBRIDGE_OAUTH_CLIENT_ID and LONGBRIDGE_OAUTH_REFRESH_TOKEN are required."
             exit 1
           fi
 
-          before_sha="$({ find "$auth_dir" -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum; } | sha256sum | awk '{print $1}')"
-          echo "before_sha=$before_sha" >> "$GITHUB_OUTPUT"
+          if [[ -z "${GH_TOKEN:-}" ]]; then
+            echo "::error::LONGBRIDGE_SECRET_ROTATOR_TOKEN is required before refreshing OAuth."
+            exit 1
+          fi
+
+          next_refresh_path="$RUNNER_TEMP/longbridge-next-refresh-token"
+          export LONGBRIDGE_NEXT_REFRESH_TOKEN_PATH="$next_refresh_path"
+          python scripts/prepare_longbridge_oauth_session.py
+
+          if [[ ! -s "$next_refresh_path" ]]; then
+            echo "::error::Longbridge OAuth refresh did not produce a reusable refresh token."
+            exit 1
+          fi
+
+          # Persist a possibly rotated refresh token before any later network or
+          # collection step can fail. This makes the refresh operation crash-safe.
+          next_refresh_token="$(cat "$next_refresh_path")"
+          echo "::add-mask::$next_refresh_token"
+          printf '%s' "$next_refresh_token" | \
+            gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          rm -f "$next_refresh_path"
+          echo "Longbridge OAuth refresh token was persisted successfully."
 
           "$LONGBRIDGE_BIN" auth status --format json > "$RUNNER_TEMP/longbridge-auth-status.json"
           python scripts/validate_longbridge_auth_status.py "$RUNNER_TEMP/longbridge-auth-status.json"
@@ -154,41 +167,6 @@ jobs:
             --date "${{ steps.target.outputs.date }}" \
             "${refresh_args[@]}"
 
-      - name: Persist refreshed Longbridge OAuth session
-        if: ${{ steps.longbridge_auth.outputs.available == 'true' }}
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.LONGBRIDGE_SECRET_ROTATOR_TOKEN }}
-          BEFORE_SHA: ${{ steps.longbridge_auth.outputs.before_sha }}
-        run: |
-          set -euo pipefail
-          auth_dir="$HOME/.longbridge/openapi"
-
-          if [[ ! -d "$auth_dir/tokens" ]] || ! find "$auth_dir/tokens" -type f -print -quit | grep -q .; then
-            echo "::error::Longbridge OAuth token directory disappeared after collection."
-            exit 1
-          fi
-
-          after_sha="$({ find "$auth_dir" -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum; } | sha256sum | awk '{print $1}')"
-          if [[ "$after_sha" == "$BEFORE_SHA" ]]; then
-            echo "Longbridge OAuth session did not change; repository secret rotation is unnecessary."
-            exit 0
-          fi
-
-          if [[ -z "${GH_TOKEN:-}" ]]; then
-            echo "::error::Longbridge OAuth session changed, but LONGBRIDGE_SECRET_ROTATOR_TOKEN is not configured."
-            exit 1
-          fi
-
-          archive_path="$RUNNER_TEMP/longbridge-openapi-auth.zip"
-          rm -f "$archive_path"
-          (cd "$auth_dir" && zip -qr "$archive_path" .)
-          encoded="$(base64 -w 0 "$archive_path")"
-          echo "::add-mask::$encoded"
-          printf '%s' "$encoded" | gh secret set LONGBRIDGE_CLI_AUTH_B64 --repo "$GITHUB_REPOSITORY"
-          rm -f "$archive_path"
-          echo "Longbridge OAuth repository secret was rotated successfully."
-
       - name: Upload safe daily package
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
@@ -200,3 +178,12 @@ jobs:
             output/${{ steps.target.outputs.date }}/CHATGPT_HANDOFF_*.md
           if-no-files-found: error
           retention-days: 14
+
+      - name: Remove temporary Longbridge OAuth material
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          rm -rf "$HOME/.longbridge/openapi"
+          rm -f "$RUNNER_TEMP/longbridge-next-refresh-token"
+          rm -f "$RUNNER_TEMP/longbridge-auth-status.json"
+          rm -f "$RUNNER_TEMP/longbridge-check.json"
