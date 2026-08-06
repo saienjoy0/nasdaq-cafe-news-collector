@@ -34,7 +34,7 @@ function Set-RepositorySecret {
         [System.IO.File]::WriteAllText($temp, $Value, [System.Text.UTF8Encoding]::new($false))
         Get-Content -LiteralPath $temp -Raw | gh secret set $Name --repo $Repository
         if ($LASTEXITCODE -ne 0) {
-            throw "GitHub Secret $Name の登録に失敗しました。"
+            throw "Failed to set GitHub Secret: $Name"
         }
     }
     finally {
@@ -43,26 +43,26 @@ function Set-RepositorySecret {
 }
 
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) {
-    throw "GitHub CLI (gh) が見つかりません。先に gh をインストールしてください。"
+    throw "GitHub CLI (gh) was not found. Install it before running this script."
 }
 
 gh auth status | Out-Null
 if ($LASTEXITCODE -ne 0) {
-    throw "GitHub CLIへログインしていません。gh auth login を実行してください。"
+    throw "GitHub CLI is not authenticated. Run: gh auth login"
 }
 
 $oauthBase = "https://openapi.longbridge.com/oauth2"
 $redirectUri = "http://127.0.0.1:60355/callback/"
 
 $registrationBody = @{
-    client_name                 = "NASDAQ Cafe GitHub Actions"
-    redirect_uris               = @($redirectUri)
-    token_endpoint_auth_method  = "none"
-    grant_types                 = @("authorization_code", "refresh_token")
-    response_types              = @("code")
+    client_name                = "NASDAQ Cafe GitHub Actions"
+    redirect_uris              = @($redirectUri)
+    token_endpoint_auth_method = "none"
+    grant_types                = @("authorization_code", "refresh_token")
+    response_types             = @("code")
 } | ConvertTo-Json -Depth 5
 
-Write-Host "Longbridge OAuth clientを登録しています..."
+Write-Host "Registering a Longbridge OAuth public client..."
 $registration = Invoke-RestMethod `
     -Method Post `
     -Uri "$oauthBase/register" `
@@ -71,7 +71,7 @@ $registration = Invoke-RestMethod `
 
 $clientId = [string]$registration.client_id
 if ([string]::IsNullOrWhiteSpace($clientId)) {
-    throw "Longbridgeからclient_idが返りませんでした。"
+    throw "Longbridge did not return client_id."
 }
 
 $codeVerifier = New-RandomBase64Url 64
@@ -100,12 +100,13 @@ $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Loopba
 $client = $null
 try {
     $listener.Start()
-    Write-Host "ブラウザでLongbridge認証を開きます。認証を完了してください。"
+    Write-Host "Opening Longbridge authorization in the browser..."
+    Write-Host "Complete authorization within five minutes."
     Start-Process $authorizeUrl
 
     $acceptTask = $listener.AcceptTcpClientAsync()
     if (-not $acceptTask.Wait([TimeSpan]::FromMinutes(5))) {
-        throw "Longbridge認証の待機時間を超えました。もう一度実行してください。"
+        throw "Longbridge authorization timed out. Run the script again."
     }
 
     $client = $acceptTask.Result
@@ -124,10 +125,15 @@ try {
     }
 
     if ([string]::IsNullOrWhiteSpace($requestLine)) {
-        throw "Longbridge callbackを読み取れませんでした。"
+        throw "Longbridge callback request could not be read."
     }
 
-    $requestTarget = $requestLine.Split(' ')[1]
+    $parts = $requestLine.Split(' ')
+    if ($parts.Count -lt 2) {
+        throw "Longbridge callback request was malformed."
+    }
+
+    $requestTarget = $parts[1]
     $callbackUri = [Uri]("http://127.0.0.1:60355" + $requestTarget)
     Add-Type -AssemblyName System.Web
     $callbackQuery = [System.Web.HttpUtility]::ParseQueryString($callbackUri.Query)
@@ -157,13 +163,13 @@ try {
     $stream.Flush()
 
     if (-not [string]::IsNullOrWhiteSpace($oauthError)) {
-        throw "Longbridge認証が拒否されました: $oauthError"
+        throw "Longbridge authorization was rejected: $oauthError"
     }
     if ($returnedState -ne $state) {
-        throw "Longbridge OAuth stateが一致しません。処理を中止しました。"
+        throw "Longbridge OAuth state mismatch."
     }
     if ([string]::IsNullOrWhiteSpace($authorizationCode)) {
-        throw "Longbridge authorization codeが返りませんでした。"
+        throw "Longbridge did not return an authorization code."
     }
 }
 finally {
@@ -173,7 +179,7 @@ finally {
     $listener.Stop()
 }
 
-Write-Host "authorization codeをportable tokenへ交換しています..."
+Write-Host "Exchanging the authorization code for portable OAuth tokens..."
 $token = Invoke-RestMethod `
     -Method Post `
     -Uri "$oauthBase/token" `
@@ -189,18 +195,18 @@ $token = Invoke-RestMethod `
 $refreshToken = [string]$token.refresh_token
 $accessToken = [string]$token.access_token
 if ([string]::IsNullOrWhiteSpace($refreshToken) -or [string]::IsNullOrWhiteSpace($accessToken)) {
-    throw "Longbridge token responseにaccess_tokenまたはrefresh_tokenがありません。"
+    throw "Longbridge token response did not include access_token and refresh_token."
 }
 
-Write-Host "GitHub Repository Secretsへ保存しています..."
+Write-Host "Saving portable OAuth credentials to GitHub Repository Secrets..."
 Set-RepositorySecret -Name "LONGBRIDGE_OAUTH_CLIENT_ID" -Value $clientId
 Set-RepositorySecret -Name "LONGBRIDGE_OAUTH_REFRESH_TOKEN" -Value $refreshToken
 
 # The machine-bound CLI file is intentionally no longer used.
 gh secret delete LONGBRIDGE_CLI_AUTH_B64 --repo $Repository 2>$null
 
-Write-Host "portable OAuthの初回設定が完了しました。"
-Write-Host "登録先: $Repository"
-Write-Host "作成済みSecret: LONGBRIDGE_OAUTH_CLIENT_ID"
-Write-Host "作成済みSecret: LONGBRIDGE_OAUTH_REFRESH_TOKEN"
-Write-Host "既存のLONGBRIDGE_SECRET_ROTATOR_TOKENはそのまま使用します。"
+Write-Host "Portable Longbridge OAuth bootstrap completed."
+Write-Host "Repository: $Repository"
+Write-Host "Created: LONGBRIDGE_OAUTH_CLIENT_ID"
+Write-Host "Created: LONGBRIDGE_OAUTH_REFRESH_TOKEN"
+Write-Host "Existing LONGBRIDGE_SECRET_ROTATOR_TOKEN remains in use."
