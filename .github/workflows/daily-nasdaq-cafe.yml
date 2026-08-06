@@ -89,7 +89,7 @@ jobs:
 
           echo "$(dirname "$longbridge_bin")" >> "$GITHUB_PATH"
           echo "binary=$longbridge_bin" >> "$GITHUB_OUTPUT"
-          "$longbridge_bin" --version
+          "$longbridge_bin" -v
 
       - name: Restore and validate Longbridge OAuth session
         id: longbridge_auth
