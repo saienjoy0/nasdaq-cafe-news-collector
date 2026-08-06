@@ -99,8 +99,16 @@ jobs:
         run: |
           set -euo pipefail
 
-          dispatched_after="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          echo "dispatched_after=$dispatched_after" >> "$GITHUB_OUTPUT"
+          previous_run_id="$(
+            gh run list \
+              --repo "$GITHUB_REPOSITORY" \
+              --workflow "$TARGET_WORKFLOW" \
+              --event workflow_dispatch \
+              --branch main \
+              --limit 1 \
+              --json databaseId \
+              --jq '.[0].databaseId // 0'
+          )"
 
           gh workflow run "$TARGET_WORKFLOW" \
             --repo "$GITHUB_REPOSITORY" \
@@ -118,8 +126,8 @@ jobs:
                 --event workflow_dispatch \
                 --branch main \
                 --limit 20 \
-                --json databaseId,createdAt,url \
-                --jq ". | map(select(.createdAt >= \"$dispatched_after\")) | sort_by(.databaseId) | last // {}"
+                --json databaseId,url \
+                --jq ". | map(select(.databaseId > $previous_run_id)) | sort_by(.databaseId) | first // {}"
             )"
             child_run_id="$(printf '%s' "$run_json" | python -c 'import json,sys; print(json.load(sys.stdin).get("databaseId", ""))')"
             child_run_url="$(printf '%s' "$run_json" | python -c 'import json,sys; print(json.load(sys.stdin).get("url", ""))')"
@@ -218,3 +226,10 @@ jobs:
               --repo "$GITHUB_REPOSITORY" \
               --body-file "$result_path"
           fi
+
+      - name: Propagate collector failure
+        if: ${{ always() && steps.wait.outputs.conclusion != 'success' }}
+        shell: bash
+        run: |
+          echo "::error::The dispatched daily collector did not succeed."
+          exit 1
