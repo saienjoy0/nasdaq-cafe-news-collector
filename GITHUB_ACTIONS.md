@@ -23,7 +23,7 @@ secrets in priority order:
 2. `FRED_API_KEY` - US interest-rate and macroeconomic data
 3. `SERPAPI_API_KEY` - supplementary web/news search (optional)
 4. `FMP_API_KEY` - supplementary market/company news (optional)
-5. `LONGBRIDGE_CLI_AUTH_B64` - Base64 of the OAuth CLI session file
+5. `LONGBRIDGE_CLI_AUTH_B64` - Base64 of a ZIP archive containing the Longbridge `openapi` OAuth directory
 6. `LONGBRIDGE_SECRET_ROTATOR_TOKEN` - fine-grained PAT limited to this repository with `Secrets: Read and write`
 
 Add `SEC_USER_AGENT` as a repository **variable**, not a secret. It is not an
@@ -54,21 +54,38 @@ account token before any market-data collection. The collector itself only
 allows the Longbridge commands `auth status` and `quote`; order, account,
 position, portfolio, and trade commands remain blocked.
 
-On Windows, create the repository secret without printing the OAuth file:
+The CLI stores the actual OAuth token below the `tokens/<client_id>` directory.
+The whole `openapi` directory must therefore be archived; the `cli-auth` marker
+alone is not sufficient.
+
+On Windows, create the repository secret without printing the OAuth data:
 
 ```powershell
-$path = "$env:USERPROFILE\.longbridge\openapi\cli-auth"
-$encoded = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes($path))
+$source = "$env:USERPROFILE\.longbridge\openapi"
+$zip = "$env:TEMP\longbridge-openapi-auth.zip"
+
+if (-not (Test-Path "$source\tokens")) {
+    throw "Longbridge token directory was not found: $source\tokens"
+}
+if (Test-Path $zip) {
+    Remove-Item $zip -Force
+}
+
+tar.exe -a -c -f $zip -C $source .
+$encoded = [Convert]::ToBase64String([System.IO.File]::ReadAllBytes($zip))
 Set-Clipboard -Value $encoded
+Remove-Item $zip -Force
+Write-Host "Longbridge OAuth archive was copied to the clipboard."
 ```
 
 Store the clipboard value as `LONGBRIDGE_CLI_AUTH_B64`.
 
-The scheduled runner restores the file to
-`$HOME/.longbridge/openapi/cli-auth`, validates the token and paper account,
-executes quote-only collection, and compares the OAuth file hash before and
-after collection. If Longbridge refreshes or rewrites the session, the workflow
-updates `LONGBRIDGE_CLI_AUTH_B64` using `LONGBRIDGE_SECRET_ROTATOR_TOKEN`.
+The scheduled runner restores the archive to `$HOME/.longbridge/openapi`,
+requires at least one file under `tokens/<client_id>`, validates the token and
+paper account, and executes quote-only collection. It hashes the complete OAuth
+directory before and after collection. If Longbridge refreshes or rewrites the
+token files, the workflow creates a new ZIP archive and updates
+`LONGBRIDGE_CLI_AUTH_B64` using `LONGBRIDGE_SECRET_ROTATOR_TOKEN`.
 Secret values are never uploaded as artifacts or committed.
 
 Do not add `LONGBRIDGE_APP_KEY`, `LONGBRIDGE_APP_SECRET`, or
