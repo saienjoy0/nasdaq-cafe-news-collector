@@ -1,0 +1,235 @@
+name: ChatGPT NASDAQ Cafe collection request
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+
+concurrency:
+  group: chatgpt-nasdaq-cafe-collection
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    if: >-
+      github.event.issue.user.login == github.repository_owner &&
+      github.event.issue.author_association == 'OWNER' &&
+      startsWith(github.event.issue.title, '[NASDAQ Cafe Collect]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE_NUMBER: ${{ github.event.issue.number }}
+      ISSUE_BODY: ${{ github.event.issue.body }}
+      TARGET_WORKFLOW: daily-nasdaq-cafe.yml
+
+    steps:
+      - name: Parse and validate collection request
+        id: request
+        shell: bash
+        run: |
+          python - <<'PY'
+          from __future__ import annotations
+
+          import os
+          import re
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+
+          body = os.environ.get("ISSUE_BODY", "")
+          marker = "<!-- nasdaq-cafe-collection-request -->"
+          if marker not in body:
+              raise SystemExit("Issue request marker is missing.")
+
+          date_match = re.search(
+              r"(?m)^\s*date:\s*(today|\d{4}-\d{2}-\d{2})\s*$",
+              body,
+          )
+          refresh_match = re.search(
+              r"(?mi)^\s*refresh:\s*(true|false)\s*$",
+              body,
+          )
+          if date_match is None:
+              raise SystemExit("Issue request must contain date: today or YYYY-MM-DD.")
+          if refresh_match is None:
+              raise SystemExit("Issue request must contain refresh: true or false.")
+
+          target_date = date_match.group(1)
+          refresh = refresh_match.group(1).lower()
+          if target_date == "today":
+              target_date = datetime.now(ZoneInfo("Asia/Tokyo")).date().isoformat()
+          else:
+              try:
+                  target_date = datetime.strptime(target_date, "%Y-%m-%d").date().isoformat()
+              except ValueError as exc:
+                  raise SystemExit("Target date must be today or YYYY-MM-DD.") from exc
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"date={target_date}\n")
+              output.write(f"refresh={refresh}\n")
+
+          print(f"Target date: {target_date}")
+          print(f"Refresh: {refresh}")
+          PY
+
+      - name: Mark request as accepted
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh label create chatgpt-collect \
+            --repo "$GITHUB_REPOSITORY" \
+            --color "1D76DB" \
+            --description "Authorized ChatGPT collection request" \
+            --force
+          gh issue edit "$ISSUE_NUMBER" \
+            --repo "$GITHUB_REPOSITORY" \
+            --add-label "chatgpt-collect"
+
+      - name: Dispatch existing daily collector
+        id: child
+        shell: bash
+        env:
+          TARGET_DATE: ${{ steps.request.outputs.date }}
+          REFRESH: ${{ steps.request.outputs.refresh }}
+        run: |
+          set -euo pipefail
+
+          previous_run_id="$(
+            gh run list \
+              --repo "$GITHUB_REPOSITORY" \
+              --workflow "$TARGET_WORKFLOW" \
+              --event workflow_dispatch \
+              --branch main \
+              --limit 1 \
+              --json databaseId \
+              --jq '.[0].databaseId // 0'
+          )"
+
+          gh workflow run "$TARGET_WORKFLOW" \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main \
+            -f date="$TARGET_DATE" \
+            -f refresh="$REFRESH"
+
+          child_run_id=""
+          child_run_url=""
+          for _ in $(seq 1 60); do
+            run_json="$(
+              gh run list \
+                --repo "$GITHUB_REPOSITORY" \
+                --workflow "$TARGET_WORKFLOW" \
+                --event workflow_dispatch \
+                --branch main \
+                --limit 20 \
+                --json databaseId,url \
+                --jq ". | map(select(.databaseId > $previous_run_id)) | sort_by(.databaseId) | first // {}"
+            )"
+            child_run_id="$(printf '%s' "$run_json" | python -c 'import json,sys; print(json.load(sys.stdin).get("databaseId", ""))')"
+            child_run_url="$(printf '%s' "$run_json" | python -c 'import json,sys; print(json.load(sys.stdin).get("url", ""))')"
+            if [[ -n "$child_run_id" ]]; then
+              break
+            fi
+            sleep 5
+          done
+
+          if [[ -z "$child_run_id" ]]; then
+            echo "::error::Dispatched workflow run could not be located."
+            exit 1
+          fi
+
+          echo "run_id=$child_run_id" >> "$GITHUB_OUTPUT"
+          echo "run_url=$child_run_url" >> "$GITHUB_OUTPUT"
+          echo "Child run: $child_run_url"
+
+      - name: Wait for collector and capture result
+        id: wait
+        shell: bash
+        env:
+          CHILD_RUN_ID: ${{ steps.child.outputs.run_id }}
+        run: |
+          set +e
+          gh run watch "$CHILD_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --exit-status
+          watch_status=$?
+          set -e
+
+          conclusion="$(
+            gh run view "$CHILD_RUN_ID" \
+              --repo "$GITHUB_REPOSITORY" \
+              --json conclusion \
+              --jq '.conclusion // "unknown"'
+          )"
+          echo "conclusion=$conclusion" >> "$GITHUB_OUTPUT"
+          echo "watch_status=$watch_status" >> "$GITHUB_OUTPUT"
+
+      - name: Report request result
+        if: ${{ always() }}
+        shell: bash
+        env:
+          TARGET_DATE: ${{ steps.request.outputs.date }}
+          CHILD_RUN_ID: ${{ steps.child.outputs.run_id }}
+          CHILD_RUN_URL: ${{ steps.child.outputs.run_url }}
+          CHILD_CONCLUSION: ${{ steps.wait.outputs.conclusion }}
+        run: |
+          set -euo pipefail
+
+          target_date="${TARGET_DATE:-unknown}"
+          child_run_id="${CHILD_RUN_ID:-unknown}"
+          child_run_url="${CHILD_RUN_URL:-https://github.com/$GITHUB_REPOSITORY/actions}"
+          conclusion="${CHILD_CONCLUSION:-failure}"
+          result_path="$RUNNER_TEMP/nasdaq-cafe-collection-result.md"
+
+          if [[ "$conclusion" == "success" ]]; then
+            cat > "$result_path" <<EOF
+          <!-- nasdaq-cafe-collection-result -->
+
+          status: success
+          date: $target_date
+          run_id: $child_run_id
+          artifact_name: nasdaq-cafe-$target_date
+          run_url: $child_run_url
+          EOF
+
+            gh issue comment "$ISSUE_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --body-file "$result_path"
+            gh issue close "$ISSUE_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --reason completed
+          else
+            gh label create chatgpt-collect-failed \
+              --repo "$GITHUB_REPOSITORY" \
+              --color "D73A4A" \
+              --description "ChatGPT collection request failed" \
+              --force
+            gh issue edit "$ISSUE_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --add-label "chatgpt-collect-failed"
+
+            cat > "$result_path" <<EOF
+          <!-- nasdaq-cafe-collection-result -->
+
+          status: failure
+          date: $target_date
+          run_id: $child_run_id
+          artifact_name: unavailable
+          run_url: $child_run_url
+          EOF
+
+            gh issue comment "$ISSUE_NUMBER" \
+              --repo "$GITHUB_REPOSITORY" \
+              --body-file "$result_path"
+          fi
+
+      - name: Propagate collector failure
+        if: ${{ always() && steps.wait.outputs.conclusion != 'success' }}
+        shell: bash
+        run: |
+          echo "::error::The dispatched daily collector did not succeed."
+          exit 1
