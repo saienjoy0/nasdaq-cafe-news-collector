@@ -1,12 +1,6 @@
 name: Daily NASDAQ Cafe collection
 
 on:
-  push:
-    branches:
-      - feat/longbridge-oauth-actions
-  pull_request:
-    branches:
-      - main
   schedule:
     # 07:17 Asia/Tokyo (22:17 UTC on the previous day).
     # Avoid the top of the hour, when scheduled Actions are more likely to be delayed.
