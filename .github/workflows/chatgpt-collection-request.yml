@@ -36,6 +36,8 @@ jobs:
           python - <<'PY'
           from __future__ import annotations
 
+          import base64
+          import json
           import os
           import re
           from datetime import datetime
@@ -54,6 +56,10 @@ jobs:
               r"(?mi)^\s*refresh:\s*(true|false)\s*$",
               body,
           )
+          mode_match = re.search(
+              r"(?mi)^\s*mode:\s*(broad|followup)\s*$",
+              body,
+          )
           if date_match is None:
               raise SystemExit("Issue request must contain date: today or YYYY-MM-DD.")
           if refresh_match is None:
@@ -61,6 +67,7 @@ jobs:
 
           target_date = date_match.group(1)
           refresh = refresh_match.group(1).lower()
+          mode = (mode_match.group(1).lower() if mode_match else "broad")
           if target_date == "today":
               target_date = datetime.now(ZoneInfo("Asia/Tokyo")).date().isoformat()
           else:
@@ -69,12 +76,63 @@ jobs:
               except ValueError as exc:
                   raise SystemExit("Target date must be today or YYYY-MM-DD.") from exc
 
+          request_json_b64 = ""
+          wave_padded = ""
+          if mode == "followup":
+              followup_match = re.search(
+                  r"<!-- nasdaq-cafe-research-acquisition-request -->\s*```json\s*(\{.*?\})\s*```",
+                  body,
+                  flags=re.IGNORECASE | re.DOTALL,
+              )
+              if followup_match is None:
+                  raise SystemExit("Follow-up request JSON block is missing.")
+              raw_json = followup_match.group(1)
+              if len(raw_json.encode("utf-8")) > 48_000:
+                  raise SystemExit("Follow-up request JSON is too large.")
+              try:
+                  request = json.loads(raw_json)
+              except json.JSONDecodeError as exc:
+                  raise SystemExit(f"Follow-up request JSON is invalid: {exc}") from exc
+              if not isinstance(request, dict):
+                  raise SystemExit("Follow-up request root must be an object.")
+              if request.get("contractVersion") != "1.0.0":
+                  raise SystemExit("Follow-up contractVersion must be 1.0.0.")
+              if request.get("episodeDate") != target_date:
+                  raise SystemExit("Follow-up episodeDate must match issue date.")
+              wave = request.get("wave")
+              if not isinstance(wave, int) or isinstance(wave, bool) or wave not in {1, 2}:
+                  raise SystemExit("Follow-up wave must be 1 or 2.")
+              requests = request.get("requests")
+              if not isinstance(requests, list) or not 1 <= len(requests) <= 12:
+                  raise SystemExit("Follow-up requests must contain 1 to 12 entries.")
+              request_json_b64 = base64.b64encode(
+                  json.dumps(
+                      request,
+                      ensure_ascii=False,
+                      separators=(",", ":"),
+                      sort_keys=True,
+                  ).encode("utf-8")
+              ).decode("ascii")
+              wave_padded = f"{wave:02d}"
+
+          artifact_name = (
+              f"nasdaq-cafe-{target_date}"
+              if mode == "broad"
+              else f"nasdaq-cafe-followup-{target_date}-w{wave_padded}"
+          )
+
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
               output.write(f"date={target_date}\n")
               output.write(f"refresh={refresh}\n")
+              output.write(f"mode={mode}\n")
+              output.write(f"wave={wave_padded}\n")
+              output.write(f"artifact_name={artifact_name}\n")
+              output.write(f"request_json_b64={request_json_b64}\n")
 
           print(f"Target date: {target_date}")
           print(f"Refresh: {refresh}")
+          print(f"Mode: {mode}")
+          print(f"Artifact: {artifact_name}")
           PY
 
       - name: Mark request as accepted
@@ -96,6 +154,8 @@ jobs:
         env:
           TARGET_DATE: ${{ steps.request.outputs.date }}
           REFRESH: ${{ steps.request.outputs.refresh }}
+          MODE: ${{ steps.request.outputs.mode }}
+          REQUEST_JSON_B64: ${{ steps.request.outputs.request_json_b64 }}
         run: |
           set -euo pipefail
 
@@ -114,7 +174,9 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --ref main \
             -f date="$TARGET_DATE" \
-            -f refresh="$REFRESH"
+            -f refresh="$REFRESH" \
+            -f mode="$MODE" \
+            -f request_json_b64="$REQUEST_JSON_B64"
 
           child_run_id=""
           child_run_url=""
@@ -173,6 +235,9 @@ jobs:
         shell: bash
         env:
           TARGET_DATE: ${{ steps.request.outputs.date }}
+          MODE: ${{ steps.request.outputs.mode }}
+          WAVE: ${{ steps.request.outputs.wave }}
+          ARTIFACT_NAME: ${{ steps.request.outputs.artifact_name }}
           CHILD_RUN_ID: ${{ steps.child.outputs.run_id }}
           CHILD_RUN_URL: ${{ steps.child.outputs.run_url }}
           CHILD_CONCLUSION: ${{ steps.wait.outputs.conclusion }}
@@ -180,6 +245,9 @@ jobs:
           set -euo pipefail
 
           target_date="${TARGET_DATE:-unknown}"
+          mode="${MODE:-unknown}"
+          wave="${WAVE:-}"
+          artifact_name="${ARTIFACT_NAME:-unavailable}"
           child_run_id="${CHILD_RUN_ID:-unknown}"
           child_run_url="${CHILD_RUN_URL:-https://github.com/$GITHUB_REPOSITORY/actions}"
           conclusion="${CHILD_CONCLUSION:-failure}"
@@ -191,8 +259,10 @@ jobs:
 
           status: success
           date: $target_date
+          mode: $mode
+          wave: $wave
           run_id: $child_run_id
-          artifact_name: nasdaq-cafe-$target_date
+          artifact_name: $artifact_name
           run_url: $child_run_url
           EOF
 
@@ -217,6 +287,8 @@ jobs:
 
           status: failure
           date: $target_date
+          mode: $mode
+          wave: $wave
           run_id: $child_run_id
           artifact_name: unavailable
           run_url: $child_run_url
