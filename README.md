@@ -4,6 +4,8 @@
 
 ## 日次実行
 
+通常の広域収集:
+
 ```powershell
 python -m nasdaq_cafe.run collect --date today
 ```
@@ -27,15 +29,38 @@ python -m nasdaq_cafe.run fetch-url "https://example.com/article" --date 2026-07
 python -m nasdaq_cafe.run retry-failed --date 2026-07-10
 ```
 
+Causal Researchがmaterial evidence gapを特定した場合だけ、別途作成された厳格なrequest JSONを使ってbounded follow-upを実行できます。
+
+```powershell
+python -m nasdaq_cafe.research_acquisition `
+  --date 2026-08-06 `
+  --request research_acquisition_request.json
+```
+
+Collectorはそのrequestを機械的に実行するだけで、主役、比較銘柄、Expected / Actual / Gap、因果、NASDAQへの波及を判断しません。
+
 ## 市場データ経路
 
 - Longbridge CLI OAuth: NASDAQ、ETF、大型テックなどのQuote取得
+- Longbridge CLI `intraday`: Causal Researchが明示要求したUS銘柄・ETFの1分時系列
 - FRED: 米10年債などのマクロ系列
 - FMP: 補助的な企業・市場データ
 - SEC EDGAR・企業IR: 公式開示
 - Tavily・SerpAPI・RSS: ニュース候補と本文取得
 
-Longbridgeはペーパー口座のOAuthセッションだけを許可します。collectorが実行できるLongbridgeコマンドは`auth status`と`quote`だけで、注文、残高、ポジション、Portfolio、Trade APIはコード上で拒否します。GitHub-hosted Actionsでは、ローカルCLIのmachine-bound認証ファイルをコピーせず、portableなOAuth client IDとrefresh tokenから実行ごとに一時セッションを生成します。初回設定と自動更新については`GITHUB_ACTIONS.md`を参照してください。
+LongbridgeはGitHub Actions本番経路でペーパー口座のOAuthセッションを検証します。collectorが実行できるLongbridgeコマンドはread-onlyの`auth status`、`quote`、`intraday`だけで、注文、残高、ポジション、Portfolio、Trade APIはコード上で拒否します。GitHub-hosted Actionsでは、ローカルCLIのmachine-bound認証ファイルをコピーせず、portableなOAuth client IDとrefresh tokenから実行ごとに一時セッションを生成します。初回設定と自動更新については`GITHUB_ACTIONS.md`を参照してください。
+
+通常のBroad Collectionではこれまでの固定ウォッチリストを維持します。Follow-upでは、ChatGPT/Causal Researchがmaterialな比較・時系列確認に必要と判断した場合に限り、`PLTR.US`、`MU.US`、`ARM.US`、`ORCL.US`など固定リスト外のUS symbolも明示指定できます。Collector自身が追加銘柄を推測することはありません。
+
+Follow-up request v1で許可するのは次だけです。
+
+```text
+market_intraday
+market_quote
+exact_url_archive
+```
+
+通常はwave 1のみ。wave-1証拠によって新しいmaterial testが必要になった場合のみwave 2を許可し、wave 3は拒否します。不足した証拠をCollectorが推論で埋めることはありません。
 
 ## Raw Archive
 
@@ -72,6 +97,18 @@ output/YYYY-MM-DD/CHATGPT_FULLTEXT_HANDOFF_YYYY-MM-DD.md
 output/latest/chatgpt_fulltext_handoff.md
 ```
 
+Follow-up出力:
+
+```text
+output/YYYY-MM-DD/followup/wave-NN/research_acquisition_request.json
+output/YYYY-MM-DD/followup/wave-NN/research_acquisition_result.json
+output/YYYY-MM-DD/followup/wave-NN/followup_manifest.json
+output/YYYY-MM-DD/followup/wave-NN/<request evidence>.json
+output/YYYY-MM-DD/raw/followup/wave-NN/<raw provider data>.json
+```
+
+1分時系列はprovider rawを保存した上で、下流のFinancial Visual契約へ渡せる`precision: verified-intraday-series`へ正規化します。これは時系列の確認材料であり、ニュースと値動きの因果を自動確定するものではありません。
+
 通常出力、RSS/Search raw、READMEには記事本文をコピーしません。
 
 ## 設定
@@ -106,4 +143,5 @@ Raw Archiveの主な保護設定:
 - paywall、login、CAPTCHAの回避
 - OpenAI API、n8n
 - Trade API、Order API、Positions、Account balance、Portfolio、自動売買
+- Collectorによる主役・因果・Expected / Actual / Gapの判断
 - Codex/PythonによるYouTube台本、要約、投資推奨の生成
