@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import ipaddress
 import json
 import re
 import sys
@@ -35,6 +36,7 @@ REQUEST_STATUSES = {
 SYMBOL_RE = re.compile(r"^(?:[A-Z][A-Z0-9.-]{0,20}|\.[A-Z0-9]{1,12})\.US$")
 REQUEST_ID_RE = re.compile(r"^RA-[A-Z0-9-]{1,32}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+LOCAL_HOST_SUFFIXES = (".localhost", ".local", ".internal")
 
 
 class ResearchAcquisitionError(ValueError):
@@ -291,6 +293,18 @@ def validate_exact_url(value: Any) -> str:
         raise ResearchAcquisitionError("URL must be an absolute http(s) URL")
     if parsed.username or parsed.password:
         raise ResearchAcquisitionError("URL credentials are forbidden")
+    hostname = (parsed.hostname or "").strip().lower()
+    if not hostname:
+        raise ResearchAcquisitionError("URL hostname is missing")
+    if hostname == "localhost" or hostname.endswith(LOCAL_HOST_SUFFIXES):
+        raise ResearchAcquisitionError("local/private hostnames are forbidden")
+    candidate = hostname.strip("[]")
+    try:
+        address = ipaddress.ip_address(candidate)
+    except ValueError:
+        address = None
+    if address is not None and not address.is_global:
+        raise ResearchAcquisitionError("non-public IP addresses are forbidden")
     return url
 
 
