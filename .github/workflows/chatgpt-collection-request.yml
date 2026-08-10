@@ -230,6 +230,42 @@ jobs:
           echo "conclusion=$conclusion" >> "$GITHUB_OUTPUT"
           echo "watch_status=$watch_status" >> "$GITHUB_OUTPUT"
 
+      - name: Read follow-up acquisition status
+        id: acquisition
+        if: ${{ always() && steps.request.outputs.mode == 'followup' && steps.wait.outputs.conclusion == 'success' }}
+        shell: bash
+        env:
+          CHILD_RUN_ID: ${{ steps.child.outputs.run_id }}
+          ARTIFACT_NAME: ${{ steps.request.outputs.artifact_name }}
+        run: |
+          set -euo pipefail
+          destination="$RUNNER_TEMP/nasdaq-cafe-followup-result"
+          rm -rf "$destination"
+          mkdir -p "$destination"
+          gh run download "$CHILD_RUN_ID" \
+            --repo "$GITHUB_REPOSITORY" \
+            --name "$ARTIFACT_NAME" \
+            --dir "$destination"
+          result_path="$(find "$destination" -type f -name research_acquisition_result.json -print -quit)"
+          if [[ -z "$result_path" ]]; then
+            echo "::error::Follow-up artifact did not contain research_acquisition_result.json."
+            exit 1
+          fi
+          acquisition_status="$(python - "$result_path" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          value = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+          status = value.get("status")
+          if status not in {"success", "partial", "unavailable"}:
+              raise SystemExit(f"Invalid acquisition status: {status!r}")
+          print(status)
+          PY
+          )"
+          echo "status=$acquisition_status" >> "$GITHUB_OUTPUT"
+          echo "Follow-up acquisition status: $acquisition_status"
+
       - name: Report request result
         if: ${{ always() }}
         shell: bash
@@ -241,6 +277,7 @@ jobs:
           CHILD_RUN_ID: ${{ steps.child.outputs.run_id }}
           CHILD_RUN_URL: ${{ steps.child.outputs.run_url }}
           CHILD_CONCLUSION: ${{ steps.wait.outputs.conclusion }}
+          ACQUISITION_STATUS: ${{ steps.acquisition.outputs.status }}
         run: |
           set -euo pipefail
 
@@ -251,13 +288,25 @@ jobs:
           child_run_id="${CHILD_RUN_ID:-unknown}"
           child_run_url="${CHILD_RUN_URL:-https://github.com/$GITHUB_REPOSITORY/actions}"
           conclusion="${CHILD_CONCLUSION:-failure}"
+          acquisition_status="${ACQUISITION_STATUS:-not-applicable}"
           result_path="$RUNNER_TEMP/nasdaq-cafe-collection-result.md"
 
           if [[ "$conclusion" == "success" ]]; then
+            reported_status="success"
+            if [[ "$mode" == "followup" ]]; then
+              if [[ "$acquisition_status" == "success" || "$acquisition_status" == "partial" || "$acquisition_status" == "unavailable" ]]; then
+                reported_status="$acquisition_status"
+              else
+                reported_status="failure"
+              fi
+            fi
+
             cat > "$result_path" <<EOF
           <!-- nasdaq-cafe-collection-result -->
 
-          status: success
+          status: $reported_status
+          workflow_status: $conclusion
+          acquisition_status: $acquisition_status
           date: $target_date
           mode: $mode
           wave: $wave
@@ -269,6 +318,30 @@ jobs:
             gh issue comment "$ISSUE_NUMBER" \
               --repo "$GITHUB_REPOSITORY" \
               --body-file "$result_path"
+
+            if [[ "$reported_status" == "failure" ]]; then
+              gh label create chatgpt-collect-failed \
+                --repo "$GITHUB_REPOSITORY" \
+                --color "D73A4A" \
+                --description "ChatGPT collection request failed" \
+                --force
+              gh issue edit "$ISSUE_NUMBER" \
+                --repo "$GITHUB_REPOSITORY" \
+                --add-label "chatgpt-collect-failed"
+              exit 1
+            fi
+
+            if [[ "$reported_status" == "unavailable" ]]; then
+              gh label create chatgpt-collect-unavailable \
+                --repo "$GITHUB_REPOSITORY" \
+                --color "FBCA04" \
+                --description "Collection completed but requested evidence was unavailable" \
+                --force
+              gh issue edit "$ISSUE_NUMBER" \
+                --repo "$GITHUB_REPOSITORY" \
+                --add-label "chatgpt-collect-unavailable"
+            fi
+
             gh issue close "$ISSUE_NUMBER" \
               --repo "$GITHUB_REPOSITORY" \
               --reason completed
@@ -286,6 +359,8 @@ jobs:
           <!-- nasdaq-cafe-collection-result -->
 
           status: failure
+          workflow_status: $conclusion
+          acquisition_status: unavailable
           date: $target_date
           mode: $mode
           wave: $wave
