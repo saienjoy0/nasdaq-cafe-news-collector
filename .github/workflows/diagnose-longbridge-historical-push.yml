@@ -1,0 +1,220 @@
+name: Diagnose Longbridge historical intraday on marker push
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/diagnostics/longbridge-historical-trigger.txt'
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: diagnose-longbridge-historical-push
+  cancel-in-progress: false
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      LONGBRIDGE_OAUTH_CLIENT_ID: ${{ secrets.LONGBRIDGE_OAUTH_CLIENT_ID }}
+      LONGBRIDGE_OAUTH_REFRESH_TOKEN: ${{ secrets.LONGBRIDGE_OAUTH_REFRESH_TOKEN }}
+      SYMBOL: QQQ.US
+      MARKET_DATE: '2026-08-07'
+      MARKET_DATE_COMPACT: '20260807'
+      ISSUE_NUMBER: '11'
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12'
+
+      - name: Install Longbridge CLI
+        id: install_longbridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL https://open.longbridge.com/longbridge/longbridge-terminal/install | sh
+          longbridge_bin="$(command -v longbridge || true)"
+          if [[ -z "$longbridge_bin" ]]; then
+            for candidate in "$HOME/.local/bin/longbridge" "$HOME/bin/longbridge" "/usr/local/bin/longbridge"; do
+              if [[ -x "$candidate" ]]; then
+                longbridge_bin="$candidate"
+                break
+              fi
+            done
+          fi
+          if [[ -z "$longbridge_bin" ]]; then
+            echo '::error::Longbridge CLI executable was not found.'
+            exit 1
+          fi
+          echo "$(dirname "$longbridge_bin")" >> "$GITHUB_PATH"
+          echo "binary=$longbridge_bin" >> "$GITHUB_OUTPUT"
+          "$longbridge_bin" -V
+
+      - name: Prepare portable OAuth session
+        shell: bash
+        env:
+          LONGBRIDGE_BIN: ${{ steps.install_longbridge.outputs.binary }}
+          ROTATOR_TOKEN: ${{ secrets.LONGBRIDGE_SECRET_ROTATOR_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${LONGBRIDGE_OAUTH_CLIENT_ID:-}" || -z "${LONGBRIDGE_OAUTH_REFRESH_TOKEN:-}" || -z "${ROTATOR_TOKEN:-}" ]]; then
+            echo '::error::Required Longbridge OAuth/rotator secrets are missing.'
+            exit 1
+          fi
+          echo "::add-mask::$LONGBRIDGE_OAUTH_REFRESH_TOKEN"
+          export GH_TOKEN="$ROTATOR_TOKEN"
+          printf '%s' "$LONGBRIDGE_OAUTH_REFRESH_TOKEN" | gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          next_refresh_path="$RUNNER_TEMP/longbridge-next-refresh-token"
+          export LONGBRIDGE_NEXT_REFRESH_TOKEN_PATH="$next_refresh_path"
+          python scripts/prepare_longbridge_oauth_session.py
+          next_refresh_token="$(cat "$next_refresh_path")"
+          echo "::add-mask::$next_refresh_token"
+          printf '%s' "$next_refresh_token" | gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
+          rm -f "$next_refresh_path"
+          "$LONGBRIDGE_BIN" auth status --format json > "$RUNNER_TEMP/longbridge-auth-status.json"
+          python scripts/validate_longbridge_auth_status.py "$RUNNER_TEMP/longbridge-auth-status.json"
+          "$LONGBRIDGE_BIN" check --format json > "$RUNNER_TEMP/longbridge-check.json"
+          python scripts/validate_longbridge_check.py "$RUNNER_TEMP/longbridge-check.json"
+
+      - name: Compare quote and historical minute paths
+        shell: bash
+        env:
+          LONGBRIDGE_BIN: ${{ steps.install_longbridge.outputs.binary }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/longbridge-historical-diagnostic"
+          mkdir -p "$out"
+
+          capture() {
+            name="$1"
+            shift
+            set +e
+            "$@" > "$out/$name.stdout" 2> "$out/$name.stderr"
+            rc=$?
+            set -e
+            printf '%s\n' "$rc" > "$out/$name.rc"
+          }
+
+          capture quote "$LONGBRIDGE_BIN" quote "$SYMBOL" --format json
+          capture intraday_regular "$LONGBRIDGE_BIN" intraday "$SYMBOL" --date "$MARKET_DATE_COMPACT" --format json
+          capture intraday_all "$LONGBRIDGE_BIN" intraday "$SYMBOL" --date "$MARKET_DATE_COMPACT" --session all --format json
+          capture kline_history "$LONGBRIDGE_BIN" kline history "$SYMBOL" --period 1m --start "$MARKET_DATE" --end "$MARKET_DATE" --format json
+
+          python - "$out" "$SYMBOL" "$MARKET_DATE" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          root = Path(sys.argv[1])
+          symbol = sys.argv[2]
+          market_date = sys.argv[3]
+
+          def rc(name):
+              return int((root / f"{name}.rc").read_text().strip())
+
+          def load(name):
+              text = (root / f"{name}.stdout").read_text(encoding="utf-8", errors="replace")
+              try:
+                  return json.loads(text), None
+              except json.JSONDecodeError as exc:
+                  return None, f"JSONDecodeError: {exc}"
+
+          def intraday_count(value):
+              if isinstance(value, list):
+                  return len(value)
+              if isinstance(value, dict) and isinstance(value.get("timeshares"), list):
+                  return sum(
+                      len(group.get("minutes", []))
+                      for group in value["timeshares"]
+                      if isinstance(group, dict) and isinstance(group.get("minutes", []), list)
+                  )
+              return None
+
+          summary = {"symbol": symbol, "marketDate": market_date, "paths": {}}
+          for name in ("quote", "intraday_regular", "intraday_all", "kline_history"):
+              value, parse_error = load(name)
+              entry = {
+                  "returnCode": rc(name),
+                  "jsonParsed": parse_error is None,
+                  "parseError": parse_error,
+                  "rootType": type(value).__name__ if value is not None else None,
+                  "topLevelKeys": sorted(value.keys()) if isinstance(value, dict) else None,
+              }
+              if name == "quote":
+                  entry["recordCount"] = len(value) if isinstance(value, list) else None
+              elif name.startswith("intraday"):
+                  entry["recordCount"] = intraday_count(value)
+                  if isinstance(value, dict) and isinstance(value.get("timeshares"), list):
+                      entry["timeshareGroupCount"] = len(value["timeshares"])
+              else:
+                  entry["recordCount"] = len(value) if isinstance(value, list) else None
+              summary["paths"][name] = entry
+
+          quote_ok = (summary["paths"]["quote"].get("recordCount") or 0) > 0
+          regular = summary["paths"]["intraday_regular"].get("recordCount") or 0
+          all_rows = summary["paths"]["intraday_all"].get("recordCount") or 0
+          kline = summary["paths"]["kline_history"].get("recordCount") or 0
+
+          if quote_ok and (regular > 0 or all_rows > 0):
+              classification = "historical-intraday-data-exists"
+          elif quote_ok and kline > 0:
+              classification = "history-timeshares-empty-but-kline-history-works"
+          elif quote_ok:
+              classification = "quote-works-but-all-historical-minute-paths-empty-or-failed"
+          else:
+              classification = "symbol-or-entitlement-path-failure"
+          summary["classification"] = classification
+
+          (root / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          lines = [
+              "<!-- nasdaq-cafe-longbridge-diagnostic-result -->",
+              "",
+              f"symbol: {symbol}",
+              f"market_date: {market_date}",
+              f"classification: {classification}",
+              "",
+          ]
+          for name, entry in summary["paths"].items():
+              lines.append(f"- {name}: rc={entry['returnCode']}, records={entry.get('recordCount')}, root={entry.get('rootType')}")
+          (root / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+          print(json.dumps(summary, indent=2, sort_keys=True))
+          PY
+
+      - name: Upload diagnostic artifact
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: longbridge-historical-diagnostic-2026-08-07-QQQ
+          path: ${{ runner.temp }}/longbridge-historical-diagnostic/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Comment diagnostic summary
+        if: ${{ always() }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ -f "$RUNNER_TEMP/longbridge-historical-diagnostic/summary.md" ]]; then
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file "$RUNNER_TEMP/longbridge-historical-diagnostic/summary.md"
+          else
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body 'Longbridge diagnostic workflow failed before producing summary.md.'
+          fi
+
+      - name: Remove temporary OAuth material
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          rm -rf "$HOME/.longbridge/openapi"
+          rm -f "$RUNNER_TEMP/longbridge-next-refresh-token"
+          rm -f "$RUNNER_TEMP/longbridge-auth-status.json"
+          rm -f "$RUNNER_TEMP/longbridge-check.json"
