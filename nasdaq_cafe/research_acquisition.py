@@ -86,6 +86,7 @@ def validate_request_document(value: dict[str, Any], *, episode_date: str | None
 
     seen_ids: set[str] = set()
     market_keys: set[tuple[str, str, str, str]] = set()
+    exact_urls: set[str] = set()
     market_count = 0
     exact_url_count = 0
     normalized_requests: list[dict[str, Any]] = []
@@ -165,6 +166,10 @@ def validate_request_document(value: dict[str, Any], *, episode_date: str | None
             except ResearchAcquisitionError as exc:
                 errors.append(f"{prefix}.parameters.url: {exc}")
                 continue
+            if url in exact_urls:
+                errors.append(f"{prefix}: duplicate exact URL request")
+                continue
+            exact_urls.add(url)
             title = parameters.get("title", "")
             if not isinstance(title, str):
                 errors.append(f"{prefix}.parameters.title must be a string")
@@ -352,14 +357,29 @@ def _execute_request(
             )
 
         if request_type == "exact_url_archive":
+            requested_url = parameters["url"]
             archive_result = register_and_fetch_url(
                 config,
-                parameters["url"],
+                requested_url,
                 parameters.get("title", ""),
             )
-            summary = archive_result.get("summary", {})
-            complete_count = int(summary.get("complete_count", 0) or 0)
-            if complete_count <= 0:
+            payload = archive_result.get("payload")
+            if not isinstance(payload, dict):
+                payload = {}
+            matched_items = [
+                entry
+                for entry in payload.get("items", [])
+                if isinstance(entry, dict) and str(entry.get("primary_url") or "").strip() == requested_url
+            ]
+            matched_unreadable = [
+                entry
+                for entry in payload.get("unreadable", [])
+                if isinstance(entry, dict) and str(entry.get("primary_url") or "").strip() == requested_url
+            ]
+            if not matched_items:
+                reason = "exact URL could not be materialized as readable full text"
+                if matched_unreadable:
+                    reason = str(matched_unreadable[0].get("reason") or reason)
                 return {
                     "requestId": request_id,
                     "status": "unavailable",
@@ -367,14 +387,16 @@ def _execute_request(
                     "outputPath": None,
                     "sha256": None,
                     "recordCount": 0,
-                    "reason": "exact URL could not be materialized as readable full text",
+                    "reason": reason,
                 }
             output_path = followup_root / f"{request_id}_exact_url_archive.json"
             snapshot = {
-                "requestedUrl": parameters["url"],
+                "source": "Raw Archive",
+                "kind": "exact-url-archive",
+                "requestedUrl": requested_url,
                 "title": parameters.get("title", ""),
-                "summary": summary,
-                "payload": archive_result.get("payload", {}),
+                "items": matched_items,
+                "unreadable": matched_unreadable,
             }
             write_json(output_path, snapshot)
             return _success_result(
@@ -382,7 +404,7 @@ def _execute_request(
                 provider="Raw Archive",
                 output_path=output_path.relative_to(config.output_dir),
                 sha256=sha256_file(output_path),
-                record_count=complete_count,
+                record_count=len(matched_items),
             )
 
         return {
