@@ -9,6 +9,7 @@ from unittest.mock import patch
 from nasdaq_cafe.config import build_config
 from nasdaq_cafe.research_acquisition import (
     ResearchAcquisitionError,
+    _execute_request,
     run_followup,
     validate_request_document,
     validate_us_symbol,
@@ -39,6 +40,28 @@ def intraday_request(symbol: str = "AMD.US") -> dict:
             "session": "all",
         },
     }
+
+
+def exact_url_request(url: str = "https://example.com/target") -> dict:
+    return {
+        "requestId": "RA-URL",
+        "type": "exact_url_archive",
+        "reason": "official release",
+        "requiredness": "material",
+        "parameters": {"url": url, "title": "Target release"},
+    }
+
+
+def temp_config(temp_dir: str):
+    config = build_config("2026-08-06", True)
+    test_output = Path(temp_dir) / "output" / "2026-08-06"
+    return type(config)(
+        target_date=config.target_date,
+        refresh=config.refresh,
+        output_dir=test_output,
+        raw_dir=test_output / "raw",
+        env=config.env,
+    )
 
 
 class ResearchAcquisitionValidationTests(unittest.TestCase):
@@ -72,14 +95,15 @@ class ResearchAcquisitionValidationTests(unittest.TestCase):
         with self.assertRaisesRegex(ResearchAcquisitionError, "duplicate market request"):
             validate_request_document(request_doc(one, two))
 
+    def test_duplicate_exact_url_request_is_rejected(self) -> None:
+        one = exact_url_request()
+        two = dict(exact_url_request())
+        two["requestId"] = "RA-URL-2"
+        with self.assertRaisesRegex(ResearchAcquisitionError, "duplicate exact URL"):
+            validate_request_document(request_doc(one, two))
+
     def test_exact_url_must_be_absolute_http(self) -> None:
-        bad = {
-            "requestId": "RA-URL",
-            "type": "exact_url_archive",
-            "reason": "official release",
-            "requiredness": "material",
-            "parameters": {"url": "file:///etc/passwd", "title": ""},
-        }
+        bad = exact_url_request("file:///etc/passwd")
         with self.assertRaisesRegex(ResearchAcquisitionError, "absolute http"):
             validate_request_document(request_doc(bad))
 
@@ -93,17 +117,7 @@ class ResearchAcquisitionExecutionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp_dir:
             request_path = Path(temp_dir) / "request.json"
             request_path.write_text(json.dumps(request_doc(intraday_request())), encoding="utf-8")
-            config = build_config("2026-08-06", True)
-
-            test_output = Path(temp_dir) / "output" / "2026-08-06"
-            test_raw = test_output / "raw"
-            config = type(config)(
-                target_date=config.target_date,
-                refresh=config.refresh,
-                output_dir=test_output,
-                raw_dir=test_raw,
-                env=config.env,
-            )
+            config = temp_config(temp_dir)
             provider = {
                 "status": "fetched",
                 "cache_used": False,
@@ -148,10 +162,63 @@ class ResearchAcquisitionExecutionTests(unittest.TestCase):
             self.assertTrue(result["manifest_path"].is_file())
             result_doc = json.loads(result["result_path"].read_text(encoding="utf-8"))
             self.assertEqual("success", result_doc["results"][0]["status"])
-            series_path = test_output / result_doc["results"][0]["outputPath"]
+            series_path = config.output_dir / result_doc["results"][0]["outputPath"]
             series = json.loads(series_path.read_text(encoding="utf-8"))
             self.assertEqual("verified-intraday-series", series["precision"])
             self.assertRegex(series["rawSha256"], r"^[0-9a-f]{64}$")
+
+    def test_exact_url_success_is_bound_to_requested_document_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = temp_config(temp_dir)
+            config.output_dir.mkdir(parents=True, exist_ok=True)
+            requested = "https://example.com/target"
+            archive = {
+                "summary": {"complete_count": 99},
+                "payload": {
+                    "items": [
+                        {"primary_url": "https://example.com/other", "full_text": "other"},
+                        {"primary_url": requested, "full_text": "target"},
+                    ],
+                    "unreadable": [],
+                },
+            }
+            with patch("nasdaq_cafe.research_acquisition.register_and_fetch_url", return_value=archive):
+                result = _execute_request(
+                    config=config,
+                    item=exact_url_request(requested),
+                    followup_root=config.output_dir / "followup" / "wave-01",
+                    raw_root=config.raw_dir / "followup" / "wave-01",
+                )
+            self.assertEqual("success", result["status"])
+            self.assertEqual(1, result["recordCount"])
+            snapshot = json.loads((config.output_dir / result["outputPath"]).read_text(encoding="utf-8"))
+            self.assertEqual([requested], [item["primary_url"] for item in snapshot["items"]])
+
+    def test_other_complete_documents_do_not_mask_requested_url_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config = temp_config(temp_dir)
+            requested = "https://example.com/target"
+            archive = {
+                "summary": {"complete_count": 99},
+                "payload": {
+                    "items": [
+                        {"primary_url": "https://example.com/other", "full_text": "other"}
+                    ],
+                    "unreadable": [
+                        {"primary_url": requested, "reason": "paywall"}
+                    ],
+                },
+            }
+            with patch("nasdaq_cafe.research_acquisition.register_and_fetch_url", return_value=archive):
+                result = _execute_request(
+                    config=config,
+                    item=exact_url_request(requested),
+                    followup_root=config.output_dir / "followup" / "wave-01",
+                    raw_root=config.raw_dir / "followup" / "wave-01",
+                )
+            self.assertEqual("unavailable", result["status"])
+            self.assertEqual("paywall", result["reason"])
+            self.assertIsNone(result["outputPath"])
 
 
 if __name__ == "__main__":
