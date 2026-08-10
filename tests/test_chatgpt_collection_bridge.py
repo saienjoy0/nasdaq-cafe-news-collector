@@ -67,11 +67,25 @@ class ChatGPTCollectionBridgeContractTests(unittest.TestCase):
         self.assertIn("artifact_name: $artifact_name", self.bridge)
         self.assertIn("nasdaq-cafe-followup-", self.bridge)
 
-    def test_failure_is_reported_and_issue_remains_open(self) -> None:
-        failure_section = self.bridge.split('if [[ "$conclusion" == "success" ]]', 1)[1].split("else", 1)[1]
-        self.assertIn("status: failure", failure_section)
-        self.assertIn("chatgpt-collect-failed", failure_section)
-        self.assertNotIn('gh issue close "$ISSUE_NUMBER"', failure_section)
+    def test_followup_reads_canonical_acquisition_status_from_artifact(self) -> None:
+        self.assertIn("Read follow-up acquisition status", self.bridge)
+        self.assertIn('gh run download "$CHILD_RUN_ID"', self.bridge)
+        self.assertIn("research_acquisition_result.json", self.bridge)
+        self.assertIn('{"success", "partial", "unavailable"}', self.bridge)
+        self.assertIn("acquisition_status: $acquisition_status", self.bridge)
+        self.assertIn('reported_status="$acquisition_status"', self.bridge)
+
+    def test_unavailable_is_not_reported_as_success(self) -> None:
+        self.assertIn("status: $reported_status", self.bridge)
+        self.assertIn("workflow_status: $conclusion", self.bridge)
+        self.assertIn("chatgpt-collect-unavailable", self.bridge)
+        self.assertNotIn("status: success\n          date:", self.bridge)
+
+    def test_technical_child_failure_is_reported_and_issue_remains_open(self) -> None:
+        technical_failure = self.bridge.split('if [[ "$conclusion" == "success" ]]', 1)[1].rsplit("else", 1)[1]
+        self.assertIn("status: failure", technical_failure)
+        self.assertIn("chatgpt-collect-failed", technical_failure)
+        self.assertNotIn('gh issue close "$ISSUE_NUMBER"', technical_failure)
 
     def test_child_failure_is_propagated_after_reporting(self) -> None:
         self.assertIn("Propagate collector failure", self.bridge)

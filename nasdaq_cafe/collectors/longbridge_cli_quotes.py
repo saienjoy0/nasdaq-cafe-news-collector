@@ -104,16 +104,18 @@ def fetch_longbridge_intraday(
         return _missing_result("Longbridge CLI intraday command failed.")
 
     try:
-        rows = json.loads(intraday["stdout"] or "[]")
+        payload = json.loads(intraday["stdout"] or "[]")
     except json.JSONDecodeError:
         return _missing_result("Longbridge CLI intraday command did not return JSON.")
-    if not isinstance(rows, list):
-        return _missing_result("Longbridge CLI intraday JSON root must be an array.")
 
     try:
+        rows = _extract_intraday_rows(payload)
         points = [_normalize_intraday_row(row) for row in rows]
     except (KeyError, TypeError, ValueError) as exc:
         return _missing_result(f"Longbridge intraday row validation failed: {exc}")
+
+    if not points:
+        return _missing_result("Longbridge intraday returned no minute rows for the requested date/session.")
 
     points.sort(key=lambda item: item["timestamp"])
     seen: set[str] = set()
@@ -126,7 +128,7 @@ def fetch_longbridge_intraday(
     return {
         "status": "fetched",
         "cache_used": False,
-        "rawRows": rows,
+        "rawRows": payload,
         "series": {
             "source": "Longbridge",
             "kind": "intraday",
@@ -144,13 +146,67 @@ def fetch_longbridge_intraday(
     }
 
 
-def _parse_intraday_time(raw_time: str) -> datetime:
-    text = raw_time.strip()
+def _extract_intraday_rows(payload: Any) -> list[dict[str, Any]]:
+    """Normalize the two documented Longbridge CLI JSON surfaces.
+
+    Live `intraday` uses the normal table printer and therefore returns a JSON
+    array with `time`, `price`, `volume`, `turnover`, and `avg_price`.
+
+    Historical `intraday --date` in Longbridge CLI v0.26.0 is implemented by
+    `/v1/quote/history-timeshares` and prints that raw JSON object.  Its
+    relevant payload is `timeshares[].minutes[]`, where volume/turnover are
+    named `amount`/`balance`.
+
+    Keep this intentionally narrow: unknown dictionary shapes are rejected
+    instead of guessed.
+    """
+    if isinstance(payload, list):
+        return payload
+    if not isinstance(payload, dict):
+        raise TypeError("JSON root must be an array or historical timeshares object")
+
+    timeshares = payload.get("timeshares")
+    if not isinstance(timeshares, list):
+        raise ValueError("historical intraday JSON must contain timeshares[]")
+
+    rows: list[dict[str, Any]] = []
+    for group in timeshares:
+        if not isinstance(group, dict):
+            raise TypeError("historical timeshare group must be an object")
+        minutes = group.get("minutes")
+        if minutes is None:
+            continue
+        if not isinstance(minutes, list):
+            raise TypeError("historical timeshare minutes must be an array")
+        for minute in minutes:
+            if not isinstance(minute, dict):
+                raise TypeError("historical intraday minute must be an object")
+            rows.append(
+                {
+                    "time": minute["timestamp"],
+                    "price": minute["price"],
+                    "avg_price": minute["avg_price"],
+                    "volume": minute["amount"],
+                    "turnover": minute["balance"],
+                }
+            )
+    return rows
+
+
+def _parse_intraday_time(raw_time: Any) -> datetime:
+    if isinstance(raw_time, bool):
+        raise ValueError("boolean intraday timestamp is invalid")
+    if isinstance(raw_time, (int, float)):
+        return datetime.fromtimestamp(int(raw_time), tz=timezone.utc)
+
+    text = str(raw_time).strip()
     if not text:
         raise ValueError("empty intraday timestamp")
+    if text.isdigit() or (text.startswith("-") and text[1:].isdigit()):
+        return datetime.fromtimestamp(int(text), tz=timezone.utc)
 
-    # Current CLI examples use a UTC wall-clock string while recent CLI
-    # releases may emit RFC3339. Accept both without guessing a local US zone.
+    # Current live CLI examples use a wall-clock string while recent releases
+    # may emit RFC3339. Accept both without guessing a US local timezone.
     if text.endswith("Z"):
         parsed = datetime.fromisoformat(text[:-1] + "+00:00")
     else:
@@ -166,7 +222,7 @@ def _parse_intraday_time(raw_time: str) -> datetime:
 def _normalize_intraday_row(row: Any) -> dict[str, Any]:
     if not isinstance(row, dict):
         raise TypeError("row must be an object")
-    parsed = _parse_intraday_time(str(row["time"]))
+    parsed = _parse_intraday_time(row["time"])
     return {
         "timestamp": parsed.isoformat().replace("+00:00", "Z"),
         "price": float(str(row["price"])),
