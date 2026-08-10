@@ -1,0 +1,74 @@
+name: Research Acquisition Bridge CI
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/research-acquisition-bridge-ci.yml"
+      - ".github/workflows/chatgpt-collection-request.yml"
+      - ".github/workflows/daily-nasdaq-cafe.yml"
+      - "contracts/research_acquisition_*.schema.json"
+      - "nasdaq_cafe/collectors/longbridge_cli_quotes.py"
+      - "nasdaq_cafe/research_acquisition.py"
+      - "tests/test_chatgpt_collection_bridge.py"
+      - "tests/test_longbridge_intraday_safety.py"
+      - "tests/test_longbridge_oauth_actions.py"
+      - "tests/test_research_acquisition.py"
+      - "tests/test_research_acquisition_url_safety.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/research-acquisition-bridge-ci.yml"
+      - ".github/workflows/chatgpt-collection-request.yml"
+      - ".github/workflows/daily-nasdaq-cafe.yml"
+      - "contracts/research_acquisition_*.schema.json"
+      - "nasdaq_cafe/collectors/longbridge_cli_quotes.py"
+      - "nasdaq_cafe/research_acquisition.py"
+      - "tests/test_chatgpt_collection_bridge.py"
+      - "tests/test_longbridge_intraday_safety.py"
+      - "tests/test_longbridge_oauth_actions.py"
+      - "tests/test_research_acquisition.py"
+      - "tests/test_research_acquisition_url_safety.py"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install collector dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+
+      - name: Compile acquisition modules
+        run: |
+          python -m py_compile \
+            nasdaq_cafe/collectors/longbridge_cli_quotes.py \
+            nasdaq_cafe/research_acquisition.py
+
+      - name: Validate acquisition JSON schemas
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for path in sorted(Path("contracts").glob("research_acquisition_*.schema.json")):
+              value = json.loads(path.read_text(encoding="utf-8"))
+              assert isinstance(value, dict)
+              print("PASS", path)
+          PY
+
+      - name: Run bounded acquisition and Longbridge safety tests
+        run: |
+          python -m unittest -v \
+            tests.test_research_acquisition \
+            tests.test_research_acquisition_url_safety \
+            tests.test_longbridge_intraday_safety \
+            tests.test_chatgpt_collection_bridge \
+            tests.test_longbridge_oauth_actions
