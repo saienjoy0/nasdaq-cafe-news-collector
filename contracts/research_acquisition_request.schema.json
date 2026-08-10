@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nasdaq-cafe.local/contracts/research_acquisition_request.schema.json",
+  "title": "NASDAQ Cafe Research Acquisition Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "episodeDate",
+    "wave",
+    "baseResearchInputManifestSha256",
+    "researchPurpose",
+    "requests"
+  ],
+  "properties": {
+    "contractVersion": {"const": "1.0.0"},
+    "episodeDate": {"type": "string", "format": "date"},
+    "wave": {"type": "integer", "minimum": 1, "maximum": 2},
+    "baseResearchInputManifestSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "researchPurpose": {"type": "string", "minLength": 1},
+    "requests": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {"$ref": "#/$defs/request"}
+    }
+  },
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestId", "type", "reason", "requiredness", "parameters"],
+      "properties": {
+        "requestId": {"type": "string", "pattern": "^RA-[A-Z0-9-]{1,32}$"},
+        "type": {"enum": ["market_intraday", "market_quote", "exact_url_archive"]},
+        "reason": {"type": "string", "minLength": 1},
+        "requiredness": {"enum": ["material", "supporting"]},
+        "parameters": {"type": "object"}
+      }
+    }
+  }
+}

@@ -1,18 +1,34 @@
 # GitHub Actions
 
-`.github/workflows/daily-nasdaq-cafe.yml` runs the collector every day at
+`.github/workflows/daily-nasdaq-cafe.yml` runs the broad collector every day at
 07:17 Japan time. It can also be started manually from the Actions tab with
 `today` or a specific `YYYY-MM-DD` date.
 
-Each run uploads only the safe handoff files below for 14 days:
+The same workflow also accepts a bounded `followup` mode for research-acquisition
+requests that were authored upstream by ChatGPT/Causal Research. Scheduled runs
+remain broad-only; the workflow never chooses a lead, comparison symbol, or causal
+hypothesis by itself.
+
+Broad runs upload only the safe handoff files below for 14 days:
 
 - `source_pack.md`
 - `source_pack.json`
 - `prompt_input.md`
 - `CHATGPT_HANDOFF_YYYY-MM-DD.md`
 
-Raw article HTML/PDF/text, full-text handoff files, local caches, OAuth files,
-and credentials are intentionally excluded from artifacts and commits.
+Follow-up runs upload only the explicitly requested evidence package under:
+
+```text
+nasdaq-cafe-followup-YYYY-MM-DD-wNN
+```
+
+including the canonical acquisition request/result, bounded market evidence, exact
+URL archive evidence, and the follow-up manifest. OAuth files and credentials are
+never included.
+
+Raw article HTML/PDF/text from the normal broad run, full-text handoff files, local
+caches, OAuth files, and credentials are intentionally excluded from normal broad
+artifacts and commits.
 
 ## Recommended configuration
 
@@ -76,19 +92,49 @@ Every run follows this order:
 2. Immediately persist the returned refresh token back to the repository secret.
 3. Create a plaintext CLI compatibility session only inside the ephemeral runner.
 4. Validate `lb_papertrading`, `US_QBBO_OpenAPI`, token status, and connectivity.
-5. Execute the quote-only collector.
+5. Execute either the broad quote collector or an explicit bounded read-only follow-up request.
 6. Delete temporary OAuth material with an `always()` cleanup step.
 
 Persisting the rotated refresh token before validation and collection avoids
 losing a single-use replacement token if a later step fails. Workflow
 concurrency is serialized so two jobs cannot refresh the same token at once.
 
-The collector itself permits only `auth status` and `quote`. Order, account,
-position, portfolio, balance, and trading commands remain blocked in code.
+The collector's Longbridge safety gate permits only:
+
+```text
+auth status
+quote
+intraday
+```
+
+`quote` remains the broad-market path. `intraday` is available only for explicit
+research follow-up symbols/dates and produces read-only minute evidence. Order,
+account, position, portfolio, balance, and other trading commands remain blocked
+in code.
 
 Do not add `LONGBRIDGE_APP_KEY`, `LONGBRIDGE_APP_SECRET`, or
 `LONGBRIDGE_ACCESS_TOKEN`; this workflow uses OAuth 2.0, not the legacy API-key
 credential path.
+
+## Research follow-up mode
+
+The production-facing ChatGPT bridge continues to use the owner-only Issue
+entrypoint. A follow-up Issue carries a strict `research_acquisition_request`
+with:
+
+- exact episode date;
+- wave `1` or `2` only;
+- SHA-256 of the base research input manifest;
+- explicit request IDs and reasons;
+- at most 12 bounded requests;
+- only `market_intraday`, `market_quote`, or `exact_url_archive` request types.
+
+Market symbols may be outside the broad fixed watchlist when ChatGPT/Causal
+Research explicitly selected them for a material test. The Collector validates
+and executes the symbol; it does not infer which symbols should be compared.
+
+The normal case is wave 1. Wave 2 is reserved for a new material evidence test
+exposed by wave-1 results. Wave 3 is rejected.
 
 ## Public repository note
 

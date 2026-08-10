@@ -17,6 +17,19 @@ on:
         required: false
         default: true
         type: boolean
+      mode:
+        description: "Collection mode"
+        required: false
+        default: "broad"
+        type: choice
+        options:
+          - broad
+          - followup
+      request_json_b64:
+        description: "Base64 research acquisition request; followup mode only"
+        required: false
+        default: ""
+        type: string
 
 permissions:
   contents: read
@@ -119,8 +132,6 @@ jobs:
             exit 1
           fi
 
-          # Prove that the rotator token can update repository secrets before
-          # consuming a refresh token that the OAuth server may rotate.
           echo "::add-mask::$LONGBRIDGE_OAUTH_REFRESH_TOKEN"
           printf '%s' "$LONGBRIDGE_OAUTH_REFRESH_TOKEN" | \
             gh secret set LONGBRIDGE_OAUTH_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY"
@@ -135,8 +146,6 @@ jobs:
             exit 1
           fi
 
-          # Persist a possibly rotated refresh token before any later network or
-          # collection step can fail. This makes the refresh operation crash-safe.
           next_refresh_token="$(cat "$next_refresh_path")"
           echo "::add-mask::$next_refresh_token"
           printf '%s' "$next_refresh_token" | \
@@ -152,18 +161,70 @@ jobs:
 
           echo "available=true" >> "$GITHUB_OUTPUT"
 
-      - name: Resolve target date
+      - name: Resolve target date and mode
         id: target
         shell: bash
+        env:
+          REQUESTED_DATE: ${{ inputs.date }}
+          REQUESTED_MODE: ${{ inputs.mode }}
         run: |
-          target_date="${{ inputs.date }}"
+          set -euo pipefail
+          target_date="${REQUESTED_DATE:-today}"
           if [[ -z "$target_date" || "$target_date" == "today" ]]; then
             target_date="$(TZ=Asia/Tokyo date +%F)"
           fi
+          mode="${REQUESTED_MODE:-broad}"
+          if [[ "$mode" != "broad" && "$mode" != "followup" ]]; then
+            echo "::error::mode must be broad or followup."
+            exit 1
+          fi
+          if [[ "$GITHUB_EVENT_NAME" == "schedule" && "$mode" != "broad" ]]; then
+            echo "::error::Scheduled collection is broad-only."
+            exit 1
+          fi
           echo "date=$target_date" >> "$GITHUB_OUTPUT"
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
           echo "Target date: $target_date"
+          echo "Mode: $mode"
 
-      - name: Collect source pack and Raw Archive
+      - name: Prepare follow-up request
+        if: ${{ steps.target.outputs.mode == 'followup' }}
+        id: followup
+        shell: bash
+        env:
+          REQUEST_JSON_B64: ${{ inputs.request_json_b64 }}
+          TARGET_DATE: ${{ steps.target.outputs.date }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${REQUEST_JSON_B64:-}" ]]; then
+            echo "::error::followup mode requires request_json_b64."
+            exit 1
+          fi
+          request_path="$RUNNER_TEMP/research_acquisition_request.json"
+          printf '%s' "$REQUEST_JSON_B64" | base64 --decode > "$request_path"
+          python - "$request_path" "$TARGET_DATE" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          from nasdaq_cafe.research_acquisition import validate_request_document
+
+          path = Path(sys.argv[1])
+          target_date = sys.argv[2]
+          value = json.loads(path.read_text(encoding="utf-8"))
+          normalized = validate_request_document(value, episode_date=target_date)
+          path.write_text(
+              json.dumps(normalized, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+              encoding="utf-8",
+          )
+          print(normalized["wave"])
+          PY
+          wave="$(python -c 'import json,sys; print(json.load(open(sys.argv[1], encoding="utf-8"))["wave"])' "$request_path")"
+          echo "request_path=$request_path" >> "$GITHUB_OUTPUT"
+          printf -v wave_padded '%02d' "$wave"
+          echo "wave=$wave_padded" >> "$GITHUB_OUTPUT"
+
+      - name: Collect broad source pack and Raw Archive
+        if: ${{ steps.target.outputs.mode == 'broad' }}
         shell: bash
         run: |
           refresh_args=()
@@ -174,7 +235,21 @@ jobs:
             --date "${{ steps.target.outputs.date }}" \
             "${refresh_args[@]}"
 
+      - name: Collect targeted research follow-up
+        if: ${{ steps.target.outputs.mode == 'followup' }}
+        shell: bash
+        run: |
+          refresh_args=()
+          if [[ "${{ inputs.refresh }}" == "true" ]]; then
+            refresh_args+=(--refresh)
+          fi
+          python -m nasdaq_cafe.research_acquisition \
+            --date "${{ steps.target.outputs.date }}" \
+            --request "${{ steps.followup.outputs.request_path }}" \
+            "${refresh_args[@]}"
+
       - name: Upload safe daily package
+        if: ${{ steps.target.outputs.mode == 'broad' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: nasdaq-cafe-${{ steps.target.outputs.date }}
@@ -186,6 +261,17 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Upload safe follow-up package
+        if: ${{ steps.target.outputs.mode == 'followup' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: nasdaq-cafe-followup-${{ steps.target.outputs.date }}-w${{ steps.followup.outputs.wave }}
+          path: |
+            output/${{ steps.target.outputs.date }}/followup/wave-${{ steps.followup.outputs.wave }}/
+            output/${{ steps.target.outputs.date }}/raw/followup/wave-${{ steps.followup.outputs.wave }}/
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Remove temporary Longbridge OAuth material
         if: ${{ always() }}
         shell: bash
@@ -194,3 +280,4 @@ jobs:
           rm -f "$RUNNER_TEMP/longbridge-next-refresh-token"
           rm -f "$RUNNER_TEMP/longbridge-auth-status.json"
           rm -f "$RUNNER_TEMP/longbridge-check.json"
+          rm -f "$RUNNER_TEMP/research_acquisition_request.json"

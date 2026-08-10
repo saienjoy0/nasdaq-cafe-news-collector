@@ -4,6 +4,7 @@ import json
 import os
 import shutil
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,7 @@ QUOTE_RAW_FILE = "longbridge_quotes.json"
 SAFE_COMMANDS = {
     "auth status",
     "quote",
+    "intraday",
 }
 
 
@@ -29,40 +31,17 @@ def ensure_longbridge_quotes(config: RunConfig) -> dict[str, Any]:
             "missing_data": [],
         }
 
-    executable = _find_longbridge_executable()
-    if executable is None:
-        return _missing_result("Longbridge CLI executable was not found.")
-
-    auth = _run_longbridge([str(executable), "auth", "status", "--format", "json"])
-    if auth["returncode"] != 0:
-        return _missing_result("Longbridge CLI auth status failed.")
-
-    try:
-        auth_payload = json.loads(auth["stdout"] or "{}")
-    except json.JSONDecodeError:
-        return _missing_result("Longbridge CLI auth status did not return JSON.")
-
-    token_status = (auth_payload.get("token") or {}).get("status")
-    if token_status != "valid":
-        return _missing_result("Longbridge CLI auth token is not valid. User authentication is required.")
-
-    symbols = list(LONGBRIDGE_FIXED_SYMBOLS)
-    quote = _run_longbridge([str(executable), "quote", *symbols, "--format", "json"])
-    if quote["returncode"] != 0:
-        return _missing_result("Longbridge CLI quote command failed.")
-
-    try:
-        items = json.loads(quote["stdout"] or "[]")
-    except json.JSONDecodeError:
-        return _missing_result("Longbridge CLI quote command did not return JSON.")
+    result = fetch_longbridge_quotes(list(LONGBRIDGE_FIXED_SYMBOLS))
+    if result["status"] != "fetched":
+        return result
 
     payload = {
         "source": "Longbridge",
         "kind": "quotes",
         "fetched_by": "longbridge-cli",
         "generated_at": utc_now_iso(),
-        "symbols": symbols,
-        "items": items,
+        "symbols": list(LONGBRIDGE_FIXED_SYMBOLS),
+        "items": result["items"],
     }
     write_json(raw_path, payload)
     return {
@@ -71,6 +50,150 @@ def ensure_longbridge_quotes(config: RunConfig) -> dict[str, Any]:
         "raw_path": str(raw_path),
         "missing_data": [],
     }
+
+
+def fetch_longbridge_quotes(symbols: list[str]) -> dict[str, Any]:
+    executable, auth_error = _authenticated_longbridge()
+    if executable is None:
+        return _missing_result(auth_error or "Longbridge CLI is unavailable.")
+
+    quote = _run_longbridge([str(executable), "quote", *symbols, "--format", "json"])
+    if quote["returncode"] != 0:
+        return _missing_result("Longbridge CLI quote command failed.")
+
+    try:
+        items = json.loads(quote["stdout"] or "[]")
+    except json.JSONDecodeError:
+        return _missing_result("Longbridge CLI quote command did not return JSON.")
+    if not isinstance(items, list):
+        return _missing_result("Longbridge CLI quote JSON root must be an array.")
+
+    return {
+        "status": "fetched",
+        "cache_used": False,
+        "items": items,
+        "missing_data": [],
+    }
+
+
+def fetch_longbridge_intraday(
+    *,
+    symbol: str,
+    target_date: str,
+    session: str,
+) -> dict[str, Any]:
+    executable, auth_error = _authenticated_longbridge()
+    if executable is None:
+        return _missing_result(auth_error or "Longbridge CLI is unavailable.")
+
+    compact_date = datetime.strptime(target_date, "%Y-%m-%d").strftime("%Y%m%d")
+    command = [
+        str(executable),
+        "intraday",
+        symbol,
+        "--date",
+        compact_date,
+        "--format",
+        "json",
+    ]
+    if session == "all":
+        command.extend(["--session", "all"])
+
+    intraday = _run_longbridge(command)
+    if intraday["returncode"] != 0:
+        return _missing_result("Longbridge CLI intraday command failed.")
+
+    try:
+        rows = json.loads(intraday["stdout"] or "[]")
+    except json.JSONDecodeError:
+        return _missing_result("Longbridge CLI intraday command did not return JSON.")
+    if not isinstance(rows, list):
+        return _missing_result("Longbridge CLI intraday JSON root must be an array.")
+
+    try:
+        points = [_normalize_intraday_row(row) for row in rows]
+    except (KeyError, TypeError, ValueError) as exc:
+        return _missing_result(f"Longbridge intraday row validation failed: {exc}")
+
+    points.sort(key=lambda item: item["timestamp"])
+    seen: set[str] = set()
+    for point in points:
+        timestamp = point["timestamp"]
+        if timestamp in seen:
+            return _missing_result("Longbridge intraday returned duplicate minute timestamps.")
+        seen.add(timestamp)
+
+    return {
+        "status": "fetched",
+        "cache_used": False,
+        "rawRows": rows,
+        "series": {
+            "source": "Longbridge",
+            "kind": "intraday",
+            "fetched_by": "longbridge-cli",
+            "generated_at": utc_now_iso(),
+            "symbol": symbol,
+            "marketDate": target_date,
+            "timezone": "UTC",
+            "session": session,
+            "resolution": "1m",
+            "precision": "verified-intraday-series",
+            "points": points,
+        },
+        "missing_data": [],
+    }
+
+
+def _parse_intraday_time(raw_time: str) -> datetime:
+    text = raw_time.strip()
+    if not text:
+        raise ValueError("empty intraday timestamp")
+
+    # Current CLI examples use a UTC wall-clock string while recent CLI
+    # releases may emit RFC3339. Accept both without guessing a local US zone.
+    if text.endswith("Z"):
+        parsed = datetime.fromisoformat(text[:-1] + "+00:00")
+    else:
+        try:
+            parsed = datetime.fromisoformat(text)
+        except ValueError:
+            parsed = datetime.strptime(text, "%Y-%m-%d %H:%M:%S")
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
+def _normalize_intraday_row(row: Any) -> dict[str, Any]:
+    if not isinstance(row, dict):
+        raise TypeError("row must be an object")
+    parsed = _parse_intraday_time(str(row["time"]))
+    return {
+        "timestamp": parsed.isoformat().replace("+00:00", "Z"),
+        "price": float(str(row["price"])),
+        "avgPrice": float(str(row["avg_price"])),
+        "volume": int(str(row["volume"])),
+        "turnover": float(str(row["turnover"])),
+    }
+
+
+def _authenticated_longbridge() -> tuple[Path | None, str | None]:
+    executable = _find_longbridge_executable()
+    if executable is None:
+        return None, "Longbridge CLI executable was not found."
+
+    auth = _run_longbridge([str(executable), "auth", "status", "--format", "json"])
+    if auth["returncode"] != 0:
+        return None, "Longbridge CLI auth status failed."
+
+    try:
+        auth_payload = json.loads(auth["stdout"] or "{}")
+    except json.JSONDecodeError:
+        return None, "Longbridge CLI auth status did not return JSON."
+
+    token_status = (auth_payload.get("token") or {}).get("status")
+    if token_status != "valid":
+        return None, "Longbridge CLI auth token is not valid. User authentication is required."
+    return executable, None
 
 
 def _find_longbridge_executable() -> Path | None:
@@ -87,14 +210,16 @@ def _find_longbridge_executable() -> Path | None:
 
 
 def _run_longbridge(command: list[str]) -> dict[str, Any]:
-    # Safety gate: Phase 1.6 only allows auth-status checks and quote reads.
+    # Safety gate: read-only quote access plus exact intraday retrieval only.
     command_text = " ".join(command[1:3]) if len(command) >= 3 else ""
     if command[1:3] == ["auth", "status"]:
         allowed = "auth status"
     elif len(command) >= 2 and command[1] == "quote":
         allowed = "quote"
+    elif len(command) >= 2 and command[1] == "intraday":
+        allowed = "intraday"
     else:
-        raise ValueError(f"Blocked non-quote Longbridge command: {command_text}")
+        raise ValueError(f"Blocked non-market-data Longbridge command: {command_text}")
     if allowed not in SAFE_COMMANDS:
         raise ValueError(f"Blocked Longbridge command: {command_text}")
 
