@@ -75,6 +75,28 @@ class LongbridgeIntradaySafetyTests(unittest.TestCase):
         self.assertIn("20260409", command)
         self.assertIn("--session", command)
 
+    def test_rfc3339_timestamp_is_normalized_to_utc(self) -> None:
+        row = {
+            "time": "2026-04-09T09:30:00-04:00",
+            "price": "343.150",
+            "avg_price": "343.150",
+            "volume": "123",
+            "turnover": "42123.45",
+        }
+        normalized = lb._normalize_intraday_row(row)
+        self.assertEqual("2026-04-09T13:30:00Z", normalized["timestamp"])
+
+    def test_zulu_timestamp_is_preserved_as_utc(self) -> None:
+        row = {
+            "time": "2026-04-09T13:30:00Z",
+            "price": "343.150",
+            "avg_price": "343.150",
+            "volume": "123",
+            "turnover": "42123.45",
+        }
+        normalized = lb._normalize_intraday_row(row)
+        self.assertEqual("2026-04-09T13:30:00Z", normalized["timestamp"])
+
 
 if __name__ == "__main__":
     unittest.main()
