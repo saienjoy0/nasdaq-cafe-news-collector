@@ -144,11 +144,29 @@ def fetch_longbridge_intraday(
     }
 
 
+def _parse_intraday_time(raw_time: str) -> datetime:
+    text = raw_time.strip()
+    if not text:
+        raise ValueError("empty intraday timestamp")
+
+    # Current CLI examples use a UTC wall-clock string while recent CLI
+    # releases may emit RFC3339. Accept both without guessing a local US zone.
+    if text.endswith("Z"):
+        parsed = datetime.fromisoformat(text[:-1] + "+00:00")
+    else:
+        try:
+            parsed = datetime.fromisoformat(text)
+        except ValueError:
+            parsed = datetime.strptime(text, "%Y-%m-%d %H:%M:%S")
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
 def _normalize_intraday_row(row: Any) -> dict[str, Any]:
     if not isinstance(row, dict):
         raise TypeError("row must be an object")
-    raw_time = str(row["time"]).strip()
-    parsed = datetime.strptime(raw_time, "%Y-%m-%d %H:%M:%S").replace(tzinfo=timezone.utc)
+    parsed = _parse_intraday_time(str(row["time"]))
     return {
         "timestamp": parsed.isoformat().replace("+00:00", "Z"),
         "price": float(str(row["price"])),
