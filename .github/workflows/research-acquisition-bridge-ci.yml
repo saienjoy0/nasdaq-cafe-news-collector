@@ -66,9 +66,9 @@ jobs:
 
       - name: Run bounded acquisition and Longbridge safety tests
         run: |
-          python -m unittest -v \
-            tests.test_research_acquisition \
-            tests.test_research_acquisition_url_safety \
-            tests.test_longbridge_intraday_safety \
-            tests.test_chatgpt_collection_bridge \
-            tests.test_longbridge_oauth_actions
+          set -euo pipefail
+          python tests/test_research_acquisition.py
+          python tests/test_research_acquisition_url_safety.py
+          python tests/test_longbridge_intraday_safety.py
+          python tests/test_chatgpt_collection_bridge.py
+          python tests/test_longbridge_oauth_actions.py
