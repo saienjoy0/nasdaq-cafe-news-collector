@@ -1,0 +1,76 @@
+name: Persist 2026-08-10 Wave 2 Evidence
+
+on:
+  push:
+    branches:
+      - acceptance/persist-2026-08-10-wave2
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  persist:
+    if: ${{ !contains(github.event.head_commit.message, '[persisted-wave2]') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download successful repaired Wave 2 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: nasdaq-cafe-followup-2026-08-10-w02
+          path: .wave2-artifact
+          github-token: ${{ github.token }}
+          repository: saienjoy0/nasdaq-cafe-news-collector
+          run-id: 31357986916
+
+      - name: Verify immutable successful evidence
+        run: |
+          set -euo pipefail
+          test "$(sha256sum .wave2-artifact/research_acquisition_request.json | awk '{print $1}')" = "9626f06b10627a63ee90e1440c5d53bd28d311fa03e33e5d4ed6ffa12043ad86"
+          test "$(sha256sum .wave2-artifact/research_acquisition_result.json | awk '{print $1}')" = "3645ad75e058db2b18da48e4ae63914eb9e949418da814950cf67348c6fb8b51"
+          test "$(sha256sum .wave2-artifact/followup/wave-02/RA-W2-001_intraday_series.json | awk '{print $1}')" = "c5ae14c0f2e0d3ca69f1230017235148c5f25cabadbb3b9045cb0d5313746ad3"
+          test "$(sha256sum .wave2-artifact/followup/wave-02/RA-W2-002_intraday_series.json | awk '{print $1}')" = "e77af6c459a882a91bd9213bbececf928f157090d27c91eca7c40d0d265fe193"
+          test "$(sha256sum .wave2-artifact/followup/wave-02/RA-W2-003_intraday_series.json | awk '{print $1}')" = "8f7af78647e60f82e2fd3b1380b02b56c157984a49d8d28568e5e33efd624b7d"
+          test "$(sha256sum .wave2-artifact/followup/wave-02/RA-W2-004_intraday_series.json | awk '{print $1}')" = "162c79e750c86e2df38f84305c46d40d684d9db00d762bab78c515d020dd27ed"
+          test "$(sha256sum .wave2-artifact/followup/wave-02/RA-W2-005_exact_url_archive.json | awk '{print $1}')" = "d3f39df43016cd0e50d3e3ae4663362cee2018564e562fee646811985de661f3"
+
+      - name: Materialize acceptance snapshot
+        run: |
+          set -euo pipefail
+          target=acceptance-evidence/2026-08-10/wave-02
+          rm -rf "$target"
+          mkdir -p "$target"
+          cp .wave2-artifact/research_acquisition_request.json "$target/"
+          cp .wave2-artifact/research_acquisition_result.json "$target/"
+          cp .wave2-artifact/followup_manifest.json "$target/"
+          cp -R .wave2-artifact/followup "$target/"
+          cp -R .wave2-artifact/raw "$target/"
+          cat > "$target/SNAPSHOT.json" <<'JSON'
+          {
+            "collectorRepository": "saienjoy0/nasdaq-cafe-news-collector",
+            "collectorCommit": "cebc76df9fd499453e7cab79e5a52cafaf4707f9",
+            "collectorRunId": 31357986916,
+            "artifactId": 9051322177,
+            "artifactDigest": "sha256:6b27c2873e4ccb6e552872becf0dc3669b72593f477aa74239a9034b1164cd66",
+            "status": "success",
+            "purpose": "Immutable acceptance snapshot of the repaired 2026-08-10 Wave 2 research artifact."
+          }
+          JSON
+
+      - name: Commit snapshot to acceptance branch
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add acceptance-evidence/2026-08-10/wave-02
+          if git diff --cached --quiet; then
+            echo "Snapshot already materialized"
+            exit 0
+          fi
+          git commit -m "[persisted-wave2] Snapshot repaired 2026-08-10 Wave 2 evidence"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
