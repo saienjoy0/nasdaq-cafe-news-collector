@@ -5,6 +5,7 @@ import sys
 from typing import Any
 
 from nasdaq_cafe.cache import read_json
+from nasdaq_cafe.collection_policy import collect_manifest_fulltext_with_policy
 from nasdaq_cafe.collectors.economic_calendar_collector import collect_economic_calendar
 from nasdaq_cafe.collectors.fred_collector import collect_fred_dgs10
 from nasdaq_cafe.collectors.fmp_collector import collect_fmp
@@ -33,10 +34,10 @@ from nasdaq_cafe.processing.article_review_targets import build_article_review_t
 from nasdaq_cafe.processing.news_drivers import enrich_news_drivers
 from nasdaq_cafe.processing.normalize import dedupe_news, utc_now_iso
 from nasdaq_cafe.processing.relevance import select_candidates
+from nasdaq_cafe.provider_capability import write_provider_capability_report
 from nasdaq_cafe.raw_archive import (
     article_fulltext_status,
     build_raw_archive_manifest,
-    collect_manifest_fulltext,
     register_and_fetch_url,
     retry_failed_fulltext,
 )
@@ -76,6 +77,7 @@ def main(argv: list[str] | None = None) -> int:
 
     config = build_config(args.date, args.refresh)
     pack = build_source_pack(config)
+    write_provider_capability_report(config, pack)
     write_source_pack(config.output_dir, pack)
     write_prompt_input(config.output_dir, pack)
     write_chatgpt_handoff(config.output_dir, pack)
@@ -84,6 +86,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"Generated: {config.output_dir / 'source_pack.md'}")
     print(f"Generated: {config.output_dir / 'source_pack.json'}")
+    print(f"Generated: {config.output_dir / 'provider_capability_report.json'}")
     print(f"Generated: {config.raw_dir / 'manifest.json'}")
     print(f"Generated: {config.raw_dir / 'article_fulltext.json'}")
     print(f"Generated: {config.output_dir / f'CHATGPT_HANDOFF_{config.target_date}.md'}")
@@ -106,7 +109,8 @@ def _print_raw_archive_result(config: RunConfig, result: dict[str, Any]) -> None
         f"attempted={summary.get('attempted_count', 0)}, "
         f"complete={summary.get('complete_count', 0)}, "
         f"failed={summary.get('failed_count', 0)}, "
-        f"not_attempted_limit={summary.get('not_attempted_limit_count', 0)}"
+        f"not_attempted_limit={summary.get('not_attempted_limit_count', 0)}, "
+        f"not_attempted_runtime_budget={summary.get('not_attempted_runtime_budget_count', 0)}"
     )
 
 
@@ -169,8 +173,9 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
     cache_used_flags.append(gdelt_radar["cache_used"])
     statuses["GDELT Radar"] = gdelt_radar["status"]
 
-    # This is the critical boundary: every collector URL is registered and
-    # fetched before relevance, review priority, driver or handoff selection.
+    # Critical boundary: every collector URL is registered before relevance,
+    # review priority, driver or handoff selection. The retrieval wrapper applies
+    # only a technical runtime safeguard and never sees editorial fields.
     manifest = build_raw_archive_manifest(
         config,
         {
@@ -183,12 +188,11 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
             "sec_ir": sec_ir.get("raw", {}),
         },
     )
-    article_fulltext = collect_manifest_fulltext(config, manifest)
+    article_fulltext = collect_manifest_fulltext_with_policy(config, manifest)
     cache_used_flags.append(article_fulltext["cache_used"])
     statuses["Raw Archive"] = article_fulltext["status"]
     statuses["Article Full Text"] = article_fulltext["status"]
 
-    # Derived metadata and handoff selection start only after Raw Archive work.
     market_movers = movers["market_movers"] or longbridge["market_movers"]
     watchlist = _merge_watchlist(longbridge["watchlist"])
     news_items = enrich_news_drivers(
@@ -213,6 +217,11 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
         "USDJPY": longbridge["market_data"].get("USDJPY"),
     }
     raw_archive_status = article_fulltext_status(article_fulltext, config)
+    coverage = article_fulltext.get("acquisition_coverage", {})
+    if isinstance(coverage, dict):
+        raw_archive_status["not_attempted_runtime_budget_count"] = coverage.get(
+            "not_attempted_runtime_budget_unique", 0
+        )
 
     return {
         "date": config.target_date,
@@ -246,6 +255,12 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
             "RSS": rss.get("collector_metadata", {}),
             "Search": search.get("collector_metadata", {}),
             "Raw Archive": manifest.get("retrieval_policy", {}),
+            "acquisitionCoverage": coverage,
+            "providerCapabilitySidecar": {
+                "path": f"output/{config.target_date}/provider_capability_report.json",
+                "operationalOnly": True,
+                "marketEvidence": False,
+            },
             "api_key_status": _api_key_status(config.env),
         },
         "missing_data": unique_missing(missing_data),
