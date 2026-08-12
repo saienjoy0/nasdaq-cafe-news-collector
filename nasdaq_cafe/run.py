@@ -5,10 +5,11 @@ import sys
 from typing import Any
 
 from nasdaq_cafe.cache import read_json
+from nasdaq_cafe.collectors.cross_market_snapshot_collector import collect_cross_market_snapshot
 from nasdaq_cafe.collectors.economic_calendar_collector import collect_economic_calendar
 from nasdaq_cafe.collectors.fred_collector import collect_fred_dgs10
 from nasdaq_cafe.collectors.fmp_collector import collect_fmp
-from nasdaq_cafe.collectors.gdelt_radar_collector import (
+from nasdaq_cafe.collectors.gdelt_perspective_collector import (
     collect_gdelt_radar,
     gdelt_daily_lead_theme_candidates,
     gdelt_fulltext_candidates,
@@ -22,10 +23,10 @@ from nasdaq_cafe.collectors.longbridge_cli_quotes import ensure_longbridge_quote
 from nasdaq_cafe.collectors.longbridge_raw_loader import load_longbridge_raw
 from nasdaq_cafe.collectors.market_movers_collector import collect_market_movers
 from nasdaq_cafe.collectors.rss_collector import collect_rss_news
-from nasdaq_cafe.collectors.search_collector import collect_search_news
+from nasdaq_cafe.collectors.search_discovery_collector import collect_search_news
 from nasdaq_cafe.collectors.sec_ir_collector import collect_sec_ir
 from nasdaq_cafe.config import RunConfig, WATCHLIST, build_config, unique_missing
-from nasdaq_cafe.outputs.write_chatgpt_handoff import write_chatgpt_handoff
+from nasdaq_cafe.outputs.write_chatgpt_handoff_v11 import write_chatgpt_handoff
 from nasdaq_cafe.outputs.write_fulltext_handoff import write_chatgpt_fulltext_handoff
 from nasdaq_cafe.outputs.write_prompt_input import write_prompt_input
 from nasdaq_cafe.outputs.write_source_pack import write_source_pack
@@ -33,6 +34,7 @@ from nasdaq_cafe.processing.article_review_targets import build_article_review_t
 from nasdaq_cafe.processing.news_drivers import enrich_news_drivers
 from nasdaq_cafe.processing.normalize import dedupe_news, utc_now_iso
 from nasdaq_cafe.processing.relevance import select_candidates
+from nasdaq_cafe.processing.research_candidate_pool import build_research_candidate_pool
 from nasdaq_cafe.raw_archive import (
     article_fulltext_status,
     build_raw_archive_manifest,
@@ -169,8 +171,17 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
     cache_used_flags.append(gdelt_radar["cache_used"])
     statuses["GDELT Radar"] = gdelt_radar["status"]
 
+    cross_market = collect_cross_market_snapshot(
+        config,
+        macro=fred.get("values", {"DGS10": fred.get("value")}),
+        existing_market_data=longbridge.get("market_data", {}),
+    )
+    missing_data.extend(cross_market.get("missing_data", []))
+    cache_used_flags.append(bool(cross_market.get("cache_used")))
+    statuses["Cross-Market Snapshot"] = str(cross_market.get("status", "unknown"))
+
     # This is the critical boundary: every collector URL is registered and
-    # fetched before relevance, review priority, driver or handoff selection.
+    # fetched before relevance, review priority, driver, broad-pool or handoff selection.
     manifest = build_raw_archive_manifest(
         config,
         {
@@ -188,7 +199,7 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
     statuses["Raw Archive"] = article_fulltext["status"]
     statuses["Article Full Text"] = article_fulltext["status"]
 
-    # Derived metadata and handoff selection start only after Raw Archive work.
+    # Derived metadata and both legacy/new handoff selection start only after Raw Archive work.
     market_movers = movers["market_movers"] or longbridge["market_movers"]
     watchlist = _merge_watchlist(longbridge["watchlist"])
     news_items = enrich_news_drivers(
@@ -213,6 +224,22 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
         "USDJPY": longbridge["market_data"].get("USDJPY"),
     }
     raw_archive_status = article_fulltext_status(article_fulltext, config)
+    gdelt_candidates = gdelt_radar_candidates(gdelt_radar)
+
+    research_candidate_pool, discovery_coverage = build_research_candidate_pool(
+        [
+            ("RSS", rss.get("news_items", [])),
+            ("Longbridge", longbridge.get("news_items", [])),
+            ("FMP", fmp.get("news_items", [])),
+            ("Search", search.get("discovery_items", [])),
+            ("GDELT", gdelt_candidates),
+        ],
+        target_date=config.target_date,
+        coverage_inputs=[
+            search.get("discovery_coverage", {}),
+            gdelt_radar.get("discovery_coverage", {}),
+        ],
+    )
 
     return {
         "date": config.target_date,
@@ -225,12 +252,13 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
             "session_note": "Sessions remain separate when the source exposes session fields; otherwise session is unknown.",
         },
         "market_data": market_data,
+        "cross_market_snapshot": cross_market.get("snapshot", {}),
         "macro": fred.get("values", {"DGS10": fred["value"]}),
         "watchlist": watchlist,
         "market_movers": market_movers,
         "economic_events": economic_calendar["economic_events"],
         "gdelt_radar_status": gdelt_radar_status(gdelt_radar, config),
-        "gdelt_radar_candidates": gdelt_radar_candidates(gdelt_radar),
+        "gdelt_radar_candidates": gdelt_candidates,
         "gdelt_fulltext_candidates": gdelt_fulltext_candidates(gdelt_radar),
         "daily_lead_theme_candidates": gdelt_daily_lead_theme_candidates(gdelt_radar),
         "statement_radar_status": statement_radar_status(gdelt_radar),
@@ -238,6 +266,8 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
         "statement_fulltext_candidates": statement_fulltext_candidates(gdelt_radar),
         "news_items": news_items,
         "search_supplements": search_supplements,
+        "research_candidate_pool": research_candidate_pool,
+        "discovery_coverage": discovery_coverage,
         "article_review_targets": article_review_targets,
         "article_fulltext_status": raw_archive_status,
         "raw_archive_status": raw_archive_status,
