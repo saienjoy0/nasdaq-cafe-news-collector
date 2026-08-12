@@ -24,6 +24,9 @@ US_INSTRUMENTS: tuple[tuple[str, str], ...] = (
     *tuple((ticker, f"{ticker}.US") for ticker in WATCHLIST),
 )
 
+# These two symbols are explicitly supported by the current Longbridge CLI
+# documentation examples for Hang Seng index products.  We do not infer or
+# hard-code unverified Japan/China index symbols.
 HK_INSTRUMENTS: tuple[tuple[str, str], ...] = (
     ("Hang Seng", "HSI.HK"),
     ("Hang Seng Tech", "HSTECH.HK"),
@@ -130,6 +133,7 @@ def _build_snapshot(config: RunConfig, macro: dict[str, Any], existing_market_da
         for instrument, symbol in HK_INSTRUMENTS:
             markets["hong_kong"].append(_unavailable_entry("hong_kong", instrument, symbol, "Asia/Hong_Kong", "preceding_us_session", reason))
 
+    # Provider capability is explicit.  No guessed symbol and no silent proxy.
     markets["japan"].extend(
         [
             _unavailable_entry(
@@ -150,15 +154,17 @@ def _build_snapshot(config: RunConfig, macro: dict[str, Any], existing_market_da
             ),
         ]
     )
-    markets["china"].append(
-        _unavailable_entry(
-            "china",
-            "CSI 300 or Shanghai Composite",
-            "",
-            "Asia/Shanghai",
-            "preceding_us_session",
-            "Exact Longbridge China index symbol was not verified by the read-only capability probe; no symbol was guessed.",
-        )
+    markets["china"].extend(
+        [
+            _unavailable_entry(
+                "china",
+                "CSI 300 or Shanghai Composite",
+                "",
+                "Asia/Shanghai",
+                "preceding_us_session",
+                "Exact Longbridge China index symbol was not verified by the read-only capability probe; no symbol was guessed.",
+            )
+        ]
     )
 
     markets["cross_asset"].append(_fred_dgs10_entry(macro.get("DGS10")))
@@ -215,7 +221,7 @@ def _fetch_daily_rows(executable: Any, symbol: str, target_date: str) -> tuple[l
         "history",
         symbol,
         "--period",
-        "1d",
+        "day",
         "--start",
         start,
         "--end",
