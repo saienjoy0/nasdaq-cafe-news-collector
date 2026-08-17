@@ -1,4 +1,5 @@
 name: Daily NASDAQ Cafe collection
+run-name: "Daily NASDAQ Cafe ${{ inputs.correlation_id || github.event_name }}"
 
 on:
   schedule:
@@ -7,6 +8,11 @@ on:
     - cron: "17 22 * * *"
   workflow_dispatch:
     inputs:
+      correlation_id:
+        description: "Opaque dispatch correlation ID; set by authorized bridge"
+        required: false
+        default: ""
+        type: string
       date:
         description: "Target date: today or YYYY-MM-DD"
         required: false

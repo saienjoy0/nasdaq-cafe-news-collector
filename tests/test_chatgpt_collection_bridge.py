@@ -50,20 +50,32 @@ class ChatGPTCollectionBridgeContractTests(unittest.TestCase):
         self.assertNotIn("python -m nasdaq_cafe.run collect", self.bridge)
         self.assertIn("-f mode=\"$MODE\"", self.bridge)
         self.assertIn("-f request_json_b64=\"$REQUEST_JSON_B64\"", self.bridge)
+        self.assertIn("-f correlation_id=\"$correlation_id\"", self.bridge)
 
     def test_daily_workflow_keeps_one_broad_collector_entrypoint(self) -> None:
         if self.daily:
             self.assertEqual(1, self.daily.count("python -m nasdaq_cafe.run collect"))
             self.assertEqual(1, self.daily.count("python -m nasdaq_cafe.research_acquisition"))
+            self.assertIn("correlation_id:", self.daily)
+            self.assertIn('run-name: "Daily NASDAQ Cafe ${{ inputs.correlation_id || github.event_name }}"', self.daily)
             self.assertIn("mode:", self.daily)
             self.assertIn("request_json_b64:", self.daily)
             self.assertIn("Scheduled collection is broad-only.", self.daily)
 
-    def test_bridge_reports_dynamic_artifact_contract(self) -> None:
-        self.assertIn("previous_run_id=", self.bridge)
-        self.assertIn("select(.databaseId > $previous_run_id)", self.bridge)
+    def test_bridge_binds_request_to_exact_child_run_name(self) -> None:
+        self.assertIn('correlation_id="issue-${ISSUE_NUMBER}-parent-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"', self.bridge)
+        self.assertIn('expected_title="Daily NASDAQ Cafe $correlation_id"', self.bridge)
+        self.assertIn("--json databaseId,url,displayTitle", self.bridge)
+        self.assertIn('row.get("displayTitle") == expected', self.bridge)
+        self.assertIn('actual_title="$(gh run view "$child_run_id"', self.bridge)
+        self.assertIn('if [[ "$actual_title" != "$expected_title" ]]', self.bridge)
+        self.assertNotIn("previous_run_id=", self.bridge)
+        self.assertNotIn("select(.databaseId > $previous_run_id)", self.bridge)
+
+    def test_bridge_reports_correlated_artifact_contract(self) -> None:
         self.assertIn('gh run watch "$CHILD_RUN_ID"', self.bridge)
         self.assertIn("<!-- nasdaq-cafe-collection-result -->", self.bridge)
+        self.assertIn("correlation_id: $correlation_id", self.bridge)
         self.assertIn("artifact_name: $artifact_name", self.bridge)
         self.assertIn("nasdaq-cafe-followup-", self.bridge)
 
