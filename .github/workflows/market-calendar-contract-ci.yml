@@ -10,6 +10,7 @@ on:
       - "nasdaq_cafe/config.py"
       - "nasdaq_cafe/run.py"
       - "nasdaq_cafe/outputs/write_chatgpt_handoff.py"
+      - "nasdaq_cafe/outputs/write_fulltext_handoff.py"
       - "tests/test_trading_calendar.py"
       - ".github/workflows/market-calendar-contract-ci.yml"
   pull_request:
@@ -19,6 +20,7 @@ on:
       - "nasdaq_cafe/config.py"
       - "nasdaq_cafe/run.py"
       - "nasdaq_cafe/outputs/write_chatgpt_handoff.py"
+      - "nasdaq_cafe/outputs/write_fulltext_handoff.py"
       - "tests/test_trading_calendar.py"
       - ".github/workflows/market-calendar-contract-ci.yml"
   workflow_dispatch:
@@ -39,7 +41,7 @@ jobs:
       - name: Install locked dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile calendar boundary
-        run: python -m py_compile nasdaq_cafe/trading_calendar.py nasdaq_cafe/config.py nasdaq_cafe/run.py nasdaq_cafe/outputs/write_chatgpt_handoff.py
+        run: python -m py_compile nasdaq_cafe/trading_calendar.py nasdaq_cafe/config.py nasdaq_cafe/run.py nasdaq_cafe/outputs/write_chatgpt_handoff.py nasdaq_cafe/outputs/write_fulltext_handoff.py
       - name: Trading calendar contract regression
         run: python -m unittest tests.test_trading_calendar -v
       - name: Full Collector regression
