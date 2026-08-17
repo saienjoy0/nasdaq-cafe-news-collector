@@ -5,6 +5,7 @@ from pathlib import Path
 
 from nasdaq_cafe.config import build_config
 from nasdaq_cafe.outputs.write_chatgpt_handoff import render_chatgpt_handoff
+from nasdaq_cafe.outputs.write_fulltext_handoff import render_chatgpt_fulltext_handoff
 from nasdaq_cafe.trading_calendar import resolve_research_trading_session
 
 
@@ -51,25 +52,28 @@ class TradingCalendarContractTests(unittest.TestCase):
         self.assertIn('"researchTradingDate": config.research_trading_date', source)
         self.assertNotIn('researchTradingDate": (', source)
 
-    def test_formal_chatgpt_handoff_consumes_canonical_field_without_recalculation(self) -> None:
-        source = (ROOT / "nasdaq_cafe" / "outputs" / "write_chatgpt_handoff.py").read_text(encoding="utf-8")
-        self.assertIn('pack.get("researchTradingDate"', source)
-        self.assertNotIn("def _market_session_date", source)
-        self.assertNotIn("timedelta(days=1)", source)
+    def test_all_chatgpt_handoffs_consume_canonical_field_without_recalculation(self) -> None:
+        handoff_source = (ROOT / "nasdaq_cafe" / "outputs" / "write_chatgpt_handoff.py").read_text(encoding="utf-8")
+        fulltext_source = (ROOT / "nasdaq_cafe" / "outputs" / "write_fulltext_handoff.py").read_text(encoding="utf-8")
+        for source in (handoff_source, fulltext_source):
+            self.assertIn('pack.get("researchTradingDate"', source)
+            self.assertNotIn("def _market_session_date", source)
+            self.assertNotIn("timedelta(days=1)", source)
 
-        rendered = render_chatgpt_handoff(
-            {
-                "date": "2026-08-17",
-                "researchTradingDate": "2026-08-14",
-                "researchTradingSession": {
-                    "calendar": "NYSE",
-                    "marketOpen": "2026-08-14T13:30:00+00:00",
-                    "marketClose": "2026-08-14T20:00:00+00:00",
-                    "isHalfDay": False,
-                },
-            }
-        )
+        pack = {
+            "date": "2026-08-17",
+            "researchTradingDate": "2026-08-14",
+            "researchTradingSession": {
+                "calendar": "NYSE",
+                "marketOpen": "2026-08-14T13:30:00+00:00",
+                "marketClose": "2026-08-14T20:00:00+00:00",
+                "isHalfDay": False,
+            },
+        }
+        rendered = render_chatgpt_handoff(pack)
+        rendered_fulltext = render_chatgpt_fulltext_handoff(pack, {})
         self.assertIn("market_session_date_us: 2026-08-14", rendered)
+        self.assertIn("market_session_date_us: 2026-08-14", rendered_fulltext)
 
 
 if __name__ == "__main__":
