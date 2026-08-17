@@ -159,20 +159,13 @@ jobs:
         run: |
           set -euo pipefail
 
-          previous_run_id="$(
-            gh run list \
-              --repo "$GITHUB_REPOSITORY" \
-              --workflow "$TARGET_WORKFLOW" \
-              --event workflow_dispatch \
-              --branch main \
-              --limit 1 \
-              --json databaseId \
-              --jq '.[0].databaseId // 0'
-          )"
+          correlation_id="issue-${ISSUE_NUMBER}-parent-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+          expected_title="Daily NASDAQ Cafe $correlation_id"
 
           gh workflow run "$TARGET_WORKFLOW" \
             --repo "$GITHUB_REPOSITORY" \
             --ref main \
+            -f correlation_id="$correlation_id" \
             -f date="$TARGET_DATE" \
             -f refresh="$REFRESH" \
             -f mode="$MODE" \
@@ -181,16 +174,16 @@ jobs:
           child_run_id=""
           child_run_url=""
           for _ in $(seq 1 60); do
-            run_json="$(
+            runs_json="$(
               gh run list \
                 --repo "$GITHUB_REPOSITORY" \
                 --workflow "$TARGET_WORKFLOW" \
                 --event workflow_dispatch \
                 --branch main \
-                --limit 20 \
-                --json databaseId,url \
-                --jq ". | map(select(.databaseId > $previous_run_id)) | sort_by(.databaseId) | first // {}"
+                --limit 50 \
+                --json databaseId,url,displayTitle
             )"
+            run_json="$(printf '%s' "$runs_json" | EXPECTED_TITLE="$expected_title" python -c 'import json,os,sys; expected=os.environ["EXPECTED_TITLE"]; matches=[row for row in json.load(sys.stdin) if row.get("displayTitle") == expected]; print(json.dumps(matches[0] if matches else {}))')"
             child_run_id="$(printf '%s' "$run_json" | python -c 'import json,sys; print(json.load(sys.stdin).get("databaseId", ""))')"
             child_run_url="$(printf '%s' "$run_json" | python -c 'import json,sys; print(json.load(sys.stdin).get("url", ""))')"
             if [[ -n "$child_run_id" ]]; then
@@ -200,12 +193,20 @@ jobs:
           done
 
           if [[ -z "$child_run_id" ]]; then
-            echo "::error::Dispatched workflow run could not be located."
+            echo "::error::Dispatched workflow run with correlation ID $correlation_id could not be located."
             exit 1
           fi
 
+          actual_title="$(gh run view "$child_run_id" --repo "$GITHUB_REPOSITORY" --json displayTitle --jq '.displayTitle')"
+          if [[ "$actual_title" != "$expected_title" ]]; then
+            echo "::error::Resolved child run title does not match exact correlation ID."
+            exit 1
+          fi
+
+          echo "correlation_id=$correlation_id" >> "$GITHUB_OUTPUT"
           echo "run_id=$child_run_id" >> "$GITHUB_OUTPUT"
           echo "run_url=$child_run_url" >> "$GITHUB_OUTPUT"
+          echo "Correlation ID: $correlation_id"
           echo "Child run: $child_run_url"
 
       - name: Wait for collector and capture result
@@ -274,6 +275,7 @@ jobs:
           MODE: ${{ steps.request.outputs.mode }}
           WAVE: ${{ steps.request.outputs.wave }}
           ARTIFACT_NAME: ${{ steps.request.outputs.artifact_name }}
+          CORRELATION_ID: ${{ steps.child.outputs.correlation_id }}
           CHILD_RUN_ID: ${{ steps.child.outputs.run_id }}
           CHILD_RUN_URL: ${{ steps.child.outputs.run_url }}
           CHILD_CONCLUSION: ${{ steps.wait.outputs.conclusion }}
@@ -285,6 +287,7 @@ jobs:
           mode="${MODE:-unknown}"
           wave="${WAVE:-}"
           artifact_name="${ARTIFACT_NAME:-unavailable}"
+          correlation_id="${CORRELATION_ID:-unknown}"
           child_run_id="${CHILD_RUN_ID:-unknown}"
           child_run_url="${CHILD_RUN_URL:-https://github.com/$GITHUB_REPOSITORY/actions}"
           conclusion="${CHILD_CONCLUSION:-failure}"
@@ -310,6 +313,7 @@ jobs:
           date: $target_date
           mode: $mode
           wave: $wave
+          correlation_id: $correlation_id
           run_id: $child_run_id
           artifact_name: $artifact_name
           run_url: $child_run_url
@@ -364,6 +368,7 @@ jobs:
           date: $target_date
           mode: $mode
           wave: $wave
+          correlation_id: $correlation_id
           run_id: $child_run_id
           artifact_name: unavailable
           run_url: $child_run_url
