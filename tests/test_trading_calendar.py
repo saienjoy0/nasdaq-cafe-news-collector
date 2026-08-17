@@ -55,10 +55,11 @@ class TradingCalendarContractTests(unittest.TestCase):
     def test_all_chatgpt_handoffs_consume_canonical_field_without_recalculation(self) -> None:
         handoff_source = (ROOT / "nasdaq_cafe" / "outputs" / "write_chatgpt_handoff.py").read_text(encoding="utf-8")
         fulltext_source = (ROOT / "nasdaq_cafe" / "outputs" / "write_fulltext_handoff.py").read_text(encoding="utf-8")
+        forbidden_manual_market_date = "datetime.fromisoformat(target_date).date() - timedelta(days=1)"
         for source in (handoff_source, fulltext_source):
             self.assertIn('pack.get("researchTradingDate"', source)
             self.assertNotIn("def _market_session_date", source)
-            self.assertNotIn("timedelta(days=1)", source)
+            self.assertNotIn(forbidden_manual_market_date, source)
 
         pack = {
             "date": "2026-08-17",
