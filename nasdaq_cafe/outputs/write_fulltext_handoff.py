@@ -33,7 +33,7 @@ def render_chatgpt_fulltext_handoff(
     article_fulltext: dict[str, Any],
 ) -> str:
     target_date = str(pack.get("date", "")).strip()
-    market_session_date = _market_session_date(target_date)
+    market_session_date = str(pack.get("researchTradingDate", "")).strip()
     generated_at_jst, generated_at_utc = _generated_timestamps()
     summary = article_fulltext.get("summary", {}) if isinstance(article_fulltext, dict) else {}
     items = article_fulltext.get("items", []) if isinstance(article_fulltext, dict) else []
@@ -136,13 +136,6 @@ def _generated_timestamps() -> tuple[str, str]:
     jst = ZoneInfo("Asia/Tokyo") if ZoneInfo else timezone(timedelta(hours=9))
     now_utc = datetime.now(UTC).replace(microsecond=0)
     return now_utc.astimezone(jst).isoformat(), now_utc.isoformat()
-
-
-def _market_session_date(target_date: str) -> str:
-    try:
-        return (datetime.fromisoformat(target_date).date() - timedelta(days=1)).isoformat()
-    except ValueError:
-        return ""
 
 
 def _format_list(value: Any) -> str:
