@@ -6,6 +6,8 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Iterable
 
+from nasdaq_cafe.trading_calendar import resolve_research_trading_session
+
 try:
     from dotenv import load_dotenv
 except Exception:  # pragma: no cover - optional dependency
@@ -48,6 +50,11 @@ class RunConfig:
     output_dir: Path
     raw_dir: Path
     env: dict[str, str]
+    research_trading_date: str = ""
+    research_trading_calendar: str = "NYSE"
+    research_trading_market_open: str = ""
+    research_trading_market_close: str = ""
+    research_trading_is_half_day: bool = False
 
 
 def load_environment() -> dict[str, str]:
@@ -122,6 +129,7 @@ def parse_target_date(value: str | None) -> str:
 
 def build_config(target_date: str | None, refresh: bool) -> RunConfig:
     normalized_date = parse_target_date(target_date)
+    research_session = resolve_research_trading_session(normalized_date)
     output_dir = OUTPUT_DIR / normalized_date
     raw_dir = output_dir / "raw"
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -132,6 +140,11 @@ def build_config(target_date: str | None, refresh: bool) -> RunConfig:
         output_dir=output_dir,
         raw_dir=raw_dir,
         env=load_environment(),
+        research_trading_date=research_session.session_date,
+        research_trading_calendar=research_session.calendar,
+        research_trading_market_open=research_session.market_open_utc,
+        research_trading_market_close=research_session.market_close_utc,
+        research_trading_is_half_day=research_session.is_half_day,
     )
 
 
