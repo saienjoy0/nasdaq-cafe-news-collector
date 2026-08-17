@@ -3,6 +3,7 @@ feedparser==6.0.13
 defusedxml==0.7.1
 fake_useragent==2.2.0
 pandas==3.0.5
+pandas_market_calendars==5.4.0
 python-dotenv==1.2.2
 yfinance==1.5.2
 fredapi==0.5.2
