@@ -225,6 +225,14 @@ def build_source_pack(config: RunConfig) -> dict[str, Any]:
 
     return {
         "date": config.target_date,
+        "researchTradingDate": config.research_trading_date,
+        "researchTradingSession": {
+            "calendar": config.research_trading_calendar,
+            "marketOpen": config.research_trading_market_open,
+            "marketClose": config.research_trading_market_close,
+            "isHalfDay": config.research_trading_is_half_day,
+            "resolution": "latest-completed-regular-session-before-episode-collection-cutoff",
+        },
         "generated_at": utc_now_iso(),
         "cache": {
             "cache_used": any(cache_used_flags),

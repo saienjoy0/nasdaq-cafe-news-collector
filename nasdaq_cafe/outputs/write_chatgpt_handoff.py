@@ -170,7 +170,7 @@ def write_readme_for_human(output_dir: Path) -> None:
 
 def render_chatgpt_handoff(pack: dict[str, Any]) -> str:
     target_date = str(pack.get("date", "")).strip()
-    market_session_date = _market_session_date(target_date)
+    market_session_date = str(pack.get("researchTradingDate", "")).strip()
     generated_at_jst, generated_at_utc = _generated_timestamps()
 
     watchlist = _ordered_watchlist(pack.get("watchlist", []))
@@ -259,13 +259,6 @@ def _generated_timestamps() -> tuple[str, str]:
     jst = ZoneInfo("Asia/Tokyo") if ZoneInfo else timezone(timedelta(hours=9))
     now_utc = datetime.now(UTC).replace(microsecond=0)
     return now_utc.astimezone(jst).strftime("%Y-%m-%d %H:%M"), now_utc.strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
-def _market_session_date(target_date: str) -> str:
-    try:
-        return (datetime.fromisoformat(target_date).date() - timedelta(days=1)).isoformat()
-    except ValueError:
-        return ""
 
 
 def _render_market_data(pack: dict[str, Any]) -> list[str]:
